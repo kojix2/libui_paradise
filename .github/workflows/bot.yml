@@ -10,7 +10,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Download Gem
         run: |
-          rm *
           gem fetch libui_paradise
       - name: Extract Gem
         run: |
