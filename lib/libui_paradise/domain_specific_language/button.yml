@@ -1,0 +1,7 @@
+button:
+ id:               button1
+ text: 'This is a button.'
+ width:                120
+ height:                80
+ on_clicked:
+  do_call_this_method
