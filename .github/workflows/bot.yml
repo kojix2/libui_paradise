@@ -21,7 +21,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: update gem copy
-          title: Automated Updates to Local Website Copy
+          commit-message: Update Gem copy
+          title: Automated Updates
           body: This is an auto-generated PR with gem updates.
           branch: gem-updates
