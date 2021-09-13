@@ -2,6 +2,7 @@ name: Download Gem and Commit
 on:
   schedule:
     - cron:  '0 10 * * *'
+  workflow_dispatch:
 jobs:
   format:
     runs-on: ubuntu-latest
