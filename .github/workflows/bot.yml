@@ -11,7 +11,7 @@ jobs:
         run: |
           rm *
           gem fetch libui_paradise
-      - name Extract Gem
+      - name: Extract Gem
         run: |
           tar -xvf libui_paradise-*.gem
           ls | grep -v 'data.tar.gz' | xargs rm -r
@@ -23,4 +23,4 @@ jobs:
           commit-message: update gem copy
           title: Automated Updates to Local Website Copy
           body: This is an auto-generated PR with gem updates.
-          branch: main
+          branch: gem-updates
