@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">12.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">21:47:09</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">13.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:34:41</span> o'clock.
 
 ## The libui_paradise project
 
@@ -23,82 +23,134 @@ https://rubygems.org/gems/libui
 
 (Or visit the github page for ruby-libui here: https://github.com/kojix2/LibUI )
 
-Aside from this mentioned goal of enhancing the upstream bindings, the
-**libui_paradise** project also attempts to demonstrate how we could
-try to use a DSL to write less code in the long run; at the least
-less syntax.
+Aside from this mentioned goal of enhancing (or trying to enhance) the
+upstream bindings, the **libui_paradise** project also attempts to
+demonstrate how we could try to use a DSL to write less code in the
+long run; at the least less syntax. Less syntax is not automatically
+a win-win situation, but often it can be very useful. Example:
 
-This is highly experimental at this stage - I want to see which API calls
-make the most sense in the long run, ideally even across different GUIs
-as well as the www. (For those of you who have some experience with ruby-gtk
-this may seem familiar - API elements such as **.set_text()** or 
-**widget1.add(widget2)**; I kind of learned GUIs first via
+    _ = button('Hello world!') # for libui
+
+You can use a similar variant in ruby-gtk3, for example:
+
+    _ = Gtk::Button.new('Hello world!')
+
+Or, if you want to use "toplevel-methods", like the above:
+
+    _ = button('Hello world!') # for ruby-gtk
+
+In fact: if you notice the above then there is indeed no difference
+between which toolkit to use. We could then, in theory, "plug in"
+different toolkits, be it ruby-gtk, ruby-tk, ruby-libui and so forth.
+We could even extend this to the www and generate the appropriate 
+tags that way. Note that this is "in theory"; in practice there are
+some shortcomings, such as different toolkits not supporting the same
+widgets or functionality.
+
+The **libui_paradise gem** is highly experimental at this stage and
+may not work for all use cases, or may have bugs - I am still learning
+myself here. I want to see which API calls make the most sense in the
+long run, ideally even across different GUIs as well as the www. (For
+those of you who have some experience with ruby-gtk this may seem
+familiar, as pointed out above - API elements such as **.set_text()**
+or **widget1.add(widget2)**; I kind of learned GUIs first via
 **ruby-gtk**, which evidently shaped my opinion on GUI layouts
 to some extent.)
 
-The official ruby-libui project comes with **13 examples**
-(August 2021) so far. Have a look at the code provided on the github
-page to understand what is going on - in particular the **histogram**
-example is really nifty to play around with. It is probably the best,
-because it features interactive and dynamic use in a visual way -
-you can choose the colours, for example. A spin-button allows for
-visual change too, but I think colours are more impressive than 
-simple up-and-down counters.
+The official ruby-libui project maintained by kojix2 comes with
+**13 examples** (August 2021) so far. I assume that more examples
+may be added over the coming months and years depending on use
+case, time availability, motivation and so forth. Have a look at
+the code provided on the github page to understand what is going
+on - in particular the **histogram** example is really nifty if
+you want to play around with it **interactively**. It is probably the
+best example in this regard, because it features interactive and
+dynamic use in a visual way - you can choose the colours, for
+example. A spin-button allows for visual change too, but I think 
+colours are more impressive than simple up-and-down counters.
+
+Also check out kojix2' other examples in ruby-gtk - would be great
+if we could have the same in libui one day, but this also depends
+on what upstream libui makes available.
 
 I am trying to think about ways to simplify the code in these
-examples as well, but as said: this is all **highly experimental**
-and subject to change. I am going via slow babysteps here! Constant
+examples as well, so that we can "do more by writing less". But as
+stated before: this is all **highly experimental** and subject
+to change. I am going via slow, tiny babysteps here! Constant
 wins the race in the long run, just remember the turtle versus
-the rabbit.
+the rabbit. The rabbit always believed that he would win the
+race ...
 
-**kojix2** pointed out that a half-baked OOP design may not make
-a lot of sense in regards to ruby-libui - we have to think a bit
-about **Fiddle::Pointer** which not everyone may have done before.
-Otherwise you may end up segfaulting everything (which I did run
-into already - but it is both scary and fun at the same time!).
-Subclassing is also difficult - which functions should be called
-to create a "proper" subclass? May there be problems as a consequence
-of this? I have no idea right now. This is definitely more related
-to the C API of ruby than "pure", plain ruby as such.
+**kojix2** pointed out that a half-baked or incomplete OOP design may
+not make a lot of sense in regards to ruby-libui - we have to think a
+bit about **Fiddle::Pointer** which not everyone may have done before.
+
+Otherwise you may end up segfaulting everything all over the place
+(which I did run into already - but it is both scary and fun at the
+same time!). Subclassing is also difficult to do properly - which
+functions should be called to create a "proper" subclass? May there
+be problems as a consequence of trying this? I have no idea right
+now. This is definitely more related to the C API of ruby than
+"pure", plain ruby as such. You kind of have to understand the 
+underlying C code to some extent.
 
 I do not really know C very well; **pointers** are way above my 
 level of understanding, so **kojix2's** point is a fair one
 to make, since someone may have to maintain a growing code base -
 this may well be the case here too, so 'defensive programming'
-is a viable strategy.
+is a viable strategy. There are examples where one has to work
+around ruby's GC too, for instance - this all makes this a little
+bit more complicated than plain, "pure" ruby code.
 
 **However had**, at the same I still want to **experiment** and see
 what may happen with the code in general - which pitfalls may happen
-or which things could be improved. I think the more people use libui
-and ruby-libui, the better this may become in the long run. Imagine
-we could almost create a full desktop system based on libui! Even
-if the original scope never was aimed towards that. :D
+or which things could be improved upon. I think the more people use
+libui and ruby-libui, the better this may become in the long run.
+Imagine we could almost create a full desktop system based on
+libui! Even if the original scope never was aimed towards that. :D
 
-Lots of people could create widgets and add-ons when this were
-possible ... but I digress.
+This may then be fast enough for ruby-on-the-desktop, and simple
+enough to do that, too. Right now this has too many shortcomings;
+I miss CSS styling in particular. But, in theory, we could do
+this. Anyone feels clever enough to use ruby as a desktop-UI
+language via libui? I suppose it still requires some decent
+knowledge of C ...
+
+Lots of different people could create widgets and add-ons when
+this were possible ... but I digress.
 
 **Write a GUI once, run everywhere** (well ... at the least in
-theory). This is a great idea, even if libui may not be around
-one day, that idea should be retained for other GUIs.
+theory). This is an excellent idea, even if libui may not be
+around one day, that idea should be retained for other GUIs
+in the future.
 
 It's quite difficult to get GTK and ruby-gtk to work on
-windows - I tried to compile it some days/weeks ago but I
+**windows** - I tried to compile it some weeks ago but I
 ended up having "missing symbols" error messages afterwards.
-On Linux this is much, much easier ... I literally just compile
-GTK, after its dependencies are proper (glib, pango, atk,
-and so forth), and then the ruby bindings maintained largely
-by kou, and ... it works! At the least on linux.
+I managed to get the hello-world.c example working, but the
+more complicated examples did not work for me.
+
+On Linux this is much, much easier to do ... I literally just
+compile GTK, after its dependencies are properly installed (glib,
+pango, atk, and so forth), and then the ruby bindings maintained
+largely by kou (and others), and ... it works! At the least
+on linux.
 
 (I used to be able to run ruby-gtk2 on windows in the past,
-a long time ago, but sadly upstream GTK developers no longer
-provide binaries, and there are no binary bundles for 
-ruby-gtk on windows anymore either.)
+a long time ago, using the provided binaries, but sadly upstream
+GTK developers no longer provide binaries as-is, and there are
+no binary bundles for ruby-gtk on windows anymore either. I
+assume it is possible if you know msys2, and the windows 
+platform, but I am no expert on either, so ...)
 
-libui is so much simpler to use on windows than GTK,
+**libui** is so much simpler to use on windows than GTK,
 though - just do **gem install libui** and it'll work,
 as-is. Literally. That's it. I tried it on my windows
 laptop and it **does** indeed work. That convinced me
-that it makes sense to use libui and ruby-libui.
+that it makes sense to use libui and ruby-libui. The reason it
+works is because the ruby-libui gem (just called **libui**)
+bundles the respective binaries, and it is quite small. This
+would be much harder to do with ruby-gtk.
 
 Now I am trying to find more awesome examples to showcase
 what can be done. Who knows - perhaps even CSS may be supported
@@ -343,11 +395,12 @@ respectively.
 
 ## Libui Form
 
-**Form** is a container that takes labels for its contents.
+**Form** is a container that takes labels for its contents. This is currently
+just a stub though - we may have to research this with better examples.
 
 ## Libui Checkbox
 
-A simple checkbox example:
+A simple checkbox example in **plain** ruby-libui follows:
 
     checkbox = UI.checkbox('Checkbox')
     checkbox_toggle_callback = proc { |ptr|
@@ -359,15 +412,18 @@ This may look like so on Linux:
 
 <img src="https://i.imgur.com/d7qWalZ.png" style="margin-left: 2em; padding: 4px; border: 1px solid black;">
 
-To query whether it is active:
+To query whether a checkbox is **active**, use code such as the
+following:
 
     checkbox.is_active?
     checkbox.active?
 
 This depends on the modifications to Fiddler::Pointer, so
-be wary - there be dragons (perhaps). Most of these modifications
-are based on .object_id, which is registered in a main, toplevel
-Hash in the **libui_paradise project**.
+be wary when you use this - there be dragons (perhaps). Most
+of these modifications are based on **.object_id**, which is
+registered in a main, toplevel Hash in the 
+**libui_paradise project**. Not very elegant, but simple, and
+it works (for the most part).
 
 ## Adding a widget into another widget
 
@@ -377,39 +433,44 @@ I chose the following **API** for this:
 
 Note that this is "cheating" a bit because the method **.add()** is defined
 on **Fiddle::Pointer**. That's scary! Segfaults coming your way. But it
-also seems to work. Which is amazing ... :-)
+also seems to work to some extent. Which is amazing ... :-)
 
-In ruby-gtk it is quite common to use .add(). While .pack_start() and
-.pack_end() are available in ruby-gtk as well, I think .add() is the
-simpler name. We just add a widget to another widget - job done.
+In ruby-gtk it is quite common to use **.add()**. While **.pack_start()**
+and **.pack_end()** are available in ruby-gtk as well, I think .add() is
+the simpler name. We just **add a widget to another widget** - job done.
 
 (I may also use << as alias to .add() and while << is great, remember
 that it can not easily be used all the time, e. g. box1 << box2 << 
 box3 versus box1.add(box2).add(box3) - the latter is a bit more
 resilient syntax-wise.)
 
-I also added << as an alias to .add() but I am not yet sure if this
-is a good idea. It's super-nifty to use << everywhere, but it also
-changes the syntax of the whole .rb file ... on the other hand, using
+As stated, **<<** was added as an alias to **.add()** but I am not yet sure
+if this is a very good idea. It's super-nifty to use << everywhere, but it
+also changes the syntax of the whole .rb file ... on the other hand, using
 << is easier than .add() so ... I'll go with that as well. Remember
 there is more than one way to do something in ruby - you need to 
-select the variant(s) that work best for you. I ignore the
-others. ;)
+select the variant(s) that work best for you and possibly ignore the
+other variants.
 
-Since a while the above can be simplified a bit.
+Since a while the above can be simplified a bit, as will be shown
+next.
 
-Rather than:
+Rather than use:
 
     box1.add(box2, 1)
 
-You can now do:
+You can now do this instead:
 
     box1.maximal(box2)
 
 This is a tiny bit longer, but you can omit the ", 1" part, which is
 nice. The alternative is .minimal(), which defaults to:
 
-    add(second_widget, 1)
+    add(second_widget, 0)
+
+So the only difference between .maximal() and .minimal() will be
+whether you pass 0 or 1 to the method. See the upstream libui
+API to understand the difference.
 
 ## Libui Tabs
 
@@ -423,8 +484,8 @@ The method **UI.new_horizontal_separator** can be used to add (or rather
 first create) a horizontal separator.
 
 You can then add it via .add() or << if you use the libui_paradise
-project. Alternatively use the toplevel method provided by ruby-libui,
-since that is what the libui_paradise project is doing anyway.
+project. Alternatively you can use the toplevel method provided by
+ruby-libui, since that is what the libui_paradise project is doing anyway.
 
 To simplify this further, you can do something like this:
 
@@ -432,13 +493,20 @@ To simplify this further, you can do something like this:
     outer_vbox.add_hsep
     # outer_vbox.add_horizontal_separator # Or this variant if you prefer some verbosity instead.
 
+Or, perhaps better, use a padded vbox:
+
+    outer_vbox = padded_vbox # note that "ui_" is not used here
+    outer_vbox.add_hsep
+
 I needed this functionality to quickly add horizontal separators for some
-visual cue in the **User Interface**. Using **.add_hsep** is very convenient
-and fast to write/type.
+visual cue in the **User Interface**. Using **.add_hsep** is very
+convenient and fast to write/type. If you want more verbosity then remember
+that you can always use the upstream API as-is.
 
 ## Entries in LibUI (ui_entry)
 
-The source for Unix (including Linux) can be read here:
+The official source for an ui_entry for Unix (including Linux) can be read
+here:
 
 https://github.com/andlabs/libui/blob/master/unix/entry.c
 
@@ -680,17 +748,6 @@ ruby-libui over the past months or so. Most work was probably done
 in 2020 or even before that (there are some older ruby bindings
 to libui, but these work differently as kojix2 explained).
 
-## Todo List
-
-Here I will list some todo entries - if anyone finds out how to solve
-them, you are welcome to share!
-
-- Find out how to create "proper" subclasses to Fiddle::Pointer, simulating a subclass to it.
-- Find out how halign and valign work in Libui-Grid. Somehow I can not easily reposition it ...
-  or perhaps I can and just have not noticed this (may have to embed one widget in another
-  widget in order for this to come into effect)
-- Find out how to do ad-hoc calls on linux to gtk, so that we can use CSS.
-
 ## Limitations of/in LibUI
 
 LibUI is not perfect - it is missing many things that should work just fine
@@ -707,32 +764,49 @@ degrees of complexity/importance:
 ## Structure of the project
 
 In **September 2021** the libui_paradise project was re-arranged slightly. There
-is now a dedicated libui_classes/ directory that "simulates" separate classes.
-For example, libui_button now resides in button.rb. I use the same directory
-layout in the gtk_paradise gem and I think it makes sense - at the least I 
-can quickly find the code that I may want to modify or extend.
+is now a dedicated **libui_classes/** directory that "simulates" separate classes.
+For example, libui_button now resides in **button.rb**. I use the same directory
+layout in the **gtk_paradise** gem and I think it makes a lot of sense - at the
+least I can quickly find the code that I may want to modify or extend. If I
+want to extend buttons, then I modify **buttons.rb**. That's simple, right?
 
 Another reason why the project was re-structured was so that we can use a
-unified DSL for the GUI elements.
+**unified DSL** for the GUI elements in the long run.
 
-For example:
+For example, code such as the following:
 
     _ = button
     _.on_clicked {
       puts 'Hello world!'
     }
 
-Should work on ruby-gtk3, libui and so forth one day - even on the www. But
-the different toolkits do not implement the same functionality. Libui only
-offers a reduced functionality, for instance. Thus, the DSL that we may then
-use can only support a subset of functionality, whereas other toolkits are
-more useful in this regard. This was an additional reason why files such
-as button.rb were created - it makes it easier to know which functionality
+Should work on ruby-gtk3, libui and all the other toolkits one day - even on
+the www. But the different toolkits do not implement the same functionality.
+Libui only offers a reduced functionality, for instance. Thus, the DSL that
+we may then use **can only support a subset of functionality**, whereas other
+toolkits are more useful in this regard. This was an additional reason why files
+such as button.rb were created - it makes it easier to know which functionality
 has to be changed in order for libui_paradise to enable such a unified
-DSL approach.
+DSL approach. This currently does not yet work fine in 2021, but one day it
+should work just fine.
 
-Note that the older libui_paradise gem will be made available at the least
-for three months (so until end of December 2021 at the least).
+Note that the older l**ibui_paradise gem** will be made available at the
+least for three months (so until end of December 2021 at the least). It used
+a different directory layout.
+
+You may ask why the main module is called **LibuiParadise::Extensions**.
+Why not modify LibUI directly? After all the gtk_paradise gem does the
+same, by modifying **module Gtk** directly.
+
+That is a good question, and the main reason for this is because I was
+not sure whether I can actually get away with modifying the LibUI
+namespace directly. Fiddle::Pointer still scares me, so I am experimenting.
+
+For now I thought it best to create a separate module, that is then included
+and modified - see the **included hook** that is presently used. This seems
+to be simpler for the time being. I may plan to change a lot more one day,
+if I ever manage to find out how to simulate proper subclasses via
+Fiddle::Pointer ... :) 
 
 --------------------------------------------------------------------------------
 ## SNIPPETS.md
@@ -1065,6 +1139,61 @@ what is going on. Since I don't, I hit a dead end, kind of.
 This is so far in September 2021. Let's see what the future brings.
 Perhaps other toolkits will learn from libui and implement the good
 parts for **their own** widget set.
+
+## LibuiParadise.parse_this_config_file()
+
+This method can be used to parse a .config file. This file should
+describe the main window, such as:
+
+     width:                                      1000
+     height:                                      150
+     title:                 Parse Config File Example
+
+I have been using this in gtk_paradise and I think it may be convenient
+if you create lots of small windows and widgets that you don't want
+to hardcode values for directly into the .rb file at hand.
+
+To create a toplevel window from this use code such as the following:
+
+    use_this_config_file = '023_parse_config_file_example.config'
+    window = LibuiParadise.parse_this_config_file(use_this_config_file)
+
+In fact, the example **023_parse_config_file_example.rb** shows how
+this is used. The width of the main window will be 1000 and the
+height only 150.
+
+This functionality may be extended in the future. For example, we
+could enable to automatically parse such a .config file if it 
+exists, thus not even requiring that method call in the future.
+
+For now, though, you have to explicitely use that method if you
+want to instantiate such a window from a .config file. It will
+be evaluated at a later time (past September 2021) how useful this
+really is.
+
+## Todo List
+
+Here I will list some todo entries - if anyone finds out how to solve
+them, you are welcome to share!
+
+- Add more small, standalone examples showcasing how to use (and combine)
+different functionality, in particular colourized text and use of 
+(embedded) images if applicable.
+
+- Find out how to create "proper" subclasses to Fiddle::Pointer, simulating
+a subclass to it.
+
+- Find out how halign and valign work in Libui-Grid. Somehow I can not easily reposition it ...
+or perhaps I have been able to, and just have not noticed this (may have to embed one
+widget in another widget in order for this to come into effect)
+
+- Find out how to do ad-hoc calls on linux to gtk, so that we can use CSS.
+Perhaps some extension mechanism could be used, similar to how ffi works
+in general. Unfortunately this probably requires knowledge of C, so this
+is an obstacle for me. I should have learned C before ruby ... :P
+
+- Get more people to learn about libui and use them in their projects,
+in particular for simple applications.
 
 ## Links related to libui or libui-based projects
 

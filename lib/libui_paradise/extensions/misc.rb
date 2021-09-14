@@ -14,6 +14,29 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === try_to_parse_this_config_file
+  #
+  # This method can be used to parse a .config file for data it stores.
+  #
+  # The .config file must have "width:", "height:" and "title:" settings.
+  # ========================================================================= #
+  def try_to_parse_this_config_file(i)
+    if File.exist? i
+      dataset = File.readlines(i)
+      width  = dataset.select {|line| line.include? 'width:' }.first.
+               split(':').last.strip.to_i
+      height = dataset.select {|line| line.include? 'height:' }.first.
+               split(':').last.strip.to_i
+      title  = dataset.select {|line| line.include? 'title:' }.first.
+               split(':').last.strip
+      window = LibuiParadise.window(title, width, height)
+      return window
+    else
+      e 'No file exists at `'+i+'`.'
+    end
+  end; alias parse_this_config_file try_to_parse_this_config_file # === parse_this_config_file
+
+  # ========================================================================= #
   # === abort_on_exception
   # ========================================================================= #
   def abort_on_exception
