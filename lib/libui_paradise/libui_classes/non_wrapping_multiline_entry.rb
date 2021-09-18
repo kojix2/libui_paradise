@@ -27,6 +27,7 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_text_view   textview } # === LibuiParadise::Extensions.ui_text_view
        self.instance_eval { alias ui_textview    textview } # === LibuiParadise::Extensions.ui_textview
        self.instance_eval { alias ui_text_buffer textview } # === LibuiParadise::Extensions.ui_text_buffer
+       self.instance_eval { alias input_field    textview } # === LibuiParadise::Extensions.input_field
 
   # ========================================================================= #
   # === textview
@@ -40,6 +41,7 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_text_view   textview # === ui_text_view
        alias ui_textview    textview # === ui_textview
        alias ui_text_buffer textview # === ui_text_buffer
+       alias input_field    textview # === input_field
 
 end
 

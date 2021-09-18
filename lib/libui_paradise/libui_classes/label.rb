@@ -35,6 +35,16 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_label label # === ui_label
 
   # ========================================================================= #
+  # === bold_label
+  #
+  # This currently does not work properly. We may have to re-examine this
+  # eventually at a later point.
+  # ========================================================================= #
+  def bold_label(i = '')
+    return label(i)
+  end
+
+  # ========================================================================= #
   # === bold_text
   #
   # This currently does NOT make the text bold - the method exists solely

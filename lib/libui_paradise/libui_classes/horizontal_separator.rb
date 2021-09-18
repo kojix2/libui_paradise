@@ -13,18 +13,20 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def self.horizontal_separator
     UI.new_horizontal_separator
-  end; self.instance_eval { alias ui_hseparator horizontal_separator } # === LibuiParadise::Extensions.ui_hseparator
-       self.instance_eval { alias ui_hsep       horizontal_separator } # === LibuiParadise::Extensions.ui_hsep
-       self.instance_eval { alias hspacer       horizontal_separator } # === LibuiParadise::Extensions.hspacer
+  end; self.instance_eval { alias ui_hseparator     horizontal_separator } # === LibuiParadise::Extensions.ui_hseparator
+       self.instance_eval { alias ui_hsep           horizontal_separator } # === LibuiParadise::Extensions.ui_hsep
+       self.instance_eval { alias hspacer           horizontal_separator } # === LibuiParadise::Extensions.hspacer
+       self.instance_eval { alias horizontal_spacer horizontal_separator } # === LibuiParadise::Extensions.horizontal_spacer
 
   # ========================================================================= #
   # === horizontal_separator
   # ========================================================================= #
   def horizontal_separator
     ::LibuiParadise::Extensions.horizontal_separator
-  end; alias ui_hseparator horizontal_separator # === ui_hseparator
-       alias ui_hsep       horizontal_separator # === ui_hsep
-       alias hspacer       horizontal_separator # === hspacer
+  end; alias ui_hseparator     horizontal_separator # === ui_hseparator
+       alias ui_hsep           horizontal_separator # === ui_hsep
+       alias hspacer           horizontal_separator # === hspacer
+       alias horizontal_spacer horizontal_separator # === hspacer
 
 end
 

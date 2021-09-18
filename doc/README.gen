@@ -20,11 +20,20 @@ https://rubygems.org/gems/libui
 
 (Or visit the github page for ruby-libui here: https://github.com/kojix2/LibUI )
 
+(Be wary of the name - the currently maintained gem is called **libui**;
+the older gem called **libui-ruby** is no longer maintained since as of **2019**. In
+the following document I may call kojix2' gem **ruby-libui**, but the official name
+is simply **libui**, which refers to the gem mentioned above: https://rubygems.org/gems/libui -
+I understand that I am using a misnomer when I refer to this as **ruby-libui**, but
+it helps me remember, so ...)
+
 Aside from this mentioned goal of enhancing (or trying to enhance) the
 upstream bindings, the **libui_paradise** project also attempts to
-demonstrate how we could try to use a DSL to write less code in the
-long run; at the least less syntax. Less syntax is not automatically
-a win-win situation, but often it can be very useful. Example:
+demonstrate how we could **try to use a DSL** to write less code in
+the long run; at the least less syntax. Less syntax is not automatically
+a win-win situation, but often it can be very useful.
+
+Example for this:
 
     _ = button('Hello world!') # for libui
 
@@ -32,17 +41,24 @@ You can use a similar variant in ruby-gtk3, for example:
 
     _ = Gtk::Button.new('Hello world!')
 
-Or, if you want to use "toplevel-methods", like the above:
+Or, if you want to use "toplevel-methods", like the above, identical to the
+first variant:
 
     _ = button('Hello world!') # for ruby-gtk
 
-In fact: if you notice the above then there is indeed no difference
-between which toolkit to use. We could then, in theory, "plug in"
-different toolkits, be it ruby-gtk, ruby-tk, ruby-libui and so forth.
+In fact: if you notice the above three lines of code then there is indeed no
+difference between which toolkit to use between the first variant and
+the last variant. We could then, in theory, "plug in" different toolkits,
+be it ruby-gtk, ruby-tk, ruby-libui and so forth.
+
 We could even extend this to the www and generate the appropriate 
-tags that way. Note that this is "in theory"; in practice there are
-some shortcomings, such as different toolkits not supporting the same
-widgets or functionality.
+tags that way, by treating HTML tags as "objects". Note that this is
+"in theory"; in practice there are some shortcomings, or limitations,
+such as different toolkits not supporting the same widgets or
+functionality. The old ruby-qt toolkit, for example, required you to
+connect slots to signals, due to qt requiring this. I do not know if
+this is still the case or not, but back in the days this was 
+necessary and it complicated using ruby-qt a little bit.
 
 The **libui_paradise gem** is highly experimental at this stage and
 may not work for all use cases, or may have bugs - I am still learning
@@ -340,7 +356,7 @@ have to build up a data structure that behaves like Fiddle::Pointer
 but also has methods that allow 'OOP behaviour'. Has anyone tried
 this yet? I am scared to try considering I already got segfaults ...
 
-Eventually I may figure this out - or somene else with more knowledge
+Eventually I may figure this out - or someone else with more knowledge
 will make this available. We can probably 'fake' subclassing to
 a pointer somehow ... after all ruby internally has to figure it
 out as well and probably did so already, on the C-level side.
@@ -877,14 +893,54 @@ want to instantiate such a window from a .config file. It will
 be evaluated at a later time (past September 2021) how useful this
 really is.
 
-## Todo List
+## Width and Height of the main window
 
-Here I will list some todo entries - if anyone finds out how to solve
-them, you are welcome to share!
+Different computers have different display values (their monitor).
 
-- Add more small, standalone examples showcasing how to use (and combine)
-different functionality, in particular colourized text and use of 
-(embedded) images if applicable.
+I use a wide-screen LCD monitor, but I also have smaller laptops,
+and I want libui to work there just as well.
+
+The following API can be used to set the width and height of the
+main window:
+
+    set_height()
+    set_width()
+
+You can also use something like '95%' as input. In that case the
+desired value will be calculated depending on the max-resolution
+of the current display. This presently only works on linux; if
+someone knows how to make this work on windows and Mac OSX let
+me know. (On these systems it will instead default to a hardcoded
+value of 1024 for width and 800 for height).
+
+The following example shows how to use a percentage value:
+
+    set_height('80%')
+
+## Status of the libui_paradise project
+
+I am still, as of 2021, experimenting somewhat randomly. While I intend to
+improve libui_paradise, it is a hobby project that is not as important
+as, say, the gtk_paradise project (which contains custom ruby-gtk
+related addons; ruby-gtk has a LOT more functionality than libui has).
+
+I can not promise to work reliably on libui_paradise, but every now and
+then, say every some weeks, I will try to add more code to it, in 
+particular examples and documentation. However had, keep in mind that
+the project is not one of my most important projects, so it may not
+receive as many updates as other projects. See also the next subsection,
+the "Todo List".
+
+## Todo List and Goals related to libui
+
+Here I will list some todo entries and related goals for libui or the
+libui_paradise gem - if anyone finds out how to solve some of these
+limitations, you are welcome to share!
+
+- Add more small, **standalone examples** showcasing how to use (and
+combine) different functionality, in particular colourized text and use
+of (embedded) images if applicable. Ideally we should be able to combine
+both freely, if possible.
 
 - Find out how to create "proper" subclasses to Fiddle::Pointer, simulating
 a subclass to it.

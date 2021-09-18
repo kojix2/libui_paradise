@@ -178,4 +178,76 @@ module Extensions # === LibuiParadise::Extensions
     i.init
   end
 
+  # ========================================================================= #
+  # === return_the_resolution_using_xrandr
+  #
+  # This method will only work on e. g. Linux.
+  #
+  # It will then return a String such as "1920x1080".
+  # ========================================================================= #
+  def return_the_resolution_using_xrandr
+    _ = `xrandr`.split("\n").select {|line|
+      line.include? '*+'
+    }.first.strip.squeeze(' ').split(' ').first.to_s
+    return _ # This will yield e. g. "1920x1080"
+  end
+
+  # ========================================================================= #
+  # === assumed_height?
+  # ========================================================================= #
+  def assumed_height?
+    return_the_resolution_using_xrandr.split('x').last.to_i
+  end; alias assumed_max_height? assumed_height? # === assumed_max_height?
+
+  # ========================================================================= #
+  # === assumed_width?
+  # ========================================================================= #
+  def assumed_width?
+    return_the_resolution_using_xrandr.split('x').first.to_i
+  end; alias assumed_max_width? assumed_width? # === assumed_max_width?
+
+  # ========================================================================= #
+  # === set_width
+  # ========================================================================= #
+  def set_width(i = 1024)
+    if i.is_a?(String) and i.include?('%')
+      # ===================================================================== #
+      # In this case we have to modify this a bit.
+      # ===================================================================== #
+      max_width = assumed_max_width?
+      i = (max_width.to_f * i.to_i) / 100.0
+    end
+    i = i.to_i
+    @width = i
+  end
+
+  # ========================================================================= #
+  # === set_height
+  # ========================================================================= #
+  def set_height(i = 800)
+    if i.is_a?(String) and i.include?('%')
+      # ===================================================================== #
+      # In this case we have to modify this a bit.
+      # ===================================================================== #
+      max_height = assumed_max_height?
+      i = (max_height.to_f * i.to_i) / 100.0
+    end
+    i = i.to_i
+    @height = i
+  end
+
+  # ========================================================================= #
+  # === width?
+  # ========================================================================= #
+  def width?
+    @width
+  end
+
+  # ========================================================================= #
+  # === height?
+  # ========================================================================= #
+  def height?
+    @height
+  end
+
 end; end

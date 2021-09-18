@@ -9,14 +9,14 @@ module LibuiParadise
 module Extensions # === LibuiParadise::Extensions
   
   # ========================================================================= #
-  # === image
+  # === Libuiparadise::Extensions.image
   #
   # This is currently limited to .png files only, due to ChunkyPng.
   #
   # At some later point in the future this limitation may be lifted. For
   # now it has to remain in place.
   # ========================================================================= #
-  def image(
+  def self.image(
       this_file,
       width  = :try_to_infer_automatically,
       height = :infer_automatically
@@ -44,6 +44,24 @@ module Extensions # === LibuiParadise::Extensions
       return _
     end
     nil
+  end; self.instance_eval { alias ui_image image } # === LibuiParadise::Extensions.ui_image
+
+  # ========================================================================= #
+  # === image
+  #
+  # This is currently limited to .png files only, due to ChunkyPng.
+  #
+  # At some later point in the future this limitation may be lifted. For
+  # now it has to remain in place.
+  # ========================================================================= #
+  def image(
+      this_file,
+      width  = :try_to_infer_automatically,
+      height = :infer_automatically
+    )
+    Libuiparadise::Extensions.image(
+      this_file, width, height
+    )
   end; alias ui_image image # === ui_image
 
 end; end
