@@ -655,5 +655,7 @@ class Pointer # === Fiddle::Pointer
   def on_click_select_all; end
   def do_center; end
   def on_hover(i = ''); end
+  def lightgreen; end
+  def set_background_colour(i = ''); end
 
 end; end
