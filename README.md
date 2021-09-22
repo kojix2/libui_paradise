@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">18.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:41:13</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">22.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:44:11</span> o'clock.
 
 ## The libui_paradise project
 
@@ -212,19 +212,25 @@ a few lines).
 ## How to get started with ruby-libui and the libui_paradise project?
 
 Well - I first recommend to you that you look directly at ruby-libui
-of kojix2, in particular the examples. Run them and look what is possible
-so far. Have a look at the code as well, in order to understand how it
-works; after some minutes you should understand quite a bit already,
-if you already know ruby.
+of kojix2, in particular the examples that he provides. Work through
+the examples step-by-step, possibly starting with the smallest example,
+and have a look at how things work - just to get an overview.
 
-Then you may look at the libui_paradise project and look to see what
-has been added. Look at the examples of the libui_paradise project
-(they are a bit simplified compared to the upstream examples), then
-consider using libui_paradise/prototype/prototype.rb, copy it and 
-adjust it to your project as-is. You may want to remove the grid
-that is inside there and use a hbox or a vbox instead. It's all
-quite simple actually once you understand the API. For example,
-a button can be added in this way to a vbox:
+Have a look at the code as well, in order to understand how it
+works; after some minutes or perhaps a very few hours you should
+understand quite a bit already, if you already know ruby. Even more
+so if you did work with GUIs before, including GUIs via a www-interface.
+
+Then you are recommended to look at the libui_paradise project and look to 
+see what has been added on top of what kojix2 provides. Look at the examples 
+of the libui_paradise project as well (they are a bit simplified compared
+to the upstream examples), then consider using
+**libui_paradise/prototype/prototype.rb** in particular. Copy it
+and adjust it to your project and use case, as-is. You may want to remove
+the grid that is inside there and use a hbox or a vbox instead, or
+a padded_hbox and padded_vbox. It's all quite simple actually once
+you understand the basic API: windows, widgets, buttons, entries. For
+example, a button can be added in this way to a vbox:
 
     outer_vbox = padded_vbox # padded means that it will have some padding to the sides
     button = ui_button('Hello world!') # You can drop the ui_ prefix if you'd like to
@@ -233,8 +239,9 @@ a button can be added in this way to a vbox:
     }
     outer_vbox.minimal(button) # Use minimal space if possible. Or use .add().
 
-That's it! A button that is in a container (vbox) that outputs hello world
-when clicked. Can't get much simpler than that. \o/
+That's it! Inside of the **.on_clicked {}** block you can run the ruby code
+that you want to use. A button that is in a container (vbox) that outputs
+hello world when clicked. Can't get much simpler than that. \o/
 
 ## Fiddle::Pointer and playing with pointers
 
@@ -382,15 +389,21 @@ To create a combo-box, do:
 
     combo_box = ui_combo_box
 
-You can fill it with an array of entries on creation-time via:
+You can fill it with an array of entries **on creation-time** via:
 
     combo_box = ui_combo_box([1,2,3,4])
 
 This will also focus on the very first element when doing so.
 
-If you need to do so manually you can use the toplevel method:
+If you need to do so manually, and focus on another element,
+you can use the following toplevel method:
 
     UI.combobox_set_selected()
+
+The source code to the combo-box in libui, at the least
+for UNIX/Linux, can be seen here:
+
+https://github.com/andlabs/libui/blob/master/unix/combobox.c 
 
 ## Error messages and ui_error_message
 
@@ -1225,6 +1238,21 @@ the project is not one of my most important projects, so it may not
 receive as many updates as other projects. See also the next subsection,
 the "Todo List".
 
+## DSLs for libui (in ruby)
+
+kojix2 pointed out that glimmer has support for libui; check it out
+here:
+
+https://github.com/AndyObtiva/glimmer-dsl-libui
+
+libui_paradise will support the same syntax (in the long run) as
+glimmer does, either directly, or via a module and a way to
+require it specifically. But stay tuned for this - right now as
+of late 2021 this is not yet guaranteed. (If anyone needs quick
+API changes, let me know and I'll change libui_paradise. Other
+than that, the libui_paradise project is in a slow maintenance
+mode right now, so again, stay tuned. \o/ )
+
 ## Todo List and Goals related to libui
 
 Here I will list some todo entries and related goals for libui or the
@@ -1249,7 +1277,12 @@ in general. Unfortunately this probably requires knowledge of C, so this
 is an obstacle for me. I should have learned C before ruby ... :P
 
 - Get more people to learn about libui and use them in their projects,
-in particular for simple applications.
+in particular for simple applications. I think this is the most important
+goal: we need more people to learn about libui and begin to use it. 
+Contribute to upstream as well. If we have a sufficiently large user
+base then it should be easier to add new possibilities onto libui,
+which in turn will "cascade" downwards to all the other bindings 
+to libui, be it in kotlin, python, ruby and so forth.
 
 ## Links related to libui or libui-based projects
 

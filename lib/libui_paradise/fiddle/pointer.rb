@@ -18,6 +18,22 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === populate
+  # ========================================================================= #
+  def populate(dataset)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last
+    case type
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      self.append_this_array(dataset)
+    end
+  end
+
+  # ========================================================================= #
   # === text?
   # ========================================================================= #
   def text?(
@@ -625,6 +641,8 @@ class Pointer # === Fiddle::Pointer
   def pad6px; end
   def pad7px; end
   def pad8px; end
+  def pad9px; end
+  def pad10px; end
   def yellow_background; end
   def try_to_use_this_font(i = nil); end
     alias use_this_font= try_to_use_this_font
@@ -657,5 +675,11 @@ class Pointer # === Fiddle::Pointer
   def on_hover(i = ''); end
   def lightgreen; end
   def set_background_colour(i = ''); end
+  def set_size_request(a = 42, b = 42); end
+  def the_first_entry_is_active; end
+  def clear_old_datapoints; end
+  def very_light_yellow_background; end
+  def width_height(a = 500, b = 500); end
+  def row_spacing=(i = 10); end
 
 end; end
