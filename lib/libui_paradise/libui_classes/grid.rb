@@ -15,7 +15,8 @@ module Extensions # === LibuiParadise::Extensions
     _ = ui_grid
     _.is_padded
     return _
-  end; alias padded_grid ui_padded_grid # === padded_grid
+  end; alias padded_grid  ui_padded_grid # === padded_grid
+       alias default_grid ui_padded_grid # === default_grid
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.grid                             (grid tag)

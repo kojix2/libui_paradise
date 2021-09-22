@@ -46,6 +46,9 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
   # === reset                                                     (reset tag)
   # ========================================================================= #
   def reset
+    set_title(TITLE)
+    set_width(WIDTH)
+    set_height(HEIGHT)
   end
 
   # ========================================================================= #
@@ -53,12 +56,11 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
   # ========================================================================= #
   def run
     window = ui_padded_main_window(
-      TITLE,
-      WIDTH,
-      HEIGHT,
+      title?,
+      width?,
+      height?,
       0
     )
- 
     outer_vbox = padded_vbox
     # ======================================================================= #
     # First add the two buttons on top:

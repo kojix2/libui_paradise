@@ -9,9 +9,9 @@ module LibuiParadise
 module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
-  # === combobox
+  # === LibuiParadise::Extensions.combobox
   # ========================================================================= #
-  def combobox(
+  def self.combobox(
       optional_array = nil, &block
     )
     combobox = UI.new_combobox
@@ -23,10 +23,21 @@ module Extensions # === LibuiParadise::Extensions
       optional_array = yield
     end
     if optional_array and optional_array.is_a?(Array)
-      append_this_array_to_that_combobox(optional_array, combobox)
+      # append_this_array_to_that_combobox(optional_array, combobox)
       combobox.append_this_array(optional_array)
     end
     return combobox
+  end; self.instance_eval { alias combo_box    combobox } # === LibuiParadise::Extensions.combo_box
+       self.instance_eval { alias ui_combo_box combobox } # === LibuiParadise::Extensions.ui_combo_box
+       self.instance_eval { alias ui_combobox  combobox } # === LibuiParadise::Extensions.ui_combobox
+
+  # ========================================================================= #
+  # === combobox
+  # ========================================================================= #
+  def combobox(
+      optional_array = nil, &block
+    )
+    return ::LibuiParadise::Extensions.combobox(optional_array, &block)
   end; alias combo_box    combobox # === combo_box
        alias ui_combo_box combobox # === ui_combo_box
        alias ui_combobox  combobox # === ui_combobox
