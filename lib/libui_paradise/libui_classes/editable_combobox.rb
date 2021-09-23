@@ -9,9 +9,9 @@ module LibuiParadise
 module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
-  # === editable_combobox
+  # === LibuiParadise::Extensions.editable_combobox
   # ========================================================================= #
-  def editable_combobox(
+  def self.editable_combobox(
       optional_array = nil, &block
     )
     _ = UI.new_editable_combobox
@@ -23,7 +23,29 @@ module Extensions # === LibuiParadise::Extensions
     end
     add_to_the_registered_widgets(_, __method__)
     return _
+  end; self.instance_eval { alias editable_combo_box    editable_combobox } # === LibuiParadise::Extensions.editable_combo_box
+       self.instance_eval { alias ui_editable_combo_box editable_combobox } # === LibuiParadise::Extensions.ui_editable_combo_box
+
+  # ========================================================================= #
+  # === editable_combobox
+  # ========================================================================= #
+  def editable_combobox(
+      optional_array = nil, &block
+    )
+    return ::LibuiParadise::Extensions(optional_array, &block)
   end; alias editable_combo_box    editable_combobox # === editable_combo_box
        alias ui_editable_combo_box editable_combobox # === ui_editable_combo_box
 
-end; end
+end
+
+# =========================================================================== #
+# === LibuiParadise::Extensions.editable_combobox
+# =========================================================================== #
+def self.editable_combobox(
+    optional_array = nil, &block
+  )
+  return ::LibuiParadise::Extensions.editable_combobox(optional_array, &block)
+end; self.instance_eval { alias editable_combo_box    editable_combobox } # === LibuiParadise.editable_combo_box
+     self.instance_eval { alias ui_editable_combo_box editable_combobox } # === LibuiParadise.ui_editable_combo_box
+
+end

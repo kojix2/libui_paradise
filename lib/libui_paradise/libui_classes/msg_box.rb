@@ -14,10 +14,14 @@ module Extensions # === LibuiParadise::Extensions
   # This method is a convenience-wrapper over UI.msg_box().
   # ========================================================================= #
   def self.msg_box(
-      main_window,
+      main_window  = :default_window,
       title_to_use = '',
       whatever     = ''
     )
+    case main_window
+    when :default_window
+      main_window = LibuParadise.window?
+    end
     _ = UI.msg_box(
       main_window,
       title_to_use,
@@ -36,7 +40,7 @@ module Extensions # === LibuiParadise::Extensions
   # This method is a convenience-wrapper over UI.msg_box().
   # ========================================================================= #
   def msg_box(
-      main_window,
+      main_window  = :default_window,
       title_to_use = '',
       whatever     = ''
     )
@@ -49,6 +53,7 @@ module Extensions # === LibuiParadise::Extensions
        alias message_to_the_user    msg_box # === message_to_the_user
        alias message_box            msg_box # === message_box
        alias popup_over_this_widget msg_box # === popup_over_this_widget
+       alias popup_message          msg_box # === popup_message
 
 end
 
@@ -69,5 +74,6 @@ end; self.instance_eval { alias ui_msg_box             msg_box } # === LibuiPara
      self.instance_eval { alias message_to_the_user    msg_box } # === LibuiParadise.message_to_the_user
      self.instance_eval { alias message_box            msg_box } # === LibuiParadise.message_box
      self.instance_eval { alias popup_over_this_widget msg_box } # === LibuiParadise.popup_over_this_widget
+     self.instance_eval { alias popup_message          msg_box } # === LibuiParadise.popup_message
 
 end

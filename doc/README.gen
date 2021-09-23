@@ -397,7 +397,19 @@ you can use the following toplevel method:
 
     UI.combobox_set_selected()
 
-The source code to the combo-box in libui, at the least
+To query the currently selected value, use:
+
+    UI.combobox_selected(pointer)
+
+This is usually done via a **proc {}** object. See kojix2' examples.
+
+In LibuiParadise a few custom methods were added, such as 
+**.ui_sync_connect()**. This method was added to connect a
+combo-box to a entry and automatically sync that entry whenever
+the combo box is changed. See the example **007_combo_box_example.rb**
+for how this works.
+
+The **source code** to the combo-box in libui, at the least
 for UNIX/Linux, can be seen here:
 
 https://github.com/andlabs/libui/blob/master/unix/combobox.c 

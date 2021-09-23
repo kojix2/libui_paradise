@@ -42,4 +42,14 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_combo_box combobox # === ui_combo_box
        alias ui_combobox  combobox # === ui_combobox
 
+  # ========================================================================= #
+  # === selected?
+  #
+  # Unsure whether this works. It appears to work, but I am not even
+  # certain as to why.
+  # ========================================================================= #
+  def selected?(pointer)
+    UI.combobox_selected(pointer).to_s
+  end
+
 end; end

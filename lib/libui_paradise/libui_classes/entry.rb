@@ -55,6 +55,10 @@ module Extensions # === LibuiParadise::Extensions
   # === text?
   #
   # This method will guarantee a String to be returned.
+  #
+  # This is a bit weird, though. We may have to remove this method one
+  # day. I forgot why I added it to entry.rb specifically. After all
+  # other widgets also should respond to .text?.
   # ========================================================================= #
   def text?(from_this_pointer)
     _ = UI.entry_text(from_this_pointer).to_s
