@@ -18,22 +18,6 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
-  # === populate
-  # ========================================================================= #
-  def populate(dataset)
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last
-    case type
-    # ======================================================================= #
-    # === :combobox
-    # ======================================================================= #
-    when :combobox
-      self.append_this_array(dataset)
-    end
-  end
-
-  # ========================================================================= #
   # === text?
   # ========================================================================= #
   def text?(
@@ -49,16 +33,190 @@ class Pointer # === Fiddle::Pointer
         type = hash[object_id].last # The last entry contains the type.
       end
     end
+pp type
+pp type
+pp type
     case type
     # ======================================================================= #
     # === :textview
     # ======================================================================= #
     when :textview
       UI.multiline_entry_text(self).to_s
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      UI.combobox_selected(self).to_s
     else # This is the "historic" default.
       UI.entry_text(self).to_s
     end
   end; alias buffer? text? # === buffer?
+
+  # ========================================================================= #
+  # === @left_counter
+  # ========================================================================= #
+  @left_counter = 0
+
+  # ========================================================================= #
+  # === Fiddle::Pointer.reset_the_left_counter
+  # ========================================================================= #
+  def self.reset_the_left_counter
+    @left_counter = 0
+  end
+
+  # ========================================================================= #
+  # === Fiddle::Pointer.increment_the_left_counter
+  # ========================================================================= #
+  def self.increment_the_left_counter
+    @left_counter += 1
+  end
+
+  # ========================================================================= #
+  # === Fiddle::Pointer.left_counter?
+  # ========================================================================= #
+  def self.left_counter?
+    @left_counter
+  end
+
+  # ========================================================================= #
+  # === @top_counter
+  # ========================================================================= #
+  @top_counter = 0
+
+  # ========================================================================= #
+  # === Fiddle::Pointer.increment_the_top_counter
+  # ========================================================================= #
+  def self.increment_the_top_counter
+    @top_counter += 1
+  end
+
+  # ========================================================================= #
+  # === Fiddle::Pointer.top_counter?
+  # ========================================================================= #
+  def self.top_counter?
+    @top_counter
+  end
+
+  # ========================================================================= #
+  # === right                                                     (right tag)
+  # ========================================================================= #
+  def right(
+      widget,
+      left  = Fiddle::Pointer.left_counter?,
+      top   = Fiddle::Pointer.top_counter?,
+      xspan = 1,
+      yspan = 1
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :vbox
+    # ======================================================================= #
+    when :vbox
+      self.add(widget)
+    # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      self.ui_grid_append(
+        widget,
+        left, # left
+        top,  # top
+        xspan,
+        yspan
+      )
+      Fiddle::Pointer.reset_the_left_counter
+      Fiddle::Pointer.increment_the_top_counter
+    else
+    end
+  end
+
+  # ========================================================================= #
+  # === left                                                       (left tag)
+  # ========================================================================= #
+  def left(
+      widget,
+      left  = Fiddle::Pointer.left_counter?,
+      top   = Fiddle::Pointer.top_counter?,
+      xspan = 1,
+      yspan = 1
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :vbox
+    # ======================================================================= #
+    when :vbox
+      self.add(widget)
+    # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      self.ui_grid_append(
+        widget,
+        self,
+        left, # left
+        top,  # top
+        xspan,
+        yspan
+      )
+      Fiddle::Pointer.increment_the_left_counter
+    else
+    end
+  end
+
+  # ========================================================================= #
+  # === ui_grid_append
+  #
+  # This method can be used to append onto a grid in LibUI.
+  #
+  # Usage example:
+  #
+  #   grid.grid_append(text('Right'), 1, 0, 1, 1, 0, 0.5, 1, 0)
+  #
+  # ========================================================================= #
+  def ui_grid_append(
+      widget_to_append,
+      left    = 0,
+      top     = 0,
+      xspan   = 1,
+      yspan   = 1,     # 
+      hexpand = false, # A "boolean".
+      halign  = 0,
+      vexpand = false, # A "boolean".
+      valign  = 0
+    )
+    # ======================================================================= #
+    # The signature in Go is:
+    #
+    #   Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
+    #
+    # ======================================================================= #
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    _type       = hash[object_id].last # This should be :grid. But it is not used here.
+    # ======================================================================= #
+    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
+    #  0,    0,    2,     1,      0,      0,       1,      0
+    # ======================================================================= #
+    UI.grid_append(
+      this_widget,
+      widget_to_append,
+      left,
+      top,
+      xspan,
+      yspan,
+      hexpand,
+      halign,
+      vexpand,
+      valign
+    )
+  end; alias grid_append ui_grid_append # === grid_append
 
   # ========================================================================= #
   # === padded=
@@ -112,6 +270,22 @@ class Pointer # === Fiddle::Pointer
       puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
     end
   end; alias set_padded padded= # === set_padded
+
+  # ========================================================================= #
+  # === populate
+  # ========================================================================= #
+  def populate(dataset)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last
+    case type
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      self.append_this_array(dataset)
+    end
+  end
 
   # ========================================================================= #
   # === is_padded
@@ -320,50 +494,6 @@ class Pointer # === Fiddle::Pointer
   end; alias value= set_value # === value=
 
   # ========================================================================= #
-  # === ui_grid_append
-  #
-  # This method can be used to append onto a grid in LibUI.
-  # ========================================================================= #
-  def ui_grid_append(
-      widget_to_append,
-      left    = 0,
-      top     = 0,
-      xspan   = 1,
-      yspan   = 1,     # 
-      hexpand = false, # A "boolean".
-      halign  = 0,
-      vexpand = false, # A "boolean".
-      valign  = 0
-    )
-    # ======================================================================= #
-    # The signature in Go is:
-    #
-    #   Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
-    #
-    # ======================================================================= #
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    _type       = hash[object_id].last # This should be :grid. But it is not used here.
-    # ======================================================================= #
-    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
-    #  0,    0,    2,     1,      0,      0,       1,      0
-    # ======================================================================= #
-    UI.grid_append(
-      this_widget,
-      widget_to_append,
-      left,
-      top,
-      xspan,
-      yspan,
-      hexpand,
-      halign,
-      vexpand,
-      valign
-    )
-  end
-
-  # ========================================================================= #
   # === append_this_array
   # ========================================================================= #
   def append_this_array(array)
@@ -570,54 +700,6 @@ class Pointer # === Fiddle::Pointer
        alias has_margin    is_margined # === has_margin
 
   # ========================================================================= #
-  # === right
-  # ========================================================================= #
-  def right(
-      widget
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last # The last entry contains the type.
-    case type
-    # ======================================================================= #
-    # === :vbox
-    # ======================================================================= #
-    when :vbox
-      self.add(widget)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      e ':grid is not yet implemented.'
-    else
-    end
-  end
-
-  # ========================================================================= #
-  # === left
-  # ========================================================================= #
-  def left(
-      widget
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last # The last entry contains the type.
-    case type
-    # ======================================================================= #
-    # === :vbox
-    # ======================================================================= #
-    when :vbox
-      self.add(widget)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      e ':grid is not yet implemented.'
-    else
-    end
-  end
-
-  # ========================================================================= #
   # Skeleton methods:
   #
   # A "skeleton" method is one that doesn't do anything right now. These
@@ -681,5 +763,6 @@ class Pointer # === Fiddle::Pointer
   def very_light_yellow_background; end
   def width_height(a = 500, b = 500); end
   def row_spacing=(i = 10); end
+  def line_spacing=(i = 10); end
 
 end; end

@@ -21,6 +21,25 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
+  # === ui_sync_connect
+  #
+  # This method can connect two widgets: the first one should be a
+  # combo-box, and the second one a ui-entry.
+  # ========================================================================= #
+  def ui_sync_connect(
+      widget1, widget2
+    )
+    combobox_selected_callback = proc { |pointer|
+      widget2.set_text(
+        selected?(pointer)
+      )
+    }
+    UI.combobox_on_selected(
+      widget1, combobox_selected_callback, nil
+    )
+  end; alias sync_connect ui_sync_connect # === sync_connect
+
+  # ========================================================================= #
   # === try_to_parse_this_config_file
   #
   # This method can be used to parse a .config file for data it stores.

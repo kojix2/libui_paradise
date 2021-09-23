@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">22.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:44:11</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">22.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">19:11:24</span> o'clock.
 
 ## The libui_paradise project
 
@@ -400,7 +400,19 @@ you can use the following toplevel method:
 
     UI.combobox_set_selected()
 
-The source code to the combo-box in libui, at the least
+To query the currently selected value, use:
+
+    UI.combobox_selected(pointer)
+
+This is usually done via a **proc {}** object. See kojix2' examples.
+
+In LibuiParadise a few custom methods were added, such as 
+**.ui_sync_connect()**. This method was added to connect a
+combo-box to a entry and automatically sync that entry whenever
+the combo box is changed. See the example **007_combo_box_example.rb**
+for how this works.
+
+The **source code** to the combo-box in libui, at the least
 for UNIX/Linux, can be seen here:
 
 https://github.com/andlabs/libui/blob/master/unix/combobox.c 
