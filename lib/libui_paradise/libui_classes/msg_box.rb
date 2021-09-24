@@ -61,7 +61,7 @@ end
 # === LibuiParadise.msg_box
 # =========================================================================== #
 def self.msg_box(
-    main_window,
+    main_window  = :default_window,
     title_to_use = '',
     whatever     = ''
   )
