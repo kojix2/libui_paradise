@@ -64,4 +64,19 @@ module Extensions # === LibuiParadise::Extensions
     )
   end; alias ui_image image # === ui_image
 
-end; end
+end
+
+# ========================================================================= #
+# === Libuiparadise.image
+# ========================================================================= #
+def self.image(
+    this_file,
+    width  = :try_to_infer_automatically,
+    height = :infer_automatically
+  )
+  ::LibuiParadise::Extensions.image(
+    this_file, width, height
+  )
+end; self.instance_eval { alias ui_image image } # === LibuiParadise.ui_image
+
+end

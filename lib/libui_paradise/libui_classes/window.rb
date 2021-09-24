@@ -80,8 +80,9 @@ module Extensions # === LibuiParadise::Extensions
     end
     UI.simple_exit(main_window)
     return main_window # Always return it here.
-  end; self.instance_eval { alias main_window    window } # === LibuiParadise::Extensions.main_window
-       self.instance_eval { alias ui_main_window window } # === LibuiParadise::Extensions.ui_main_window
+  end; self.instance_eval { alias main_window     window } # === LibuiParadise::Extensions.main_window
+       self.instance_eval { alias ui_main_window  window } # === LibuiParadise::Extensions.ui_main_window
+       self.instance_eval { alias margined_window window } # === LibuiParadise::Extensions.margined_window
 
   # ========================================================================= #
   # === window
@@ -139,8 +140,9 @@ def self.window(
     height,
     has_menubar
   )
-end; self.instance_eval { alias main_window    window } # === LibuiParadise.main_window
-     self.instance_eval { alias ui_main_window window } # === LibuiParadise.ui_main_window
+end; self.instance_eval { alias main_window     window } # === LibuiParadise.main_window
+     self.instance_eval { alias ui_main_window  window } # === LibuiParadise.ui_main_window
+     self.instance_eval { alias margined_window window } # === LibuiParadise.margined_window
 
 # =========================================================================== #
 # === LibuiParadise.main_window?
