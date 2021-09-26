@@ -18,6 +18,59 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === set_text
+  # ========================================================================= #
+  def set_text(
+      display_this_text = '', # This is the text that will be used.
+      type              = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    if type.nil?
+      type = hash[object_id].last # This should be :grid. But it is not used here.
+    end
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    #
+    # This is a text-view widget actually.
+    # ======================================================================= #
+    when :multiline_entry
+      UI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :text
+    # ======================================================================= #
+    when :text,
+         :label
+      UI.label_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :textview
+    # ======================================================================= #
+    when :textview
+      UI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      UI.entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # else;  puts 'Unhandled case so far: '+type.to_s
+    end
+  end; alias set_content set_text # === set_content
+
+  # ========================================================================= #
   # === text?
   # ========================================================================= #
   def text?(
@@ -33,24 +86,22 @@ class Pointer # === Fiddle::Pointer
         type = hash[object_id].last # The last entry contains the type.
       end
     end
-pp type
-pp type
-pp type
     case type
     # ======================================================================= #
     # === :textview
     # ======================================================================= #
     when :textview
-      UI.multiline_entry_text(self).to_s
+      return UI.multiline_entry_text(self).to_s
     # ======================================================================= #
     # === :combobox
     # ======================================================================= #
     when :combobox
-      UI.combobox_selected(self).to_s
-    else # This is the "historic" default.
-      UI.entry_text(self).to_s
+      return UI.combobox_selected(self).to_s
+    else # This is the "historic" default. May have to be removed one day.
+      return UI.entry_text(self).to_s
     end
-  end; alias buffer? text? # === buffer?
+  end; alias buffer?   text? # === buffer?
+       alias selected? text? # === selected?
 
   # ========================================================================= #
   # === @left_counter
@@ -315,49 +366,6 @@ pp type
        alias intelligent_close_down show_then_main_then_quit # === intelligent_close_down
        alias intelligent_quit       show_then_main_then_quit # === intelligent_quit
        alias intelligent_exit       show_then_main_then_quit # === intelligent_exit
-
-  # ========================================================================= #
-  # === set_text
-  # ========================================================================= #
-  def set_text(
-      display_this_text = '', # This is the text that will be used.
-      type              = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    if type.nil?
-      type = hash[object_id].last # This should be :grid. But it is not used here.
-    end
-    case type
-    # ======================================================================= #
-    # === :text
-    # ======================================================================= #
-    when :text,
-         :label
-      UI.label_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :textview
-    # ======================================================================= #
-    when :textview
-      UI.multiline_entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      UI.entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # else;  puts 'Unhandled case so far: '+type.to_s
-    end
-  end; alias set_content set_text # === set_content
 
   # ========================================================================= #
   # === on_clicked
@@ -764,5 +772,6 @@ pp type
   def width_height(a = 500, b = 500); end
   def row_spacing=(i = 10); end
   def line_spacing=(i = 10); end
+  def to_the_left; end
 
 end; end
