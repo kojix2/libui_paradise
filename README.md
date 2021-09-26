@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">23.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">13:07:34</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">25.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">20:05:16</span> o'clock.
 
 ## The libui_paradise project
 
@@ -87,7 +87,9 @@ colours are more impressive than simple up-and-down counters.
 
 Also check out kojix2' other examples in ruby-gtk - would be great
 if we could have the same in libui one day, but this also depends
-on what upstream libui makes available.
+on what upstream libui makes available, unless it is somehow
+possible to connect multiple shared libraries into libui; then
+we could perhaps extend libui.
 
 I am trying to think about ways to simplify the code in these
 examples as well, so that we can "do more by writing less". But as
@@ -739,6 +741,16 @@ To set a value:
     spinbox.set_value(42)
     spinbox.value = 42 # this works as well
 
+## Create a text-view widget
+
+A text-view widget shows content, such as the content of a local file.
+
+In libui the general API for this is:
+
+    UI.new_multiline_entry                      # this is a textview
+
+
+
 ## Enabling / Disabling buttons in libui
 
 This is, assumingly, already possible via:
@@ -764,9 +776,12 @@ This is an incomplete subsection. I know almost nothing at all about
 C; kojix2 knows more, so I refer you to the homepage of ruby-libui
 respectively.
 
-Most of the code for ruby-libui resides under ffi.rb. In August 2021
+Most of the code for ruby-libui resides under **ffi.rb**. In August 2021
 this file contains almost 1000 lines, including newlines. Still quite
-some code.
+some code. If you want to look at the raw content, have a look at
+the following link for **ffi.rb**:
+
+https://raw.githubusercontent.com/kojix2/LibUI/main/lib/libui/ffi.rb
 
 The two most important components there, as far as I understand it,
 are **try_extern** and **structs**.

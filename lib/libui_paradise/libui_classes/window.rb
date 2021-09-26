@@ -122,6 +122,7 @@ module Extensions # === LibuiParadise::Extensions
     return _
   end; alias ui_margined_window    ui_margined_main_window # === ui_margined_window
        alias ui_padded_main_window ui_margined_main_window # === ui_padded_main_window
+       alias margined_window       ui_margined_main_window # === margined_window
 
 end
 

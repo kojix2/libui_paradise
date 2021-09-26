@@ -2,7 +2,7 @@
 # Encoding: UTF-8
 # frozen_string_literal: true
 # =========================================================================== #
-# require 'libui_paradise/ui_classes/vbox.rb
+# require 'libui_paradise/libui_classes/vbox.rb
 # =========================================================================== #
 module LibuiParadise
 

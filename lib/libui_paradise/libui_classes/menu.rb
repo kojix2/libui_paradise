@@ -9,12 +9,28 @@ module LibuiParadise
 module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
-  # === menu                                                       (menu tag)
+  # === LibuiParadise::Extensions.menu                             (menu tag)
   # ========================================================================= #
-  def menu(title = '')
+  def self.menu(title = '')
     _ = UI.new_menu(title)
     add_to_the_registered_widgets(_, __method__)
     return _
+  end; self.instance_eval { alias ui_menu menu } # === ui_menu
+
+  # ========================================================================= #
+  # === menu                                                       (menu tag)
+  # ========================================================================= #
+  def menu(title = '')
+    return menu(title)
   end; alias ui_menu menu # === ui_menu
 
-end; end
+end
+
+# =========================================================================== #
+# === LibuiParadise.menu
+# =========================================================================== #
+def self.menu(title = '')
+  return LibuiParadise::Extensions.menu(title)
+end; self.instance_eval { alias ui_menu menu } # === LibuiParadise.ui_menu
+
+end
