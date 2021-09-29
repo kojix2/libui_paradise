@@ -13,25 +13,31 @@ for that licence: https://creativecommons.org/licenses/by/3.0/. For
 cfdg itself, have a look at: https://www.contextfreeart.org/gallery/)
 
 The **libui_paradise project** aims to enhance the official (upstream)
-ruby-libui bindings a little bit. You can find the upstream ruby-libui
-bindings, maintained by **kojix2**, here:
+ruby-libui bindings a little bit.
+
+You can find the upstream ruby-libui bindings, maintained by **kojix2**,
+here:
 
 https://rubygems.org/gems/libui
 
-(Or visit the github page for ruby-libui here: https://github.com/kojix2/LibUI )
+(Or visit the github page for ruby-libui here via this link:
+https://github.com/kojix2/LibUI )
 
-(Be wary of the name - the currently maintained gem is called **libui**;
-the older gem called **libui-ruby** is no longer maintained since as of **2019**. In
-the following document I may call kojix2' gem **ruby-libui**, but the official name
-is simply **libui**, which refers to the gem mentioned above: https://rubygems.org/gems/libui -
-I understand that I am using a misnomer when I refer to this as **ruby-libui**, but
-it helps me remember, so ...)
+(Be wary of the name that I use on this page - the currently maintained gem is
+called **libui**; the older gem, which was called **libui-ruby**, is no longer
+maintained since as of **2019**. In the document here I may call kojix2' gem
+**ruby-libui**, but the official name is simply **libui**, which refers to the
+gem mentioned above: https://rubygems.org/gems/libui - I understand that I
+am using a misnomer when I refer to this as **ruby-libui**, but it helps
+me remember, so ...)
 
-Aside from this mentioned goal of enhancing (or trying to enhance) the
-upstream bindings, the **libui_paradise** project also attempts to
-demonstrate how we could **try to use a DSL** to write less code in
-the long run; at the least less syntax. Less syntax is not automatically
-a win-win situation, but often it can be very useful.
+Aside from this mentioned goal of **trying to enhance** the
+upstream ruby-bindings, the **libui_paradise** project also attempts
+to demonstrate how we could **try to use a DSL** to write less code
+in the long run; at the least less syntax.
+
+Less syntax is not automatically a win-win situation, but often it can
+be very useful.
 
 Example for this:
 
@@ -60,12 +66,16 @@ connect slots to signals, due to qt requiring this. I do not know if
 this is still the case or not, but back in the days this was 
 necessary and it complicated using ruby-qt a little bit.
 
-The **libui_paradise gem** is highly experimental at this stage and
-may not work for all use cases, or may have bugs - I am still learning
-myself here. I want to see which API calls make the most sense in the
-long run, ideally even across different GUIs as well as the www. (For
-those of you who have some experience with ruby-gtk this may seem
-familiar, as pointed out above - API elements such as **.set_text()**
+The glimmer project tries to act as a general wrapper in this regard,
+in some ways - check it out (link is mentioned elsewhere in this
+document).
+
+The **libui_paradise gem** here is highly experimental at this stage
+and may not work for all use cases, or may have bugs - I am still
+learning myself here. I want to see which API calls make the most sense
+in the long run, ideally even across different GUIs as well as the
+www. (For those of you who have some experience with ruby-gtk this may
+seem familiar, as pointed out above - API elements such as **.set_text()**
 or **widget1.add(widget2)**; I kind of learned GUIs first via
 **ruby-gtk**, which evidently shaped my opinion on GUI layouts
 to some extent.)
@@ -81,6 +91,10 @@ best example in this regard, because it features interactive and
 dynamic use in a visual way - you can choose the colours, for
 example. A spin-button allows for visual change too, but I think 
 colours are more impressive than simple up-and-down counters.
+
+On windows this may look like so (via kotlin-libui):
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/histogram/histogram-windows7.png" style="margin-left: 2em">
 
 Also check out kojix2' other examples in ruby-gtk - would be great
 if we could have the same in libui one day, but this also depends
@@ -956,6 +970,16 @@ value of 1024 for width and 800 for height).
 The following example shows how to use a percentage value:
 
     set_height('80%')
+
+## Coloured Text
+
+At this point I only show how this may look on Win7, re-using
+the picture the kotlin-libui developers made available:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/drawtext/drawtext-windows7.png" style="margin-left: 2em">
+
+Doesn't look that bad, right? May not be the prettiest GUI of all
+times, but it is functional - and simple.
 
 ## Status of the libui_paradise project
 

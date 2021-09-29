@@ -773,5 +773,6 @@ class Pointer # === Fiddle::Pointer
   def row_spacing=(i = 10); end
   def line_spacing=(i = 10); end
   def to_the_left; end
+  def set_editable(i = true); end
 
 end; end
