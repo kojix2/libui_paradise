@@ -22,7 +22,7 @@ module Extensions # === LibuiParadise::Extensions
     when :default_window
       main_window = LibuParadise.window?
     end
-    _ = UI.msg_box(
+    _ = ::LibUI.msg_box(
       main_window,
       title_to_use,
       whatever

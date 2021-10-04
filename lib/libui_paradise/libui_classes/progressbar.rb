@@ -4,38 +4,38 @@
 # =========================================================================== #
 # The upstream C API can be found here:
 #
-#   https://raw.githubusercontent.com/andlabs/libui/master/unix/multilineentry.c
+#   https://github.com/andlabs/libui/blob/master/unix/progressbar.c
 #
 # =========================================================================== #
-# require 'libui_paradise/ui_classes/new_non_wrapping_multiline_entry.rb
+# require 'libui_paradise/ui_classes/progressbar.rb
 # =========================================================================== #
 module LibuiParadise
 
 module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
-  # === LibuiParadise::Extensions.non_wrapping_multiline_entry
+  # === LibuiParadise::Extensions.new_progress_bar
   # ========================================================================= #
-  def self.non_wrapping_multiline_entry
-    _ = UI.new_non_wrapping_multiline_entry
+  def self.new_progress_bar
+    _ = LibUI.new_progress_bar
     add_to_the_registered_widgets(_, __method__)
     return _
   end
 
   # ========================================================================= #
-  # === LibuiParadise::Extensions.non_wrapping_multiline_entry
+  # === new_progress_bar
   # ========================================================================= #
-  def non_wrapping_multiline_entry
-    return ::LibuiParadise::Extensions.non_wrapping_multiline_entry
+  def new_progress_bar
+    return ::LibuiParadise::Extensions.new_progress_bar
   end
 
 end
 
 # =========================================================================== #
-# === LibuiParadise.non_wrapping_multiline_entry
+# === LibuiParadise.new_progress_bar
 # =========================================================================== #
-def self.non_wrapping_multiline_entry
-  return ::LibuiParadise::Extensions.non_wrapping_multiline_entry
+def self.new_progress_bar
+  return ::LibuiParadise::Extensions.new_progress_bar
 end
 
 end

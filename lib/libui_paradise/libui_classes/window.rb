@@ -57,7 +57,7 @@ module Extensions # === LibuiParadise::Extensions
     # ======================================================================= #
     # Instantiate a new main-window next:
     # ======================================================================= #
-    main_window = UI.new_window(
+    main_window = LibUI.new_window(
       the_title,
       width,
       height,
@@ -97,7 +97,6 @@ module Extensions # === LibuiParadise::Extensions
       the_title, width, height, has_menubar
     )
   end; alias main_window    window # === main_window
-       alias ui_main_window window # === ui_main_window
 
   # ========================================================================= #
   # === ui_margined_main_window
@@ -117,13 +116,14 @@ module Extensions # === LibuiParadise::Extensions
       height      = 300, # height in n pixels.
       has_menubar =   1  # hasMenubar or has not.
     )
-    _ = ui_main_window(the_title, width, height, has_menubar)
+    _ = LibuiParadise.window(the_title, width, height, has_menubar)
     _.is_margined
     return _
   end; alias ui_margined_window    ui_margined_main_window # === ui_margined_window
        alias ui_padded_main_window ui_margined_main_window # === ui_padded_main_window
        alias margined_window       ui_margined_main_window # === margined_window
        alias padded_window         ui_margined_main_window # === padded_window
+       alias ui_main_window        ui_margined_main_window # === ui_main_window
 
 end
 
@@ -145,6 +145,7 @@ def self.window(
 end; self.instance_eval { alias main_window     window } # === LibuiParadise.main_window
      self.instance_eval { alias ui_main_window  window } # === LibuiParadise.ui_main_window
      self.instance_eval { alias margined_window window } # === LibuiParadise.margined_window
+     self.instance_eval { alias padded_window   window } # === LibuiParadise.padded_window
 
 # =========================================================================== #
 # === LibuiParadise.main_window?

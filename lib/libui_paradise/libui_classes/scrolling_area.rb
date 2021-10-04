@@ -17,14 +17,36 @@ module Extensions # === LibuiParadise::Extensions
   #
   #   uiArea *area = uiNewScrollingArea(&handler, 400, 400);
   #
+  # The two numbers are width and height, as integers, respectively.
+  # In total three arguments are required. The first argument is
+  # a so-called "AreaHandler".
+  #
+  # The code may be found here:
+  #
+  #   https://github.com/andlabs/libui/blob/master/windows/areascroll.cpp
+  #
   # ========================================================================= #
   def self.scrolling_area(
-      optional_widget = nil
+      widget,
+      width           = 400,
+      height          = 400
     )
-    _ = UI.new_scrolling_area
+    case width
+    when :default, nil
+      width = 400
+    end
+    case height
+    when :default, nil
+      height = 400
+    end
+    _ = LibUI.new_scrolling_area(widget, width, height)
+    # ======================================================================= #
+    # The next part does not yet work - is it even possible to add widgets
+    # to a scrolling area in libui?
     # if optional_widget
     #   _.add(optional_widget)
     # end
+    # ======================================================================= #
     add_to_the_registered_widgets(_, __method__)
     return _
   end; self.instance_eval { alias ui_scrolling_area  scrolling_area } # === LibuiParadise::Extensions.ui_scrolling_area
@@ -47,4 +69,17 @@ module Extensions # === LibuiParadise::Extensions
   end; alias ui_scrolling_area  scrolling_area # === ui_scrolling_area
        alias ui_scrolled_window scrolling_area # === ui_scrolling_window
 
-end; end
+end
+
+# =========================================================================== #
+# === LibuiParadise.scrolling_area
+# =========================================================================== #
+def self.scrolling_area(
+    widget,
+    width  = :default,
+    height = :default
+  )
+  ::LibuiParadise::Extensions.scrolling_area(widget, width, height)
+end
+
+end
