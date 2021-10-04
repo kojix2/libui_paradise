@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">28.09.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:05:13</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">04.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">11:59:32</span> o'clock.
 
 ## The libui_paradise project
 
@@ -201,6 +201,15 @@ There currently is quite a bit of code to make this work;
 in the long run I plan to simplify this if possible. **The
 less code we have to write, the better** - as long as the
 end code is still **readable**.
+
+Note that the subclass situation may change eventually; see
+upstream kojix2 and related discussion for fiddle. For
+the time being, though, I'll retain my old approach until
+I am sufficiently content with the project as-is. Right now
+libui_paradise has way too much undocumented and untested
+code and I still have not added all examples either (coloured
+text, for instance, still has to be added; and more image-related
+examples that are smaller). Stay tuned.
 
 ## How to require the libui_paradise project
 
@@ -812,6 +821,20 @@ understood it.
 
 If it is not in **ffi.rb** then support for that was not (yet) added.
 
+Individual enum entries can also be seen. For instance, for font-related
+data the following attributes are in use: 
+
+    AttributeTypeFamily         = 0
+    AttributeTypeSize           = 1
+    AttributeTypeWeight         = 2
+    AttributeTypeItalic         = 3
+    AttributeTypeStretch        = 4
+    AttributeTypeColor          = 5
+    AttributeTypeBackground     = 6
+    AttributeTypeUnderline      = 7
+    AttributeTypeUnderlineColor = 8
+    AttributeTypeFeatures       = 9
+
 You can probably use the rubygems features of comparing old gem 
 releases with one another to see which support has been added to
 ruby-libui over the past months or so. Most work was probably done
@@ -1334,6 +1357,18 @@ Contribute to upstream as well. If we have a sufficiently large user
 base then it should be easier to add new possibilities onto libui,
 which in turn will "cascade" downwards to all the other bindings 
 to libui, be it in kotlin, python, ruby and so forth.
+
+## DateTime Widget
+
+Only an image is shown how it may look on windows:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
+
+## Tables in LibUI
+
+Only an image is shown for now:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/table/table-windows7.png" style="margin-left: 2em">
 
 ## Links related to libui or libui-based projects
 
