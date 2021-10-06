@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">04.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">11:59:32</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:39:57</span> o'clock.
 
 ## The libui_paradise project
 
@@ -58,7 +58,9 @@ first variant:
 In fact: if you notice the above three lines of code then there is indeed no
 difference between which toolkit to use between the first variant and
 the last variant. We could then, in theory, "plug in" different toolkits,
-be it ruby-gtk, ruby-tk, ruby-libui and so forth.
+be it ruby-gtk, ruby-tk, ruby-libui and so forth. The **glimmer** project
+is doing this to some extent, as a general DSL wrapper over GUI-related
+functionality, including the www - see here: https://github.com/AndyObtiva/glimmer
 
 We could even extend this to the www and generate the appropriate 
 tags that way, by treating HTML tags as "objects". Note that this is
@@ -68,10 +70,6 @@ functionality. The old ruby-qt toolkit, for example, required you to
 connect slots to signals, due to qt requiring this. I do not know if
 this is still the case or not, but back in the days this was 
 necessary and it complicated using ruby-qt a little bit.
-
-The glimmer project tries to act as a general wrapper in this regard,
-in some ways - check it out (link is mentioned elsewhere in this
-document).
 
 The **libui_paradise gem** here is highly experimental at this stage
 and may not work for all use cases, or may have bugs - I am still
@@ -236,26 +234,30 @@ a few lines).
 
 ## How to get started with ruby-libui and the libui_paradise project?
 
-Well - I first recommend to you that you look directly at ruby-libui
-of kojix2, in particular the examples that he provides. Work through
-the examples step-by-step, possibly starting with the smallest example,
-and have a look at how things work - just to get an overview.
+Well - as stated elsewhere, I first recommend to you that you look directly
+at ruby-libui provided by kojix2, in particular the examples that he 
+distributes in the gem. Work through the examples step-by-step, possibly
+starting with the smallest example, see whether they work (they do,
+or should) and have a look at how things work - just to get an
+overview.
 
 Have a look at the code as well, in order to understand how it
-works; after some minutes or perhaps a very few hours you should
-understand quite a bit already, if you already know ruby. Even more
-so if you did work with GUIs before, including GUIs via a www-interface.
+works roughly; after some minutes or perhaps a very few hours of tinker-time
+you should understand quite a bit already, if you already know ruby. Even
+more so if you did work with GUIs before, including GUIs via a www-interface.
 
 Then you are recommended to look at the libui_paradise project and look to 
 see what has been added on top of what kojix2 provides. Look at the examples 
 of the libui_paradise project as well (they are a bit simplified compared
-to the upstream examples), then consider using
-**libui_paradise/prototype/prototype.rb** in particular. Copy it
-and adjust it to your project and use case, as-is. You may want to remove
-the grid that is inside there and use a hbox or a vbox instead, or
-a padded_hbox and padded_vbox. It's all quite simple actually once
-you understand the basic API: windows, widgets, buttons, entries. For
-example, a button can be added in this way to a vbox:
+to the upstream examples; unfortunately a few of them currently do not 
+work), then consider using **libui_paradise/prototype/prototype.rb** in
+particular. Copy it and adjust it to your project and use case, as-is. You
+may want to remove the grid that is inside there and use a hbox or a vbox
+instead, or a padded_hbox and padded_vbox. It's all quite simple actually
+once you understand the basic API: windows, widgets, buttons, entries.
+
+For example, a button can be added in this way to a vbox, if you use
+the libui_paradise gem:
 
     outer_vbox = padded_vbox # padded means that it will have some padding to the sides
     button = ui_button('Hello world!') # You can drop the ui_ prefix if you'd like to
@@ -265,8 +267,12 @@ example, a button can be added in this way to a vbox:
     outer_vbox.minimal(button) # Use minimal space if possible. Or use .add().
 
 That's it! Inside of the **.on_clicked {}** block you can run the ruby code
-that you want to use. A button that is in a container (vbox) that outputs
-hello world when clicked. Can't get much simpler than that. \o/
+that you want to use. A button that is in a container (such as **vbox**) that
+outputs hello world when clicked. Can't get much simpler than that. \o/
+
+You can omit the **ui_** part above. I just use it to point out the difference;
+and because I'd otherwise may have to use "button = button" aka "button = button()"
+which may be confusing, so I use **ui_button()** instead.
 
 ## Fiddle::Pointer and playing with pointers
 
@@ -1146,36 +1152,37 @@ Next, the content of the file called **SNIPPETS.md** will be shown.
 Available "new"-widgets in LibUI:
 
   UI.new_area
+  UI.new_attributed_string
   UI.new_group
   UI.new_spinbox
-  UI.new_attributed_string
-  UI.new_horizontal_box
   UI.new_stretch_attribute
   UI.new_background_attribute
-  UI.new_horizontal_separator                 # this is a simple horizontal separator
-  UI.new_tab
   UI.new_button                               # this is a simple button
-  UI.new_image                                # this is a simple image
-  UI.new_table                                # this is a simple table
   UI.new_checkbox                             # this is a simple checkbox
+  UI.new_color_attribute
+  UI.new_color_button
+  UI.new_combobox                             # this is a combobox
+  UI.new_date_picker
+  UI.new_date_time_picker
+  UI.new_editable_combobox
+  UI.new_grid
+  UI.new_horizontal_box
+  UI.new_horizontal_separator                 # this is a simple horizontal separator
+  UI.new_image                                # this is a simple image
+  UI.new_tab
+  UI.new_table                                # this is a simple table
   UI.new_italic_attribute                     # this is basically italic font-style
   UI.new_table_model
-  UI.new_color_attribute
   UI.new_label
   UI.new_table_value_color
-  UI.new_color_button
-  UI.new_menu
-  UI.new_table_value_image
-  UI.new_combobox                             # this is a combobox
-  UI.new_multiline_entry                      # this is a textview
-  UI.new_table_value_int
-  UI.new_date_picker
-  UI.new_non_wrapping_multiline_entry
   UI.new_table_value_string
-  UI.new_date_time_picker
-  UI.new_open_type_features
   UI.new_time_picker
-  UI.new_editable_combobox
+  UI.new_menu
+  UI.new_multiline_entry                      # this is a textview
+  UI.new_table_value_image
+  UI.new_table_value_int
+  UI.new_non_wrapping_multiline_entry
+  UI.new_open_type_features
   UI.new_password_entry
   UI.new_underline_attribute
   UI.new_entry
@@ -1193,7 +1200,6 @@ Available "new"-widgets in LibUI:
   UI.new_form                                 # this is a form
   UI.new_size_attribute
   UI.new_window
-  UI.new_grid
   UI.new_slider
 
 </pre>
@@ -1369,6 +1375,24 @@ Only an image is shown how it may look on windows:
 Only an image is shown for now:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/table/table-windows7.png" style="margin-left: 2em">
+
+## Form example in LibuiParadise
+
+Inspired by **glimmer-libui**, I ported the form example, into
+**027_form_example.rb**. Unfortunately it does not look 
+as good as it does in **glimmer-libui**, and the code I use for
+it is too verbose right now.
+
+Still, if you are curious, this is how it looks on icewm
+in October 2021:
+
+<img src="https://i.imgur.com/FkU6aWd.png" style="margin-left: 2em">
+
+I may improve this eventually a bit, so that the alignment looks
+as good as it does on glimmer-dsl; the code of 27_form_example.rb
+may also be cleaned up in the future (the glimmer-libui code 
+looks better). But for now this is how it is; Andy is very
+actively improving **glimmer-libui** right now.
 
 ## Links related to libui or libui-based projects
 
