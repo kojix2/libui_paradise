@@ -205,20 +205,6 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === return_the_resolution_using_xrandr
-  #
-  # This method will only work on e. g. Linux.
-  #
-  # It will then return a String such as "1920x1080".
-  # ========================================================================= #
-  def return_the_resolution_using_xrandr
-    _ = `xrandr`.split("\n").select {|line|
-      line.include? '*+'
-    }.first.strip.squeeze(' ').split(' ').first.to_s
-    return _ # This will yield e. g. "1920x1080"
-  end
-
-  # ========================================================================= #
   # === assumed_height?
   # ========================================================================= #
   def assumed_height?
@@ -288,6 +274,24 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def height?
     @height
+  end
+
+  # ========================================================================= #
+  # === return_the_resolution_using_xrandr
+  #
+  # This method will only work on e. g. Linux.
+  #
+  # It will then return a String such as "1920x1080".
+  # ========================================================================= #
+  def return_the_resolution_using_xrandr
+    _ = '800x600' # This is a generic failsafe value.
+    begin
+      _ = `xrandr`.split("\n").select {|line|
+        line.include? '*+'
+      }.first.strip.squeeze(' ').split(' ').first.to_s
+    rescue Errno::ENOENT # Rescue for Windows systems.
+    end
+    return _ # This will yield e. g. "1920x1080"
   end
 
 end; end
