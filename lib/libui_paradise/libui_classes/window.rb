@@ -48,7 +48,8 @@ module Extensions # === LibuiParadise::Extensions
       the_title   = '',  # Pick a title for the window here.
       width       = 500, # width  in n pixels.
       height      = 300, # height in n pixels.
-      has_menubar =   1  # hasMenubar or has not.
+      has_menubar =   1, # hasMenubar or has not.
+      &block
     )
     raw_has_menubar = 0
     if has_menubar.is_a? Numeric
@@ -79,6 +80,9 @@ module Extensions # === LibuiParadise::Extensions
       end
     end
     UI.simple_exit(main_window)
+    if block_given?
+      yield
+    end
     return main_window # Always return it here.
   end; self.instance_eval { alias main_window     window } # === LibuiParadise::Extensions.main_window
        self.instance_eval { alias ui_main_window  window } # === LibuiParadise::Extensions.ui_main_window

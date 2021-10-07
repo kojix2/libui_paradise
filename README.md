@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:39:57</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">06.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">17:04:42</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1370,6 +1370,18 @@ Only an image is shown how it may look on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
 
+## Password entries in LibUI
+
+If you use the libui_paradise gem then you can create a new password entry
+in using any of the following variants:
+
+    entry = ui_password_entry
+    entry = password_entry
+
+For "raw" libui, use this:
+
+    LibUI.new_password_entry
+
 ## Tables in LibUI
 
 Only an image is shown for now:
@@ -1416,6 +1428,11 @@ This is andlabs documentation for libui, from the point of view of
 Go. It is probably the biggest documentation for libui. While it
 is specific to Go, as it was written by the same author you can
 expect the documentation to be quite decent.
+
+(3) http://api.call-cc.org/4/doc/libui
+
+Similar to the first one, but uses a different layout, which
+may be helpful.
 
 
 ## Contact information
