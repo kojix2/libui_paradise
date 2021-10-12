@@ -18,6 +18,95 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === padded=
+  #
+  # Set a uniform padding via this method.
+  # ========================================================================= #
+  def padded=(
+      pad_n_px = 25,
+      type     = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    if type.nil?
+      # ===================================================================== #
+      # In this case we must determine the type in use.
+      # ===================================================================== #
+      if hash.has_key? object_id
+        type = hash[object_id].last # The last entry contains the type.
+      end
+    end
+    case type
+    # ======================================================================= #
+    # === :button
+    #
+    # This entry point probably does not work, so don't use it.
+    # ======================================================================= #
+    when :button
+      UI.box_set_padded(self, pad_n_px)
+    # ======================================================================= #
+    # === :vbox
+    # ======================================================================= #
+    when :vbox,
+         :hbox
+      UI.box_set_padded(self, pad_n_px)
+    # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      UI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      # ===================================================================== #
+      # This method does not seem to exist. We'll leave this here for the
+      # time being.
+      # ===================================================================== #
+      # UI.entry_set_padded(self, pad_n_px) # This line should be changed at a later time.
+    else
+      pp caller()
+      puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
+    end
+  end; alias set_padded padded= # === set_padded
+
+  # ========================================================================= #
+  # === disable                                                  (disable tag)
+  # ========================================================================= #
+  def disable(&block)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :button
+    # ======================================================================= #
+    when :button
+      LibUI.control_disable(self)
+    else
+      e 'Not registered type in .on_changed(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
+  # === enable                                                   (enable tag)
+  # ========================================================================= #
+  def enable(&block)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :button
+    # ======================================================================= #
+    when :button
+      LibUI.control_enable(self)
+    else
+      e 'Not registered type in .on_changed(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
   # === append                                          (append tag, add tag)
   #
   # This is simply a wrapper over UI.box_append().
@@ -349,59 +438,6 @@ class Pointer # === Fiddle::Pointer
       valign
     )
   end; alias grid_append ui_grid_append # === grid_append
-
-  # ========================================================================= #
-  # === padded=
-  #
-  # Set a uniform padding via this method.
-  # ========================================================================= #
-  def padded=(
-      pad_n_px = 25,
-      type     = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    if type.nil?
-      # ===================================================================== #
-      # In this case we must determine the type in use.
-      # ===================================================================== #
-      if hash.has_key? object_id
-        type = hash[object_id].last # The last entry contains the type.
-      end
-    end
-    case type
-    # ======================================================================= #
-    # === :button
-    #
-    # This entry point probably does not work, so don't use it.
-    # ======================================================================= #
-    when :button
-      UI.box_set_padded(self, pad_n_px)
-    # ======================================================================= #
-    # === :vbox
-    # ======================================================================= #
-    when :vbox,
-         :hbox
-      UI.box_set_padded(self, pad_n_px)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      UI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      # ===================================================================== #
-      # This method does not seem to exist. We'll leave this here for the
-      # time being.
-      # ===================================================================== #
-      # UI.entry_set_padded(self, pad_n_px) # This line should be changed at a later time.
-    else
-      pp caller()
-      puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
-    end
-  end; alias set_padded padded= # === set_padded
 
   # ========================================================================= #
   # === populate

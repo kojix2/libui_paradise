@@ -127,6 +127,7 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_padded_main_window ui_margined_main_window # === ui_padded_main_window
        alias margined_window       ui_margined_main_window # === margined_window
        alias padded_window         ui_margined_main_window # === padded_window
+       alias padded_main_window    ui_margined_main_window # === padded_main_window
        alias ui_main_window        ui_margined_main_window # === ui_main_window
 
 end
@@ -146,10 +147,12 @@ def self.window(
     height,
     has_menubar
   )
-end; self.instance_eval { alias main_window     window } # === LibuiParadise.main_window
-     self.instance_eval { alias ui_main_window  window } # === LibuiParadise.ui_main_window
-     self.instance_eval { alias margined_window window } # === LibuiParadise.margined_window
-     self.instance_eval { alias padded_window   window } # === LibuiParadise.padded_window
+end; self.instance_eval { alias main_window           window } # === LibuiParadise.main_window
+     self.instance_eval { alias margined_window       window } # === LibuiParadise.margined_window
+     self.instance_eval { alias ui_main_window        window } # === LibuiParadise.ui_main_window
+     self.instance_eval { alias ui_padded_main_window window } # === LibuiParadise.margined_window
+     self.instance_eval { alias padded_window         window } # === LibuiParadise.padded_window
+     self.instance_eval { alias padded_main_window    window } # === LibuiParadise.padded_main_window
 
 # =========================================================================== #
 # === LibuiParadise.main_window?
