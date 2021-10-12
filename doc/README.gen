@@ -775,7 +775,11 @@ In libui the general API for this is:
 
     UI.new_multiline_entry                      # this is a textview
 
+## Control Gallery
 
+Here is an image, from kotlin-libui, how this may look on windows:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/controlgallery/controlgallery-windows7.png" style="margin-left: 2em">
 
 ## Enabling / Disabling buttons in libui
 
@@ -795,6 +799,9 @@ In ruby-libui this should be possible via:
 
     LibUI.control_disable()
     UI.control_disable()
+
+See the example **029_two_buttons_showing_how_to_enable_and_disable_them.rb**
+in how this works.
 
 ## libui and ruby-libui internals
 

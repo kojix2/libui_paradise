@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">06.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">17:04:42</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">11.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">12:05:17</span> o'clock.
 
 ## The libui_paradise project
 
@@ -778,7 +778,11 @@ In libui the general API for this is:
 
     UI.new_multiline_entry                      # this is a textview
 
+## Control Gallery
 
+Here is an image, from kotlin-libui, how this may look on windows:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/controlgallery/controlgallery-windows7.png" style="margin-left: 2em">
 
 ## Enabling / Disabling buttons in libui
 
@@ -798,6 +802,9 @@ In ruby-libui this should be possible via:
 
     LibUI.control_disable()
     UI.control_disable()
+
+See the example **029_two_buttons_showing_how_to_enable_and_disable_them.rb**
+in how this works.
 
 ## libui and ruby-libui internals
 
