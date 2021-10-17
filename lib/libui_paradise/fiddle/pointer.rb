@@ -18,6 +18,26 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === append_text_column
+  #
+  # This method is specifically used for libui-tables.
+  # ========================================================================= #
+  def append_text_column(text, a, b)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :button
+    # ======================================================================= #
+    when :table
+      LibUI.table_append_text_column(self, text, a, b)
+    else
+      e 'Not registered type in .append_text_column(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
   # === padded=
   #
   # Set a uniform padding via this method.

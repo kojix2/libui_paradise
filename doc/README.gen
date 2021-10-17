@@ -31,10 +31,9 @@ gem mentioned above: https://rubygems.org/gems/libui - I understand that I
 am using a misnomer when I refer to this as **ruby-libui**, but it helps
 me remember, so ...)
 
-Aside from this mentioned goal of **trying to enhance** the
-upstream ruby-bindings, the **libui_paradise** project also attempts
-to demonstrate how we could **try to use a DSL** to write less code
-in the long run; at the least less syntax.
+Aside from this mentioned goal of **trying to enhance** the upstream ruby-bindings,
+the **libui_paradise** project also attempts to demonstrate how we could **try to
+use a DSL** to write less code in the long run; at the least less syntax.
 
 Less syntax is not automatically a win-win situation, but often it can
 be very useful.
@@ -386,6 +385,15 @@ following:
     a_quit_button = ui_quit_button(text: 'Open a local file') # That text description would be confusing though
     a_quit_button = ui_quit_button(text: 'Exit the application') # Much better now! \o/
 
+## UI.new_button()
+
+UI.new_button allows us to create a new button.
+
+Examples:
+
+    button1 = UI.new_button('Text')
+    button2 = UI.new_button('▶')
+  
 ## Subclassing
 
 Currently subclassing from LibUI elements does not work - I simply
@@ -546,6 +554,17 @@ API to understand the difference.
 The notebook-tab may look like this:
 
 <img src="https://i.imgur.com/olWQAIJ.png" style="margin-left: 2em">
+
+## Create a vertical box:
+
+Use code like this:
+
+    vbox = UI.new_vertical_box
+
+If you use the libui_paradise gem, you can use this:
+
+    vbox = ui_vbox # or
+    vbox = padded_vbox
 
 ## Adding a horizontal separator
 
@@ -1095,9 +1114,36 @@ For "raw" libui, use this:
 
     LibUI.new_password_entry
 
+## Progress Bars in LibUI
+
+Here an image how this may look:
+
+<img src="https://i.imgur.com/i1i4ppZ.png" style="margin-left: 2em">
+
 ## Tables in LibUI
 
-Only an image is shown for now:
+You may be able to create a new table via:
+
+    table = LibUI.new_table
+    
+    model = LibUI.new_table_model(model_handler)
+
+    table_params = LibUI::FFI::TableParams.malloc
+    table_params = Fiddle::RUBY_FREE
+    table_params.Model = model
+    table_params.RowBackgroundColorModelColumn = -1
+    table = LibUI.new_table(table_params)
+
+The table header is an array that contains the following attributes:
+
+    1. editable, bool type, the column is whether editable
+    2. textColor
+    3. title
+    4. type, specify value of button, image, imgtext, progress, checkbox, checkboxtext, color, text
+
+Note that this is incomplete; it's a bit complicated.
+
+In the end, this is possible though:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/table/table-windows7.png" style="margin-left: 2em">
 
@@ -1119,6 +1165,59 @@ may also be cleaned up in the future (the glimmer-libui code
 looks better). But for now this is how it is; Andy is very
 actively improving **glimmer-libui** right now.
 
+Available "new"-widgets in LibUI:
+
+    LibUI.new_area
+    LibUI.new_attributed_string
+    LibUI.new_group
+    LibUI.new_spinbox
+    LibUI.new_stretch_attribute
+    LibUI.new_background_attribute
+    LibUI.new_button                               # this is a simple button
+    LibUI.new_checkbox                             # this is a simple checkbox
+    LibUI.new_color_attribute
+    LibUI.new_color_button
+    LibUI.new_combobox                             # this is a combobox
+    LibUI.new_date_picker
+    LibUI.new_date_time_picker
+    LibUI.new_editable_combobox
+    LibUI.new_grid
+    LibUI.new_horizontal_box
+    LibUI.new_horizontal_separator                 # this is a simple horizontal separator
+    LibUI.new_image                                # this is a simple image
+    LibUI.new_italic_attribute                     # this is basically italic font-style
+    LibUI.new_label
+    LibUI.new_tab
+    LibUI.new_table                                # this is a simple table
+    LibUI.new_table_model
+    LibUI.new_table_value_image
+    LibUI.new_table_value_int
+    LibUI.new_table_value_color
+    LibUI.new_table_value_string
+    LibUI.new_time_picker
+    LibUI.new_menu
+    LibUI.new_multiline_entry                      # this is a textview
+    LibUI.new_non_wrapping_multiline_entry
+    LibUI.new_open_type_features
+    LibUI.new_password_entry
+    LibUI.new_underline_attribute
+    LibUI.new_entry
+    LibUI.new_progress_bar                         # this is a progress_bar
+    LibUI.new_underline_color_attribute
+    LibUI.new_family_attribute
+    LibUI.new_radio_buttons
+    LibUI.new_vertical_box
+    LibUI.new_features_attribute
+    LibUI.new_scrolling_area                       # this is a scrolling area
+    LibUI.new_vertical_separator
+    LibUI.new_font_button
+    LibUI.new_search_entry                         # this is a search entry
+    LibUI.new_weight_attribute
+    LibUI.new_form                                 # this is a form
+    LibUI.new_size_attribute
+    LibUI.new_window
+    LibUI.new_slider
+
 ## Links related to libui or libui-based projects
 
 This subsection may contain a few links, in the event that other
@@ -1137,10 +1236,13 @@ shared with a lot of documentation in general out there ...
 
 (2) https://pkg.go.dev/github.com/andlabs/ui
 
-This is andlabs documentation for libui, from the point of view of
-Go. It is probably the biggest documentation for libui. While it
-is specific to Go, as it was written by the same author you can
-expect the documentation to be quite decent.
+This is andlabs' documentation for libui, from the point of view of
+**Go**. It is probably the biggest, most complete documentation for
+libui. While it is specific to Go, as it was written by the same
+author you can expect the documentation to be quite decent.
+
+(Note that some other bindings contain good documentation too,
+such as kotlin libui bindings and others.)
 
 (3) http://api.call-cc.org/4/doc/libui
 

@@ -50,11 +50,6 @@
 
   UI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0)
 
-# How to create a button (button tag, buttons tag):
-
-  button1 = UI.new_button('Text')
-  button2 = UI.new_button('▶')
-
 # How to add a click-action to the button:
 
   UI.button_on_clicked(button) {
@@ -122,10 +117,6 @@
 
   UI.control_show(main_window)
 
-# Define a vertical box:
-
-  vbox = UI.new_vertical_box
-
 # Using a text-entry (ui entry tag):
 
   text_entry = UI.new_entry
@@ -186,10 +177,6 @@
 
   UI.quit
 
-# Create a new table:
-
-  table = UI.new_table
-
 # How to build a menu-interface (menu tag):
 
   help_menu = UI.new_menu('Help')
@@ -232,56 +219,3 @@
   Tab                    A set named tabs for placing items in
   Window                 Contains any other widget, cannot be embedded in a container
   VBox, HBox             A vertical or horizontal box for grouping items
-
-Available "new"-widgets in LibUI:
-
-  UI.new_area
-  UI.new_attributed_string
-  UI.new_group
-  UI.new_spinbox
-  UI.new_stretch_attribute
-  UI.new_background_attribute
-  UI.new_button                               # this is a simple button
-  UI.new_checkbox                             # this is a simple checkbox
-  UI.new_color_attribute
-  UI.new_color_button
-  UI.new_combobox                             # this is a combobox
-  UI.new_date_picker
-  UI.new_date_time_picker
-  UI.new_editable_combobox
-  UI.new_grid
-  UI.new_horizontal_box
-  UI.new_horizontal_separator                 # this is a simple horizontal separator
-  UI.new_image                                # this is a simple image
-  UI.new_tab
-  UI.new_table                                # this is a simple table
-  UI.new_italic_attribute                     # this is basically italic font-style
-  UI.new_table_model
-  UI.new_label
-  UI.new_table_value_color
-  UI.new_table_value_string
-  UI.new_time_picker
-  UI.new_menu
-  UI.new_multiline_entry                      # this is a textview
-  UI.new_table_value_image
-  UI.new_table_value_int
-  UI.new_non_wrapping_multiline_entry
-  UI.new_open_type_features
-  UI.new_password_entry
-  UI.new_underline_attribute
-  UI.new_entry
-  UI.new_progress_bar                         # this is a progress_bar
-  UI.new_underline_color_attribute
-  UI.new_family_attribute
-  UI.new_radio_buttons
-  UI.new_vertical_box
-  UI.new_features_attribute
-  UI.new_scrolling_area                       # this is a scrolling area
-  UI.new_vertical_separator
-  UI.new_font_button
-  UI.new_search_entry                         # this is a search entry
-  UI.new_weight_attribute
-  UI.new_form                                 # this is a form
-  UI.new_size_attribute
-  UI.new_window
-  UI.new_slider

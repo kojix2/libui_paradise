@@ -294,4 +294,16 @@ module Extensions # === LibuiParadise::Extensions
     return _ # This will yield e. g. "1920x1080"
   end
 
+  # ========================================================================= #
+  # === ui_table_params_malloc
+  # ========================================================================= #
+  def ui_table_params_malloc(optional_model = nil)
+    _ = LibUI::FFI::TableParams.malloc
+    if optional_model
+      _.Model = optional_model
+      _.RowBackgroundColorModelColumn = -1
+    end
+    return _
+  end
+
 end; end
