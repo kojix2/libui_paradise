@@ -10,9 +10,18 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.table
+  #
+  # The argument should be of type table_params.
+  #
+  # Example for this:
+  #
+  #   table_params = LibUI::FFI::TableParams.malloc
+  #   table_params.Model = model
+  #   table_params.RowBackgroundColorModelColumn = -1
+  #
   # ========================================================================= #
   def self.table(i)
-    _ = UI.new_table(i)
+    _ = LibUI.new_table(i)
     LibuiParadise::Extensions.register_this_fiddle_pointer_widget(_, __method__)
     return _
   end; self.instance_eval { alias ui_table table } # === LibuiParadise::Extensions.ui_table
