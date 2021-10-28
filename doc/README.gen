@@ -566,7 +566,7 @@ If you use the libui_paradise gem, you can use this:
     vbox = ui_vbox # or
     vbox = padded_vbox
 
-## Adding a horizontal separator
+## Adding a horizontal separator or a vertical separator
 
 The method **UI.new_horizontal_separator** can be used to add (or rather
 first create) a horizontal separator.
@@ -590,6 +590,33 @@ I needed this functionality to quickly add horizontal separators for some
 visual cue in the **User Interface**. Using **.add_hsep** is very
 convenient and fast to write/type. If you want more verbosity then remember
 that you can always use the upstream API as-is.
+
+The same applies to vertical separators, but I haven't used them yet
+actually. They do work, though.
+
+For an interesting example, have a look at the following screenshot
+from example **031_separator_example.rb**.
+
+<img src="https://i.imgur.com/cXO6RF4.png" style="margin: 1em; margin-left: 3em">
+
+What is interesting is that all the horizontal lines come from using
+a hsep (horizontal separator).
+
+The syntax is different though:
+
+    vbox.minimal(hsep, 1)
+    vbox.minimal(hsep, 0)
+
+Carefully look at the area that surrounds the button in the middle.
+
+The nearby area is padded, thanks to **vbox.minimal(hsep, 0)**. So
+passing **0** means this is quite elegant - you add padding between
+different elements. But when you pass 1 then you get this strange
+big block. I am not sure if this is how it should be, but if it is
+then you can sort of use that as an additional visual cue. I am 
+not necessarily recommending this be done, but **if** you ever have
+such a use case then you can use it - which is another reason why
+I added this screenshot, so that I don't forget. :)
 
 ## Entries in LibUI (ui_entry)
 
@@ -741,6 +768,16 @@ Note that we are here faking method-calls on a Fiddle::Pointer, but
 if we don't pay attention then it looks like **OOP**! If it walks
 like a duck, quacks like a duck then ... it may be a
 **Fiddle::Pointer:Duck**!!!
+
+You can use a toplevel margined window like this:
+
+    window = margined_window(:filename, 250, 150, 0)
+
+:filename (as Symbol) is an 'alias' - if given then
+the filename will become the title of the window at
+hand. Only the raw filename will be used, so if you
+have a file at **/tmp/foo/bar.rb** then the title
+of the window will be **bar.rb**.
 
 ## Entry
 
@@ -1036,20 +1073,6 @@ the picture the kotlin-libui developers made available:
 Doesn't look that bad, right? May not be the prettiest GUI of all
 times, but it is functional - and simple.
 
-## Status of the libui_paradise project
-
-I am still, as of 2021, experimenting somewhat randomly. While I intend to
-improve libui_paradise, it is a hobby project that is not as important
-as, say, the gtk_paradise project (which contains custom ruby-gtk
-related addons; ruby-gtk has a LOT more functionality than libui has).
-
-I can not promise to work reliably on libui_paradise, but every now and
-then, say every some weeks, I will try to add more code to it, in 
-particular examples and documentation. However had, keep in mind that
-the project is not one of my most important projects, so it may not
-receive as many updates as other projects. See also the next subsection,
-the "Todo List".
-
 ## DSLs for libui (in ruby)
 
 kojix2 pointed out that glimmer has support for libui; check it out
@@ -1065,16 +1088,40 @@ API changes, let me know and I'll change libui_paradise. Other
 than that, the libui_paradise project is in a slow maintenance
 mode right now, so again, stay tuned. \o/ )
 
+## Status of the libui_paradise project
+
+I am still, as of 2021, experimenting somewhat randomly. While I intend to
+improve libui_paradise, it is a hobby project that is not as important
+as, say, the gtk_paradise project (which contains custom ruby-gtk
+related addons; ruby-gtk has a LOT more functionality than libui has,
+just look at the CSS-related aspects).
+
+I can not promise to work reliably on libui_paradise, but every now and
+then, say every some weeks, I will try to add more code to it, in 
+particular examples and documentation. However had, keep in mind that
+the project is not one of my most important projects, so it may not
+receive as many updates as other projects; Andy is much more active
+recently via glimmer-libui-dsl, so check out his project. See also
+the following subsection, the "Todo List".
+
 ## Todo List and Goals related to libui
 
 Here I will list some todo entries and related goals for libui or the
 libui_paradise gem - if anyone finds out how to solve some of these
 limitations, you are welcome to share!
 
+This list may become outdated eventually, so assume that this has been
+valid at one point in time, but may no longer be absolutely "up to date"
+anymore.
+
+Here goes:
+
 - Add more small, **standalone examples** showcasing how to use (and
 combine) different functionality, in particular colourized text and use
-of (embedded) images if applicable. Ideally we should be able to combine
-both freely, if possible.
+of (embedded) images if applicable. Ideally we should be able to
+combine both freely, if possible. Ideally it should be a small functionality,
+to demonstrate **how** something can be done. Users can then expand from
+this point for their own GUI sets.
 
 - Find out how to create "proper" subclasses to Fiddle::Pointer, simulating
 a subclass to it.
@@ -1101,6 +1148,34 @@ to libui, be it in kotlin, python, ruby and so forth.
 Only an image is shown how it may look on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
+
+## radio-buttons in LibUI
+
+The syntax goes something like this:
+
+    rb = ui_radio_buttons
+    UI.radio_buttons_append(rb, 'Radio Button 1')
+    UI.radio_buttons_append(rb, 'Radio Button 2')
+    UI.radio_buttons_append(rb, 'Radio Button 3')
+    outer_vbox.minimal(rb) # add the radio-button control to the box.
+
+In other words: you instantiate a new rb-radio-button 'pointer';
+and then you simply append the options onto it. The String above
+will be the option at hand, e. g. 'Radio Button 1'.
+
+As I am very lazy I don't want this boilerplate code, so the following
+variant exists instead:
+
+    rb = ui_radio_buttons( ['Radio Button 1','Radio Button 2','Radio Button 3'] )
+    outer_vbox.minimal(rb) # add the radio-button control to the box.
+
+So you can simply pass in an Array. This cuts down the number of
+lines necessary. \o/
+
+Here is a screenshot to show how this looks (from
+example **032_radio_button_example.rb**).
+
+<img src="https://i.imgur.com/aJOBQzn.png" style="margin-left: 2em">
 
 ## Password entries in LibUI
 
@@ -1205,7 +1280,7 @@ Available "new"-widgets in LibUI:
     LibUI.new_progress_bar                         # this is a progress_bar
     LibUI.new_underline_color_attribute
     LibUI.new_family_attribute
-    LibUI.new_radio_buttons
+    LibUI.new_radio_buttons                        # this is for the radio button
     LibUI.new_vertical_box
     LibUI.new_features_attribute
     LibUI.new_scrolling_area                       # this is a scrolling area

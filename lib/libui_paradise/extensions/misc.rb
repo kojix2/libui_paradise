@@ -306,4 +306,37 @@ module Extensions # === LibuiParadise::Extensions
     return _
   end
 
+  # ========================================================================= #
+  # === ui_font_descriptor
+  #
+  # This method will return a new font-descriptor pointer.
+  #
+  # Usage example:
+  #
+  #   ui_font_descriptor('Hack')
+  #
+  # ========================================================================= #
+  def ui_font_descriptor(
+      use_this_font_family      = 'Hack',
+      use_this_size             = 25,
+      use_this_weight           = 500,
+      is_in_italic_font_variant = :no,
+      stretch_factor            = 4
+    )
+    case is_in_italic_font_variant
+    when :yes
+      is_in_italic_font_variant = 1 # true
+    when :no
+      is_in_italic_font_variant = 0 # false
+    end
+    font_descriptor = UI::FFI::FontDescriptor.malloc
+    font_descriptor.to_ptr.free = Fiddle::RUBY_FREE
+    font_descriptor.Family = use_this_font_family
+    font_descriptor.Size = use_this_size
+    font_descriptor.Weight = use_this_weight
+    font_descriptor.Italic = is_in_italic_font_variant
+    font_descriptor.Stretch = stretch_factor
+    return font_descriptor
+  end; alias font_descriptor ui_font_descriptor # === font_descriptor
+
 end; end

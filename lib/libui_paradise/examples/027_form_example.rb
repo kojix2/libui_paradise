@@ -31,6 +31,7 @@ button_display_name.on_clicked {
   )
 }
 
+outer_vbox.minimal(hsep, 0)
 outer_vbox.minimal(button_display_name, 1)
 
 window.child = outer_vbox

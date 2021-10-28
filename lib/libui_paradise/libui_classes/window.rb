@@ -51,6 +51,17 @@ module Extensions # === LibuiParadise::Extensions
       has_menubar =   1, # hasMenubar or has not.
       &block
     )
+    case the_title
+    # ======================================================================= #
+    # === :filename
+    # ======================================================================= #
+    when :filename,
+         :file_name
+      # ===================================================================== #
+      # __FILE__ contains the desired name. We only need the raw name, though.
+      # ===================================================================== #
+      the_title = File.basename(__FILE__)
+    end
     raw_has_menubar = 0
     if has_menubar.is_a? Numeric
       raw_has_menubar = has_menubar

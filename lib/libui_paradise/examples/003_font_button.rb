@@ -4,16 +4,16 @@
 # =========================================================================== #
 require 'libui_paradise/autoinclude'
 
-main_window = UI.window('hello world', 300, 200, 1)
+main_window = ui_window('hello world', 300, 200, 1)
 
-font_button = UI.font_button
+font_button = ui_font_button
 # =========================================================================== #
 # === font_descriptor
 #
 # The font_descriptor will contain all the important information about the
 # font at hand. It will be updated via UI.font_button_font().
 # =========================================================================== #
-font_descriptor = UI::FFI::FontDescriptor.malloc
+font_descriptor = ui_font_descriptor('Hack')
 UI.font_button_on_changed(font_button) {
   UI.font_button_font(font_button, font_descriptor)
   # ========================================================================= #
