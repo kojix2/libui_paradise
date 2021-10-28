@@ -5,7 +5,9 @@
 
 - Rewrite the project from the get-go. Also integrate 
   @main_window into the main hash, rather than have it
-  standalone.
+  standalone. ^^^ this should be fixed ASAP - it is not
+  elegant to have a separate @main_window ... but for
+  now we'll keep it as-is.
 
 - Re-organize the examples, perhaps starting with another
   one.

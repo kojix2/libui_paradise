@@ -10,6 +10,9 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.horizontal_separator
+  #
+  # This method will add a new horizontal separator. The name "hsep"
+  # is a shorter alias to this.
   # ========================================================================= #
   def self.horizontal_separator
     UI.new_horizontal_separator
@@ -17,6 +20,7 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_hsep           horizontal_separator } # === LibuiParadise::Extensions.ui_hsep
        self.instance_eval { alias hspacer           horizontal_separator } # === LibuiParadise::Extensions.hspacer
        self.instance_eval { alias horizontal_spacer horizontal_separator } # === LibuiParadise::Extensions.horizontal_spacer
+       self.instance_eval { alias hsep              horizontal_separator } # === LibuiParadise::Extensions.hsept
 
   # ========================================================================= #
   # === horizontal_separator
@@ -26,7 +30,8 @@ module Extensions # === LibuiParadise::Extensions
   end; alias ui_hseparator     horizontal_separator # === ui_hseparator
        alias ui_hsep           horizontal_separator # === ui_hsep
        alias hspacer           horizontal_separator # === hspacer
-       alias horizontal_spacer horizontal_separator # === hspacer
+       alias horizontal_spacer horizontal_separator # === horizontal_spacer
+       alias hsep              horizontal_separator # === hsep
 
 end
 
@@ -37,5 +42,6 @@ def self.horizontal_separator
   ::LibuiParadise::Extensions.horizontal_separator
 end; self.instance_eval { alias ui_hseparator horizontal_separator } # === LibuiParadise.ui_hseparator
      self.instance_eval { alias ui_hsep       horizontal_separator } # === LibuiParadise.ui_hsep
+     self.instance_eval { alias hsep          horizontal_separator } # === LibuiParadise.hsep
 
 end
