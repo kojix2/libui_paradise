@@ -339,4 +339,27 @@ module Extensions # === LibuiParadise::Extensions
     return font_descriptor
   end; alias font_descriptor ui_font_descriptor # === font_descriptor
 
+  # ========================================================================= #
+  # === ui_text_then_entry
+  #
+  # This method must return an Array containing three elements.
+  #
+  # Note that :padding specifies whether we will use padding or not in
+  # libui. In ruby-gtk3 we can pass the pixels here; I am not sure
+  # whether this is possible via libui as such.
+  # ========================================================================= #
+  def ui_text_then_entry(
+      text = '',
+      hash = {
+        padding: 0
+      }
+    )
+    text = ui_text(text)
+    entry = ui_entry
+    hbox = padded_hbox
+    hbox.minimal(text,  hash[:padding])
+    hbox.minimal(entry, hash[:padding])
+    return [ hbox, text, entry ]
+  end; alias text_then_entry ui_text_then_entry # === text_then_entry
+
 end; end
