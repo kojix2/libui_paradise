@@ -33,29 +33,34 @@ module Extensions # === LibuiParadise::Extensions
   # This method registers the particular widget in use.
   #
   # Every new_* method available on UI.new* - actually on LibUI.new* -
-  # that creates a new widget be registered via this method here. That
-  # way we have a Hash that contains lots of Fiddle::Pointers and we
-  # can, at a later time, modify these Fiddle::Pointer or call
-  # toplevel methods with these registered pointers. This will only work
-  # if we have registered these pointers though, which is why each 
-  # method that creates a new libui-widget has to make use of this method
-  # here.
+  # that creates a new widget has to be registered via this method here,
+  # by calling it. That way we have a main Hash that contains lots of
+  # Fiddle::Pointers and we can, at a later time, modify these
+  # Fiddle::Pointer or call toplevel methods with these registered
+  # pointers. This will only work if we have registered these pointers,
+  # though, which is why each method that creates a new libui-widget
+  # has to make use of this method here.
   #
-  # The only exception to the above rule is the main window. The main
-  # window is always stored at @main_window instead. Perhaps it
-  # should also use the method here, but I found it simpler to
-  # just refer to it via @main_window.
+  # The only exception to the above rule is the main window. The
+  # main window is always stored in the @main_window variable instead.
+  # Perhaps it should also use the method here, but I found it simpler
+  # to just refer to it via @main_window. (Note that in future releases
+  # of the libui_paradise gem, @main_window will probably be removed
+  # and integrated just like any other libui-widget.)
   #
-  # The mandatory entries must be:
+  # The mandatory entries given to this method must be:
   #
   #   object_id -> [:the_fiddle_pointer_widget, :the_type]
   #
   # The object_id will be determined automatically, so it can be
-  # omitted.
+  # omitted. It is the value that is returned by calling
+  # .object_id.
   #
-  # The very last argument of the two-member Array should be a symbol,
-  # such as :grid. This is automatically ensured via a call to
-  # __method__ which returns a Symbol.
+  # The very last argument of the two-member Array should be a
+  # symbol, such as :grid. This is automatically ensured via a
+  # call to __method__ which returns a Symbol. That way we can
+  # then call the correct method internally, once we know we
+  # have a :grid or any other widget.
   # ========================================================================= #
   def self.register_this_fiddle_pointer_widget(
       the_fiddle_pointer_widget,

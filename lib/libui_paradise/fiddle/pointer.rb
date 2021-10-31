@@ -771,7 +771,7 @@ class Pointer # === Fiddle::Pointer
        alias has_margin    is_margined # === has_margin
 
   # ========================================================================= #
-  # Skeleton methods:
+  # === Skeleton methods:
   #
   # A "skeleton" method is one that doesn't do anything right now. These
   # were added to increase compatibility with the gtk_paradise gem. Some
@@ -782,10 +782,6 @@ class Pointer # === Fiddle::Pointer
   def bblack1; end
   def bblack2; end
   def bblack3; end
-  def try_to_add_default_CSS_rules; end
-  def enable_free_form_css; end
-  def show_all; end # This one here may become a real method one day, but right now I don't know how to enable that.
-  def align_to_the_left; end
   def pad1px; end
   def pad2px; end
   def pad3px; end
@@ -837,5 +833,10 @@ class Pointer # === Fiddle::Pointer
   def line_spacing=(i = 10); end
   def to_the_left; end
   def set_editable(i = true); end
+  def try_to_add_default_CSS_rules; end
+  def enable_free_form_css; end
+  def show_all; end # This one here may become a real method one day, but right now I don't know how to enable that.
+  def align_to_the_left; end
+  def yellowish_background; end
 
 end; end

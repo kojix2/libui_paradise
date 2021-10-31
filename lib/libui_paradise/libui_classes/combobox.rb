@@ -32,17 +32,6 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_combobox  combobox } # === LibuiParadise::Extensions.ui_combobox
 
   # ========================================================================= #
-  # === combobox
-  # ========================================================================= #
-  def combobox(
-      optional_array = nil, &block
-    )
-    return ::LibuiParadise::Extensions.combobox(optional_array, &block)
-  end; alias combo_box    combobox # === combo_box
-       alias ui_combo_box combobox # === ui_combo_box
-       alias ui_combobox  combobox # === ui_combobox
-
-  # ========================================================================= #
   # === selected?
   #
   # Unsure whether this works. It appears to work, but I am not even
@@ -51,5 +40,19 @@ module Extensions # === LibuiParadise::Extensions
   def selected?(pointer)
     UI.combobox_selected(pointer).to_s
   end
+
+  # ========================================================================= #
+  # === combobox
+  #
+  # The first argument can be an Array.
+  # ========================================================================= #
+  def combobox(
+      optional_array = nil, &block
+    )
+    return ::LibuiParadise::Extensions.combobox(optional_array, &block)
+  end; alias combo_box       combobox # === combo_box
+       alias ui_combo_box    combobox # === ui_combo_box
+       alias ui_combobox     combobox # === ui_combobox
+       alias combo_box_entry combobox # === combo_box_entry
 
 end; end
