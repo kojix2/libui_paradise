@@ -23,7 +23,7 @@ main_window = ui_main_window(TITLE, WIDTH, HEIGHT, 0)
 # The next code used to be in place until September 2021. I will retain it
 # here in the event that we need to use it again one day.
 # =========================================================================== #
-    
+
 # combobox_selected_callback = proc { |pointer|
 #   e "New combobox selection: #{UI.combobox_selected(pointer)}"
 #   @entry.set_text(selected?(pointer))

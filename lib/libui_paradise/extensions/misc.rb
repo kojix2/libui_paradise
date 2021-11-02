@@ -362,4 +362,28 @@ module Extensions # === LibuiParadise::Extensions
     return [ hbox, text, entry ]
   end; alias text_then_entry ui_text_then_entry # === text_then_entry
 
+  # ========================================================================= #
+  # === use_libui?
+  # ========================================================================= #
+  def use_libui?
+    true
+  end
+
+  # ========================================================================= #
+  # === use_gtk?
+  # ========================================================================= #
+  def use_gtk?
+    false
+  end
+
+  # ========================================================================= #
+  # === try_to_use_this_font
+  #
+  # This is currently not in use - once libui supports setting
+  # a font then this can be enabled.
+  # ========================================================================= #
+  def try_to_use_this_font(i = nil); end
+    alias use_this_font=    try_to_use_this_font
+    alias set_use_this_font try_to_use_this_font
+
 end; end
