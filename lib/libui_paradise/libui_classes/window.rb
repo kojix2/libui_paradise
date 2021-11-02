@@ -99,6 +99,7 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_main_window  window } # === LibuiParadise::Extensions.ui_main_window
        self.instance_eval { alias margined_window window } # === LibuiParadise::Extensions.margined_window
        self.instance_eval { alias ui_window       window } # === LibuiParadise::Extensions.ui_window
+       self.instance_eval { alias window_or_vbox  window } # === LibuiParadise::Extensions.window_or_vbox
 
   # ========================================================================= #
   # === window
@@ -112,7 +113,7 @@ module Extensions # === LibuiParadise::Extensions
     LibuiParadise::Extensions.window(
       the_title, width, height, has_menubar
     )
-  end; alias main_window window # === main_window
+  end; alias main_window    window # === main_window
 
   # ========================================================================= #
   # === ui_margined_main_window
@@ -142,6 +143,7 @@ module Extensions # === LibuiParadise::Extensions
        alias padded_main_window    ui_margined_main_window # === padded_main_window
        alias ui_main_window        ui_margined_main_window # === ui_main_window
        alias ui_window             ui_margined_main_window # === ui_window
+       alias window_or_vbox        ui_margined_main_window # === window_or_vbox
 
 end
 
@@ -167,6 +169,7 @@ end; self.instance_eval { alias main_window           window } # === LibuiParadi
      self.instance_eval { alias ui_padded_main_window window } # === LibuiParadise.margined_window
      self.instance_eval { alias padded_window         window } # === LibuiParadise.padded_window
      self.instance_eval { alias padded_main_window    window } # === LibuiParadise.padded_main_window
+     self.instance_eval { alias window_or_vbox        window } # === LibuiParadise.window_or_vbox
 
 # =========================================================================== #
 # === LibuiParadise.main_window?

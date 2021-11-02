@@ -18,6 +18,60 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === on_changed
+  #
+  # The idea for this method is to respond to on-changed events, in
+  # particular on a spinbox. Currently it is enabled only for :entry
+  # widgets. This may have to be expanded one day to add more widgets.
+  #
+  # For a combobox we may have to use this code:
+  #
+  #   LibUI.combobox_on_selected
+  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
+  #   end
+  #
+  # Be sure to pass the proc object into the method, in a block.
+  #
+  # Usage example:
+  #
+  #   text_entry.on_changed { text_changed_callback }
+  #
+  # ========================================================================= #
+  def on_changed(&block)
+    current_widget = available_pointers?[self.object_id] # This will be an Array.
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :colour_button
+    # ======================================================================= #
+    when :colour_button
+      LibUI.color_button_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      LibUI.entry_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      LibUI.combobox_on_selected(self, block.call, nil)
+# 
+# combobox_selected_callback = proc { |pointer|
+#   e "New combobox selection: #{UI.combobox_selected(pointer)}"
+#   @entry.set_text(selected?(pointer))
+# }
+
+
+
+
+    else
+      e 'Not registered type in .on_changed(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
   # === append_text_column
   #
   # This method is specifically used for libui-tables.
@@ -104,7 +158,7 @@ class Pointer # === Fiddle::Pointer
     when :button
       LibUI.control_disable(self)
     else
-      e 'Not registered type in .on_changed(): '+type.to_s
+      e 'Not registered type in .disable(): '+type.to_s
     end
   end
 
@@ -122,7 +176,7 @@ class Pointer # === Fiddle::Pointer
     when :button
       LibUI.control_enable(self)
     else
-      e 'Not registered type in .on_changed(): '+type.to_s
+      e 'Not registered type in .enable(): '+type.to_s
     end
   end
 
@@ -166,46 +220,6 @@ class Pointer # === Fiddle::Pointer
     end
   end; alias add append # === add
        alias <<  append # === <<
-
-  # ========================================================================= #
-  # === on_changed
-  #
-  # The idea for this method is to respond to on-changed events, in
-  # particular on a spinbox. Currently it is enabled only for :entry
-  # widgets. This may have to be expanded one day to add more widgets.
-  #
-  # For a combobox we may have to use this code:
-  #
-  #   LibUI.combobox_on_selected
-  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
-  #   end
-  #
-  # Be sure to pass the proc object into the method, in a block.
-  #
-  # Usage example:
-  #
-  #   text_entry.on_changed { text_changed_callback }
-  #
-  # ========================================================================= #
-  def on_changed(&block)
-    current_widget = available_pointers?[self.object_id] # This will be an Array.
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :colour_button
-    # ======================================================================= #
-    when :colour_button
-      LibUI.color_button_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      LibUI.entry_on_changed(self, block.call, nil)
-    else
-      e 'Not registered type in .on_changed(): '+type.to_s
-    end
-  end
 
   # ========================================================================= #
   # === set_text
@@ -562,7 +576,8 @@ class Pointer # === Fiddle::Pointer
     else
       e 'Not registered type: '+type.to_s
     end
-  end; alias value= set_value # === value=
+  end; alias value=          set_value # === value=
+       alias start_position= set_value # === start_position=
 
   # ========================================================================= #
   # === append_this_array
@@ -793,8 +808,6 @@ class Pointer # === Fiddle::Pointer
   def pad9px; end
   def pad10px; end
   def yellow_background; end
-  def try_to_use_this_font(i = nil); end
-    alias use_this_font= try_to_use_this_font
   def hint=(i = nil); end
     alias popup_hint hint= # === popup_hint
   def modify_background(a = :active,   b = :coral); end
@@ -838,5 +851,10 @@ class Pointer # === Fiddle::Pointer
   def show_all; end # This one here may become a real method one day, but right now I don't know how to enable that.
   def align_to_the_left; end
   def yellowish_background; end
+  def on_enter; end
+  def on_value_changed; end
+  def try_to_use_this_font(i = nil); end
+    alias use_this_font=    try_to_use_this_font
+    alias set_use_this_font try_to_use_this_font
 
 end; end

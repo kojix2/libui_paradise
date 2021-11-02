@@ -823,6 +823,9 @@ To set a value:
     spinbox.set_value(42)
     spinbox.value = 42 # this works as well
 
+For an example have a look at the file **libui_paradise/examples/021_spinbutton_example.rb**
+specifically.
+
 ## Create a text-view widget
 
 A text-view widget shows content, such as the content of a local file.

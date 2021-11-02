@@ -6,7 +6,7 @@
 # =========================================================================== #
 require 'libui_paradise/autoinclude'
 
-window = ui_main_window('Spinbutton Example', 200, 100, 1)
+window = ui_main_window('Spinbutton Example', 250, 70, 1)
 
 outer_vbox = ui_padded_vbox
 spinbutton = ui_spinbutton(0, 100)

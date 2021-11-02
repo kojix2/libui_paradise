@@ -34,9 +34,10 @@ module Extensions # === LibuiParadise::Extensions
       end_point   = 100
     )
     ::LibuiParadise::Extensions.spinbox(start_point, end_point)
-  end; alias ui_spinbox    spinbox # === ui_spinbox
-       alias ui_spinbutton spinbox # === ui_spinbutton
-       alias spinbutton    spinbox # === spinbutton
+  end; alias ui_spinbox          spinbox # === ui_spinbox
+       alias ui_spinbutton       spinbox # === ui_spinbutton
+       alias spinbutton          spinbox # === spinbutton
+       alias up_and_down_counter spinbox # === up_and_down_counter
 
 end
 

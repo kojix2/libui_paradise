@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">30.10.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">20:48:47</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">01.11.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:58:11</span> o'clock.
 
 ## The libui_paradise project
 
@@ -825,6 +825,9 @@ To set a value:
 
     spinbox.set_value(42)
     spinbox.value = 42 # this works as well
+
+For an example have a look at the file **libui_paradise/examples/021_spinbutton_example.rb**
+specifically.
 
 ## Create a text-view widget
 
