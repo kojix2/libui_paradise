@@ -32,9 +32,10 @@ class Pointer # === Fiddle::Pointer
   #
   # Be sure to pass the proc object into the method, in a block.
   #
-  # Usage example:
+  # Usage examples:
   #
   #   text_entry.on_changed { text_changed_callback }
+  #   slider.on_changed { slider_changed_callback }
   #
   # ========================================================================= #
   def on_changed(&block)
@@ -42,6 +43,13 @@ class Pointer # === Fiddle::Pointer
     _pointer = current_widget.first # Not used currently in this method.
     type     = current_widget.last
     case type
+    # ======================================================================= #
+    # === :slider
+    #
+    # This is for a slider bar.
+    # ======================================================================= #
+    when :slider
+      LibUI.slider_on_changed(self, block.call, nil)
     # ======================================================================= #
     # === :colour_button
     # ======================================================================= #
@@ -57,15 +65,6 @@ class Pointer # === Fiddle::Pointer
     # ======================================================================= #
     when :combobox
       LibUI.combobox_on_selected(self, block.call, nil)
-# 
-# combobox_selected_callback = proc { |pointer|
-#   e "New combobox selection: #{UI.combobox_selected(pointer)}"
-#   @entry.set_text(selected?(pointer))
-# }
-
-
-
-
     else
       e 'Not registered type in .on_changed(): '+type.to_s
     end
@@ -856,5 +855,6 @@ class Pointer # === Fiddle::Pointer
   def try_to_use_this_font(i = nil); end
     alias use_this_font=    try_to_use_this_font
     alias set_use_this_font try_to_use_this_font
+  def horizontal_center; end
 
 end; end

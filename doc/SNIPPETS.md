@@ -131,10 +131,6 @@
   text1 = UI.entry_text(entry1) # Obtain text. You may have to call .to_s on it, to guarantee the String.
   UI.multiline_entry_text # Obtain the text from a multiline entry.
 
-# Create a textview:
-
-  UI.new_non_wrapping_multiline_entry
-
 # Putting the text-entry into a hbox:
 
   UI.box_append(hbox1, text_entry, 1)
@@ -159,11 +155,6 @@
   # Select the first entry:
 
   UI.combobox_set_selected(combobox, 0) # The first one will be active too.
-
-# Create a new tabbed notebook:
-
-  ui_tabs
-  ui_notebook
 
 # Add content to an editable combox:
 
