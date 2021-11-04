@@ -63,21 +63,6 @@ module Extensions # === LibuiParadise::Extensions
   end; alias parse_this_config_file try_to_parse_this_config_file # === parse_this_config_file
 
   # ========================================================================= #
-  # === abort_on_exception
-  # ========================================================================= #
-  def abort_on_exception
-    Thread.abort_on_exception
-  end
-
-  # ========================================================================= #
-  # === create_skeleton_then_connect_skeleton
-  # ========================================================================= #
-  def create_skeleton_then_connect_skeleton
-    create_skeleton
-    connect_skeleton
-  end
-
-  # ========================================================================= #
   # === ui_draw_text_layout_params
   # ========================================================================= #
   def ui_draw_text_layout_params
@@ -385,5 +370,26 @@ module Extensions # === LibuiParadise::Extensions
   def try_to_use_this_font(i = nil); end
     alias use_this_font=    try_to_use_this_font
     alias set_use_this_font try_to_use_this_font
+
+  # ========================================================================= #
+  # === abort_on_exception
+  # ========================================================================= #
+  def abort_on_exception
+    Thread.abort_on_exception
+  end
+
+  # ========================================================================= #
+  # === create_skeleton_then_connect_skeleton
+  # ========================================================================= #
+  def create_skeleton_then_connect_skeleton
+    create_skeleton
+    connect_skeleton
+  end
+
+  # ========================================================================= #
+  # === run_main
+  # ========================================================================= #
+  def run_main
+  end
 
 end; end

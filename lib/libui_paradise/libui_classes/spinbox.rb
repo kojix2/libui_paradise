@@ -12,9 +12,12 @@ module Extensions # === LibuiParadise::Extensions
   # === LibuiParadise::Extensions.spinbox
   #
   # This method will return a spin-button, also called a spin-box.
+  #
+  # The first argument is the start value; the second argument is the end
+  # value.
   # ========================================================================= #
   def self.spinbox(
-      start_point = 0,
+      start_point =   0,
       end_point   = 100
     )
     _ = UI.new_spinbox(start_point.to_i, end_point.to_i)

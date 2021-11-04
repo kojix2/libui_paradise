@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">01.11.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:58:11</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">04.11.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">10:58:52</span> o'clock.
 
 ## The libui_paradise project
 
@@ -797,37 +797,42 @@ outside frame. This may be useful for games and what not.
 
 ## Spinbutton / Spinbox
 
-You can use:
+You can use the following API for a spinbox:
 
     UI.new_spinbox
 
 To create a new spinbox.
 
-To specify the min and max range, pass them as parameters:
+To specify the **min** and **max** range, pass them as parameters
+on creation-time:
 
     UI.new_spinbox(0, 100)
 
-If you use the extensions then you can do this instead:
+If you use the extensions found in the libui_paradise gem then
+you can do this instead:
 
     ui_spinbox
     spinbox # this is the simplest variant
+    spinbox(0, 100)
 
-You should be able to set a value via set_value but I have
-not yet added an example for this.
+You should be able to set a value via **.set_value**. Have a look
+at the file at **libui_paradise/examples/rb 021_spinbutton_example.rb**
+to see how this works. 
 
-Relevant methods are:
+Relevant methods in regard to the spinbox in libui are as follows:
 
     UI.spinbox_on_changed()
     UI.spinbox_set_value()
     UI.spinbox_value() 
 
-To set a value:
+To **set** a value use either of the following two methods:
 
     spinbox.set_value(42)
     spinbox.value = 42 # this works as well
 
-For an example have a look at the file **libui_paradise/examples/021_spinbutton_example.rb**
-specifically.
+Here is a small image of how this looks:
+
+<img src="https://i.imgur.com/FxNTRse.png" style="margin: 0.5em; margin-left: 2em">
 
 ## Create a text-view widget
 
@@ -1113,10 +1118,6 @@ Next, the content of the file called **SNIPPETS.md** will be shown.
   text1 = UI.entry_text(entry1) # Obtain text. You may have to call .to_s on it, to guarantee the String.
   UI.multiline_entry_text # Obtain the text from a multiline entry.
 
-# Create a textview:
-
-  UI.new_non_wrapping_multiline_entry
-
 # Putting the text-entry into a hbox:
 
   UI.box_append(hbox1, text_entry, 1)
@@ -1141,11 +1142,6 @@ Next, the content of the file called **SNIPPETS.md** will be shown.
   # Select the first entry:
 
   UI.combobox_set_selected(combobox, 0) # The first one will be active too.
-
-# Create a new tabbed notebook:
-
-  ui_tabs
-  ui_notebook
 
 # Add content to an editable combox:
 
@@ -1522,7 +1518,59 @@ Available "new"-widgets in LibUI:
     LibUI.new_form                                 # this is a form
     LibUI.new_size_attribute
     LibUI.new_window
-    LibUI.new_slider
+    LibUI.new_slider                               # this is a slider
+
+## The slider widget
+
+If you use the LibuiParadise gem then you can create and use a new slider
+like this:
+
+    slider = ui_slider
+
+    # define our callback
+    slider_changed_callback = proc { |ptr|
+      puts "New Slider value: #{UI.slider_value(ptr)}"
+      0
+    }
+    UI.slider_on_changed(slider, slider_changed_callback) # last element is nil, but it seems we can omit it
+
+This may look like so on Linux:
+
+<img src="https://i.imgur.com/GVKPMS7.png" style="margin-left: 3em">
+
+# Create a new tabbed notebook:
+
+   ui_tabs
+   ui_notebook
+
+# Creating a textview in LibUI:
+
+    LibUI.new_non_wrapping_multiline_entry
+
+## Attributed Strings in LibUI
+
+An AttributedString is a string which also contains information
+about styles such as text color, font, font size. It can be drawn
+in a UiArea element.
+
+Various ways to style such an attributed String is possible.
+
+For instance, the text-weight part accepts these values
+
+    minimum
+    thin
+    ultraLight
+    light
+    book
+    normal
+    medium
+    semiBold
+    bold
+    ultraBold
+    heavy
+    ultraHeavy
+    maximum
+    # or  any number between minimum and maximum
 
 ## Links related to libui or libui-based projects
 

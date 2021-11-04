@@ -6,7 +6,7 @@
 # =========================================================================== #
 require 'libui_paradise/autoinclude'
 
-window = UI.main_window('A simple grid-example', 1200, 200, 15)
+window = ui_main_window('A simple grid-example', 1200, 200, 15)
 
 grid = ui_grid
 UI.grid_append(grid, text('Yo1'), 0, 0, 1, 1, 0, 0, 1, 0)
