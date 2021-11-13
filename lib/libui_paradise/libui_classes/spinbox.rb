@@ -20,6 +20,24 @@ module Extensions # === LibuiParadise::Extensions
       start_point =   0,
       end_point   = 100
     )
+    if start_point.is_a? Hash
+      # ===================================================================== #
+      # === :end
+      # ===================================================================== #
+      if start_point.has_key? :end
+        end_point = start_point[:end]
+      end
+      # ===================================================================== #
+      # === :start
+      # ===================================================================== #
+      if start_point.has_key? :start
+        start_point = start_point[:start]
+      end
+    end
+
+pp start_point
+pp end_point
+
     _ = UI.new_spinbox(start_point.to_i, end_point.to_i)
     add_to_the_registered_widgets(_, __method__)
     return _
@@ -33,7 +51,7 @@ module Extensions # === LibuiParadise::Extensions
   # This method will return a spin-button, also called a spin-box.
   # ========================================================================= #
   def spinbox(
-      start_point = 0,
+      start_point =   0,
       end_point   = 100
     )
     ::LibuiParadise::Extensions.spinbox(start_point, end_point)

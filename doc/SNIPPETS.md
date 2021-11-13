@@ -1,6 +1,3 @@
-# How to require libui:
-
-  require 'libui'
 
 # How to instantiate libui:
 
@@ -56,10 +53,6 @@
     UI.msg_box(main_window, 'Information', 'You clicked the button')
     0
   }
-
-# How to add a margin:
-
-  UI.window_set_margined(MAIN_WINDOW, 1)
 
 # How to exit easily:
 
@@ -185,28 +178,3 @@
     'Font weight: '+font_descriptor.Weight+
     'Font italic: '+font_descriptor.Italic+
     'Font stretch: '+font_descriptor.Stretch
-
-# Available widgets in libUI:
-
-  Button                 A button with a label
-  Checkbox               A checkbox with a label
-  Combobox               A simple combobox
-  ColorButton            A button for selecting a color
-  EditableCombobox       A combobox that can be edited.
-  Entry                  Text input, can be disabled.
-  FontButton             A button for selecting a font (Incomplete: Cannot set programmatically)
-  Form                   A container that takes labels for its contents
-  Grid                   A container that aligns widgets for window design
-  Group                  A container that provides a title for a set of items
-  Label                  Displays a single line of text
-  Menu                   Creates a single column of an application menu
-  MultilineEntry         An entry that allows multiple lines.
-  Time and Date Pickers  Allows choosing of a date and/or time.
-  ProgressBar            Displays a progress bar
-  RadioButton            A set of radio buttons
-  Separator              A simple vertical or horizontal separator
-  Slider                 A draggable slider for choosing a value in a range
-  Spinbox                A numerical input with a minimum and maximum range
-  Tab                    A set named tabs for placing items in
-  Window                 Contains any other widget, cannot be embedded in a container
-  VBox, HBox             A vertical or horizontal box for grouping items
