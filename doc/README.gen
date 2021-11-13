@@ -270,6 +270,22 @@ You can omit the **ui_** part above. I just use it to point out the difference;
 and because I'd otherwise may have to use "button = button" aka "button = button()"
 which may be confusing, so I use **ui_button()** instead.
 
+# How to require libui:
+
+Simply do:
+
+    require 'libui'
+
+Note that the **libui_paradise gem** does so automatically if you require it.
+The idea here is to simply use **libui_paradise** directly, while still allowing
+you to use **libui** at the same time as well, should you prefer to do so.
+
+# How to add a margin in LibUI:
+
+Use something like:
+
+    LibUI.window_set_margined(MAIN_WINDOW, 1)
+
 ## Fiddle::Pointer and playing with pointers
 
 The **ruby-libui bindings** make use of **Fiddle::Pointer** a lot -
@@ -398,26 +414,31 @@ Examples:
 
 Currently subclassing from LibUI elements does not work - I simply
 have no idea how to "subclass" from a **Fiddle::Pointer**. Perhaps we
-have to build up a data structure that behaves like Fiddle::Pointer
-but also has methods that allow 'OOP behaviour'. Has anyone tried
-this yet? I am scared to try considering I already got segfaults ...
+have to build up a data structure that behaves like **Fiddle::Pointer**
+but also has methods that allow for a more direct 'OOP behaviour'. Has
+anyone tried this yet? I am scared to try considering I already got
+segfaults everywhere ...
 
 Eventually I may figure this out - or someone else with more knowledge
 will make this available. We can probably 'fake' subclassing to
 a pointer somehow ... after all ruby internally has to figure it
-out as well and probably did so already, on the C-level side.
+out as well and probably did so already, on the C-level side via
+various functions.
 
 ## Quickly adding text to a widget
 
-You can use something like this:
+You can use something like this if you use the libui_paradise gem:
 
     outer_vbox = ui_vbox
     outer_vbox.text(
       'This widget can be used to do xyz.'
     )
 
-Again - this modifies **Fiddle::Pointer** so be wary. The second
-argument is the default one for use in a label / ui_text widget.
+Here .text() just means to add a text onto the vertical box.
+
+Again - this modifies **Fiddle::Pointer**, so be wary when using
+it. The second argument is the default one for use in a
+label / ui_text widget.
 
 ## Working with combo-boxes
 
@@ -427,16 +448,17 @@ To create a combo-box, do:
 
 You can fill it with an array of entries **on creation-time** via:
 
-    combo_box = ui_combo_box([1,2,3,4])
+    combo_box = ui_combo_box([1,2,3,4]) # simply pass your Array here
 
-This will also focus on the very first element when doing so.
+This will also focus (aka **select**) on the very first element
+when doing so.
 
 If you need to do so manually, and focus on another element,
-you can use the following toplevel method:
+for example, then you can use the following toplevel method:
 
     UI.combobox_set_selected()
 
-To query the currently selected value, use:
+To **query the currently selected value**, use:
 
     UI.combobox_selected(pointer)
 
@@ -812,8 +834,13 @@ you can do this instead:
     spinbox # this is the simplest variant
     spinbox(0, 100)
 
-You should be able to set a value via **.set_value**. Have a look
-at the file at **libui_paradise/examples/rb 021_spinbutton_example.rb**
+You can also be more explicit and use a hash such as the following
+example shows:
+
+    spinbutton = ui_spinbutton(start: 0, end: 100) # Start at 0, end at 100.
+
+You should be able to set a new value of the spinbox via **.set_value**. Have
+a look at the file at **libui_paradise/examples/rb 021_spinbutton_example.rb**
 to see how this works. 
 
 Relevant methods in regard to the spinbox in libui are as follows:
@@ -1248,7 +1275,32 @@ may also be cleaned up in the future (the glimmer-libui code
 looks better). But for now this is how it is; Andy is very
 actively improving **glimmer-libui** right now.
 
-Available "new"-widgets in LibUI:
+## Available widgets in libUI:
+
+    Button                 A button with a label
+    Checkbox               A checkbox with a label
+    Combobox               A simple combobox
+    ColorButton            A button for selecting a color
+    EditableCombobox       A combobox that can be edited.
+    Entry                  Text input, can be disabled.
+    FontButton             A button for selecting a font (Incomplete: Cannot set programmatically)
+    Form                   A container that takes labels for its contents
+    Grid                   A container that aligns widgets for window design
+    Group                  A container that provides a title for a set of items
+    Label                  Displays a single line of text
+    Menu                   Creates a single column of an application menu
+    MultilineEntry         An entry that allows multiple lines.
+    Time and Date Pickers  Allows choosing of a date and/or time.
+    ProgressBar            Displays a progress bar
+    RadioButton            A set of radio buttons
+    Separator              A simple vertical or horizontal separator
+    Slider                 A draggable slider for choosing a value in a range
+    Spinbox                A numerical input with a minimum and maximum range
+    Tab                    A set named tabs for placing items in
+    Window                 Contains any other widget, cannot be embedded in a container
+    VBox, HBox             A vertical or horizontal box for grouping items
+
+Available "**new**"-widgets in LibUI:
 
     LibUI.new_area
     LibUI.new_attributed_string
