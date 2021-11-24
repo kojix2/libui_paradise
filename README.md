@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">13.11.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">00:55:57</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">24.11.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">08:40:35</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1558,14 +1558,26 @@ This may look like so on Linux:
 
 <img src="https://i.imgur.com/GVKPMS7.png" style="margin-left: 3em">
 
-# Create a new tabbed notebook:
+## Create a new tabbed notebook:
 
    ui_tabs
    ui_notebook
 
-# Creating a textview in LibUI:
+## Creating a textview in LibUI:
 
     LibUI.new_non_wrapping_multiline_entry
+
+## Coloured box examples
+
+Since as of November 2021 you can use the libui_paradise gem to
+create coloured boxes:
+
+<img src="https://i.imgur.com/Ervg3vF.png" style="margin: 0.5em; margin-left: 2em">
+
+The API for this goes like so:
+
+    LibuiParadise.draw_rectangle
+    LibuiParadise.draw_rectangle(50, 50, :steelblue) # width, height, html-colour to use
 
 ## Attributed Strings in LibUI
 
@@ -1592,7 +1604,7 @@ For instance, the text-weight part accepts these values
     maximum
     # or  any number between minimum and maximum
 
-## Links related to libui or libui-based projects
+# Links related to libui or libui-based projects
 
 This subsection may contain a few links, in the event that other
 people want to see useful entries.

@@ -34,11 +34,7 @@ module Extensions # === LibuiParadise::Extensions
         start_point = start_point[:start]
       end
     end
-
-pp start_point
-pp end_point
-
-    _ = UI.new_spinbox(start_point.to_i, end_point.to_i)
+    _ = ::LibUI.new_spinbox(start_point.to_i, end_point.to_i)
     add_to_the_registered_widgets(_, __method__)
     return _
   end; self.instance_eval { alias ui_spinbox    spinbox } # === LibuiParadise::Extensions.ui_spinbox

@@ -392,4 +392,88 @@ module Extensions # === LibuiParadise::Extensions
   def run_main
   end
 
-end; end
+  # ========================================================================= #
+  # === LibuiParadise::Extensions.draw_rectangle
+  #
+  # This method can be used to draw a rectangle.
+  #
+  # The third argument should be a HTML colour.
+  # ========================================================================= #
+  def self.draw_rectangle(
+      width  = :default,
+      height = :default,
+      colour = :orange
+    )
+    unless ::LibuiParadise.respond_to?(:padded_vbox)
+      require 'libui_paradise/libui_classes/vbox.rb'
+    end
+    unless Object.const_defined? :Colours
+      begin
+        require 'colours'
+      rescue LoadError; end
+    end
+    case width
+    when :default
+      width = 25
+    end
+    case height
+    when :default
+      height = 25
+    end
+    handler = LibUI::FFI::AreaHandler.malloc
+    handler.to_ptr.free = Fiddle::RUBY_FREE
+    area    = LibUI.new_area(handler)
+    brush   = LibUI::FFI::DrawBrush.malloc
+    brush.to_ptr.free = Fiddle::RUBY_FREE
+
+    handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) { |_, _, area_draw_params|
+      path = LibUI.draw_new_path(0)
+      LibUI.draw_path_add_rectangle(path, 0, 0, width, height)
+      LibUI.draw_path_end(path)
+      brush.Type = 0
+      # ===================================================================== #
+      # Need to find out the true RGB values. For now we divide by 255.
+      #
+      # See here:
+      #
+      #   https://stackoverflow.com/questions/10848990/rgb-values-to-0-to-1-scale
+      #
+      # ===================================================================== #
+      array = Colours.colour_to_rgb(colour)
+      brush.R = array[0] / 255.0 # 0.4
+      brush.G = array[1] / 255.0 # 0.4
+      brush.B = array[2] / 255.0 # 0.8
+      brush.A = 1.0
+      area_draw_params = LibUI::FFI::AreaDrawParams.new(area_draw_params)
+      LibUI.draw_fill(area_draw_params.Context, path, brush.to_ptr)
+      LibUI.draw_free_path(path)
+    }
+
+    do_nothing = Fiddle::Closure::BlockCaller.new(0, [0]) {}
+    key_event  = Fiddle::Closure::BlockCaller.new(1, [0]) { 0 }
+
+    handler.Draw         = handler_draw_event
+    handler.MouseEvent   = do_nothing
+    handler.MouseCrossed = do_nothing
+    handler.DragBroken   = do_nothing
+    handler.KeyEvent     = key_event
+
+    box = ::LibuiParadise.padded_vbox
+    box.maximal(area)
+    return box
+  end
+
+end
+
+# =========================================================================== #
+# === LibuiParadise.draw_rectangle
+# =========================================================================== #
+def self.draw_rectangle(
+    width  = :default,
+    height = :default,
+    colour = :orange
+  )
+  ::LibuiParadise::Extensions.draw_rectangle(width, height, colour)
+end
+
+end
