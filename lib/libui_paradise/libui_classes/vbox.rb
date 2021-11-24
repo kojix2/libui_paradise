@@ -48,4 +48,13 @@ def self.vbox
   ::LibuiParadise::Extensions.vbox
 end
 
+# =========================================================================== #
+# === LibuiParadise.padded_vbox
+# =========================================================================== #
+def self.padded_vbox
+  _ = ::LibuiParadise::Extensions.vbox
+  _.is_padded
+  return _
+end
+
 end

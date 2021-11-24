@@ -44,6 +44,11 @@ class Pointer # === Fiddle::Pointer
     type     = current_widget.last
     case type
     # ======================================================================= #
+    # === :spinbox
+    # ======================================================================= #
+    when :spinbox
+      LibUI.spinbox_on_changed(self, block.call, nil)
+    # ======================================================================= #
     # === :slider
     #
     # This is for a slider bar.
