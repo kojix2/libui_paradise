@@ -14,6 +14,76 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === esystem
+  # ========================================================================= #
+  def esystem(i)
+    puts i
+    system i
+  end
+
+  # ========================================================================= #
+  # === assumed_height?
+  # ========================================================================= #
+  def assumed_height?
+    return_the_resolution_using_xrandr.split('x').last.to_i
+  end; alias assumed_max_height? assumed_height? # === assumed_max_height?
+
+  # ========================================================================= #
+  # === assumed_width?
+  # ========================================================================= #
+  def assumed_width?
+    return_the_resolution_using_xrandr.split('x').first.to_i
+  end; alias assumed_max_width? assumed_width? # === assumed_max_width?
+
+  # ========================================================================= #
+  # === set_height
+  # ========================================================================= #
+  def set_height(
+      i = 800
+    )
+    case i
+    # ======================================================================= #
+    # === :max_width
+    # ======================================================================= #
+    when :max_height
+      i = assumed_max_height?
+    end
+    if i.is_a?(String) and i.include?('%')
+      # ===================================================================== #
+      # In this case we have to modify this a bit.
+      # ===================================================================== #
+      max_height = assumed_max_height?
+      i = (max_height.to_f * i.to_i) / 100.0
+    end
+    i = i.to_i
+    @height = i
+  end
+
+  # ========================================================================= #
+  # === set_width
+  # ========================================================================= #
+  def set_width(
+      i = 1024
+    )
+    case i
+    # ======================================================================= #
+    # === :max_width
+    # ======================================================================= #
+    when :max_width
+      i = assumed_max_width?
+    end
+    if i.is_a?(String) and i.include?('%')
+      # ===================================================================== #
+      # In this case we have to modify this a bit.
+      # ===================================================================== #
+      max_width = assumed_max_width?
+      i = (max_width.to_f * i.to_i) / 100.0
+    end
+    i = i.to_i
+    @width = i
+  end
+
+  # ========================================================================= #
   # === is_on_roebe?
   # ========================================================================= #
   def is_on_roebe?
@@ -190,35 +260,6 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === assumed_height?
-  # ========================================================================= #
-  def assumed_height?
-    return_the_resolution_using_xrandr.split('x').last.to_i
-  end; alias assumed_max_height? assumed_height? # === assumed_max_height?
-
-  # ========================================================================= #
-  # === assumed_width?
-  # ========================================================================= #
-  def assumed_width?
-    return_the_resolution_using_xrandr.split('x').first.to_i
-  end; alias assumed_max_width? assumed_width? # === assumed_max_width?
-
-  # ========================================================================= #
-  # === set_width
-  # ========================================================================= #
-  def set_width(i = 1024)
-    if i.is_a?(String) and i.include?('%')
-      # ===================================================================== #
-      # In this case we have to modify this a bit.
-      # ===================================================================== #
-      max_width = assumed_max_width?
-      i = (max_width.to_f * i.to_i) / 100.0
-    end
-    i = i.to_i
-    @width = i
-  end
-
-  # ========================================================================= #
   # === set_title
   # ========================================================================= #
   def set_title(i)
@@ -230,21 +271,6 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def title?
     @title
-  end
-
-  # ========================================================================= #
-  # === set_height
-  # ========================================================================= #
-  def set_height(i = 800)
-    if i.is_a?(String) and i.include?('%')
-      # ===================================================================== #
-      # In this case we have to modify this a bit.
-      # ===================================================================== #
-      max_height = assumed_max_height?
-      i = (max_height.to_f * i.to_i) / 100.0
-    end
-    i = i.to_i
-    @height = i
   end
 
   # ========================================================================= #
@@ -271,8 +297,9 @@ module Extensions # === LibuiParadise::Extensions
   def return_the_resolution_using_xrandr
     _ = '800x600' # This is a generic failsafe value.
     begin
-      _ = `xrandr`.split("\n").select {|line|
-        line.include? '*+'
+      xrandr_result = `xrandr`
+      _ = xrandr_result.split("\n").select {|line|
+        line.include? '*'
       }.first.strip.squeeze(' ').split(' ').first.to_s
     rescue Errno::ENOENT # Rescue for Windows systems.
     end
