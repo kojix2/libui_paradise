@@ -228,6 +228,16 @@ In my own projects I tend to use the above autoinclude variant
 most of the time, because that way I can write less code (omit
 a few lines).
 
+## How to require libui itself:
+
+Simply do:
+
+    require 'libui'
+
+Note that the **libui_paradise gem** does so automatically if you require it.
+The idea here is to simply use **libui_paradise** directly, while still allowing
+you to use **libui** at the same time as well, should you prefer to do so.
+
 ## How to get started with ruby-libui and the libui_paradise project?
 
 Well - as stated elsewhere, I first recommend to you that you look directly
@@ -268,19 +278,10 @@ outputs hello world when clicked. Can't get much simpler than that. \o/
 
 You can omit the **ui_** part above. I just use it to point out the difference;
 and because I'd otherwise may have to use "button = button" aka "button = button()"
-which may be confusing, so I use **ui_button()** instead.
+which may be confusing- Thus, using **ui_button()** appeared to make more
+sense in this regard.
 
-# How to require libui:
-
-Simply do:
-
-    require 'libui'
-
-Note that the **libui_paradise gem** does so automatically if you require it.
-The idea here is to simply use **libui_paradise** directly, while still allowing
-you to use **libui** at the same time as well, should you prefer to do so.
-
-# How to add a margin in LibUI:
+## How to add a margin in LibUI:
 
 Use something like:
 
@@ -424,6 +425,57 @@ will make this available. We can probably 'fake' subclassing to
 a pointer somehow ... after all ruby internally has to figure it
 out as well and probably did so already, on the C-level side via
 various functions.
+
+## Using scrolling-areas in LibUI
+
+The following API can be used to create a new scrolling area:
+
+    LibUI.new_scrolling_area
+
+Scrolling areas have horziontal and vertical scrollbars. The
+amount that can be scrolled is determined by the area's
+size, which is decided by the programmer (both when creating
+the Area and by a call to SetSize). Only a portion of the
+Area is visible at any time; drawing and mouse events are
+automatically adjusted to match what portion is visible,
+so you do not have to worry about scrolling in your
+event handlers.
+
+The method LibUI.new_scrolling_area() accepts three arguments.
+The second and third are width and height, respectively
+(as **integers**).
+
+The first argument is the area handle. It has the following
+pointer types (struct):
+
+    .Draw
+    .MouseEvent
+    .MouseCrossed
+    .DragBroken
+    .KeyEvent
+
+The handlerDraw() function in C looks like this:
+
+    static void handlerDraw(uiAreaHandler *a, uiArea *area, uiAreaDrawParams *p)
+    {
+	    uiDrawTextLayout *textLayout;
+	    uiFontDescriptor defaultFont;
+	    uiDrawTextLayoutParams params;
+
+	    params.String = attrstr;
+	    uiFontButtonFont(fontButton, &defaultFont);
+	    params.DefaultFont = &defaultFont;
+	    params.Width = p->AreaWidth;
+	    params.Align = (uiDrawTextAlign) uiComboboxSelected(alignment);
+	    textLayout = uiDrawNewTextLayout(&params);
+	    uiDrawText(p->Context, textLayout, 0, 0);
+	    uiDrawFreeTextLayout(textLayout);
+	    uiFreeFontButtonFont(&defaultFont);
+    }
+
+The scrollable area may look like this:
+
+<img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/hello/hello-windows.png">
 
 ## Quickly adding text to a widget
 
@@ -954,6 +1006,19 @@ degrees of complexity/importance:
 
 - No CSS support. I miss this. On ruby-gtk3 this is possible. In LibUI I can't.
 - Unable to set different fonts for an application other than using FontButton.
+
+## Using C structs via fiddle
+
+To use C structs you may have to allocate memory.
+
+Example:
+
+    font_descriptor = UI::FFI::FontDescriptor.malloc
+    font_descriptor.to_ptr.free = Fiddle::RUBY_FREE
+
+This is currently necessary. Hopefully Fiddle becomes
+a bit more convenient to use in the future, so we don't
+have to care about **malloc** when writing ruby anymore.
 
 ## Structure of the project
 

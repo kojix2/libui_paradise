@@ -25,9 +25,13 @@ module Extensions # === LibuiParadise::Extensions
     case i
     when :use_new_area_handler,
          :default
+      # ===================================================================== #
+      # malloc a new area-handled next:
+      # ===================================================================== #
       i = UI::FFI::AreaHandler.malloc
+      i.to_ptr.free = Fiddle::RUBY_FREE # This one is done in upstream LibUI as well.
     end
-    _ = UI.new_area(i)
+    _ = UI.new_area(i) # Our new area, with the given handler.
     add_to_the_registered_widgets(_, __method__)
     return _
   end; self.instance_eval { alias area_handler area } # === LibuiParadise::Extensions.area_handler
