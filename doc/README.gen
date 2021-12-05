@@ -707,7 +707,17 @@ To set new content to it, do:
 
     entry.set_text('foobar') # Make sure it is a String; that seems to work better.
 
+To query the text content of such an entry, you can use the following API,
+if you use the libui_paradise gem:
+
+    entry.text?
+
 To respond to events look at **OnChanged**.
+
+To see an example where the user may input a password entry, have a
+look at the following file:
+
+    libui_paradise/examples/028_password_entry_example.rb
 
 It can be set read only via:
 
