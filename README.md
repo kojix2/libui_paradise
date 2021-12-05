@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">03.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">13:51:58</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">08:19:26</span> o'clock.
 
 ## The libui_paradise project
 
@@ -710,7 +710,17 @@ To set new content to it, do:
 
     entry.set_text('foobar') # Make sure it is a String; that seems to work better.
 
+To query the text content of such an entry, you can use the following API,
+if you use the libui_paradise gem:
+
+    entry.text?
+
 To respond to events look at **OnChanged**.
+
+To see an example where the user may input a password entry, have a
+look at the following file:
+
+    libui_paradise/examples/028_password_entry_example.rb
 
 It can be set read only via:
 
