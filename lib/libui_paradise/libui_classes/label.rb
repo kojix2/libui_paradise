@@ -60,7 +60,7 @@ module Extensions # === LibuiParadise::Extensions
   # This text variant can be styled.
   # ========================================================================= #
   def fancy_text(i = '')
-    _ = UI.new_attributed_string(i.to_s)
+    _ = LibUI.new_attributed_string(i.to_s)
     add_to_the_registered_widgets(_, __method__)
     return _
   end; alias attributed_string fancy_text # === attributed_string
@@ -79,5 +79,12 @@ def self.label(
 end; self.instance_eval { alias text     label } # === LibuiParadise.text
      self.instance_eval { alias ui_text  label } # === LibuiParadise.ui_text
      self.instance_eval { alias ui_label label } # === LibuiParadise.ui_label
+
+# ========================================================================= #
+# === LibuiParadise.string
+# ========================================================================= #
+def self.string(i = '')
+  return LibUI.new_attributed_string(i)
+end
 
 end

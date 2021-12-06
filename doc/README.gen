@@ -745,6 +745,16 @@ The latter uses:
 
     UI.entry_on_changed(text_entry, text_changed_callback, nil)
 
+## LibUI::FFI::DrawTextLayoutParams.malloc
+
+LibUI::FFI::DrawTextLayoutParams.malloc can be used to draw
+coloured text.
+
+    params = UI::FFI::DrawTextLayoutParams.malloc
+    params.to_ptr.free = Fiddle::RUBY_FREE
+
+    params.Align = 'Left' # Use left alignment here.
+
 ## Grids in LibUI
 
 The API is quite complex and hard to remember:
