@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">08:19:26</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">11:10:52</span> o'clock.
 
 ## The libui_paradise project
 
@@ -747,6 +747,16 @@ The Proc object has to be passed into the {} block variation.
 The latter uses:
 
     UI.entry_on_changed(text_entry, text_changed_callback, nil)
+
+## LibUI::FFI::DrawTextLayoutParams.malloc
+
+LibUI::FFI::DrawTextLayoutParams.malloc can be used to draw
+coloured text.
+
+    params = UI::FFI::DrawTextLayoutParams.malloc
+    params.to_ptr.free = Fiddle::RUBY_FREE
+
+    params.Align = 'Left' # Use left alignment here.
 
 ## Grids in LibUI
 

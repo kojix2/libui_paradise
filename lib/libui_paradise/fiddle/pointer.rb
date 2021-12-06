@@ -18,6 +18,15 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === append_this_string
+  #
+  # This method can be used to append a String to an existing String.
+  # ========================================================================= #
+  def append_this_string(i)
+    ::LibUI.attributed_string_append_unattributed(self, i)
+  end
+
+  # ========================================================================= #
   # === on_changed
   #
   # The idea for this method is to respond to on-changed events, in
