@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">11:10:52</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">11.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:36:46</span> o'clock.
 
 ## The libui_paradise project
 
@@ -524,6 +524,20 @@ In LibuiParadise a few custom methods were added, such as
 combo-box to a entry and automatically sync that entry whenever
 the combo box is changed. See the example **007_combo_box_example.rb**
 for how this works.
+
+Or, just as a one-liner example:
+
+    ui_sync_connect(@combo_box, @entry) # widget1, then widget2
+
+This may not always work as you'd expect, so a third argument can
+be passed (the array that populates the combo-box).
+
+So:
+
+    ui_sync_connect(@combo_box, @entry, @array_here)
+
+There are probably more elegant ways to solve this, but I only
+wanted to solve this quickly and move on.
 
 The **source code** to the combo-box in libui, at the least
 for UNIX/Linux, can be seen here:

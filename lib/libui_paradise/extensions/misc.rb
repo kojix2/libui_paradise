@@ -14,6 +14,31 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === ui_sync_connect
+  #
+  # This method can connect two widgets: the first one should be a
+  # combo-box, and the second one a ui-entry.
+  # ========================================================================= #
+  def ui_sync_connect(
+      widget1,
+      widget2,
+      optional_array = nil
+    )
+    combobox_selected_callback = proc { |pointer|
+      selected_value = selected?(pointer)
+      if optional_array and optional_array.is_a?(Array)
+        selected_value = optional_array[selected_value.to_i]
+      end
+      widget2.set_text(
+        selected_value
+      )
+    }
+    ::LibUI.combobox_on_selected(
+      widget1, combobox_selected_callback, nil
+    )
+  end; alias sync_connect ui_sync_connect # === sync_connect
+
+  # ========================================================================= #
   # === colour_to_rgb
   # ========================================================================= #
   def colour_to_rgb(colour = :steelblue)
@@ -97,25 +122,6 @@ module Extensions # === LibuiParadise::Extensions
   def is_on_roebe?
     ENV['IS_ROEBE'].to_s == '1'
   end
-
-  # ========================================================================= #
-  # === ui_sync_connect
-  #
-  # This method can connect two widgets: the first one should be a
-  # combo-box, and the second one a ui-entry.
-  # ========================================================================= #
-  def ui_sync_connect(
-      widget1, widget2
-    )
-    combobox_selected_callback = proc { |pointer|
-      widget2.set_text(
-        selected?(pointer)
-      )
-    }
-    UI.combobox_on_selected(
-      widget1, combobox_selected_callback, nil
-    )
-  end; alias sync_connect ui_sync_connect # === sync_connect
 
   # ========================================================================= #
   # === try_to_parse_this_config_file
