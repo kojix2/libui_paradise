@@ -38,7 +38,7 @@ module Extensions # === LibuiParadise::Extensions
   # certain as to why.
   # ========================================================================= #
   def selected?(pointer)
-    UI.combobox_selected(pointer).to_s
+    ::LibUI.combobox_selected(pointer).to_s
   end
 
   # ========================================================================= #
@@ -54,5 +54,6 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_combo_box    combobox # === ui_combo_box
        alias ui_combobox     combobox # === ui_combobox
        alias combo_box_entry combobox # === combo_box_entry
+       alias libui_combo_box combobox # === libui_combo_box
 
 end; end

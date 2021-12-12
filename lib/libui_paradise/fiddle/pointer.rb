@@ -4,8 +4,8 @@
 # =========================================================================== #
 # === Fiddle::Pointer
 #
-# Modify Fiddle::Pointer - but this is super-specific to Libui, so it
-# is really not recommended to do this.
+# Modify Fiddle::Pointer - but this is super-specific to Libui, so it is
+# really not recommended to do this.
 #
 # A cleaner solution would be to modify just in-place, such as via
 # refinements, but I don't like the syntax of refinements really,
@@ -16,6 +16,47 @@
 module Fiddle
 
 class Pointer # === Fiddle::Pointer
+
+  # ========================================================================= #
+  # === append                                          (append tag, add tag)
+  #
+  # This is simply a wrapper over UI.box_append().
+  # ========================================================================= #
+  def append(
+      this_widget,
+      padding_to_use = 1
+    )
+    current_widget = available_pointers?[self.object_id] # This will be an Array.
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :tab
+    #
+    # This is specifically for the notebook-tab. In this case the argument
+    # names do not make a lot of sense. For instance, this_widget is
+    # actually the text-title for the tab, and padding_to_use is the
+    # actual widget that will be embedded. Because this is, however had,
+    # the "minor use case", compared to the subsequent "else" clause, I
+    # will keep the name as-is. The comment here should be kept, in order
+    # to explain this peculiar oddity though.
+    # ======================================================================= #
+    when :tab
+      UI.tab_append(self, this_widget.to_s, padding_to_use)
+    # ======================================================================= #
+    # === :window
+    #
+    # Add support for the toplevel window here, as of September 2021.
+    # ======================================================================= #
+    when :window
+      UI.window_set_child(self, this_widget)
+    else # This is the default.
+      UI.box_append(
+        self, this_widget, padding_to_use
+      )
+    end
+  end; alias add append # === add
+       alias <<  append # === <<
 
   # ========================================================================= #
   # === append_this_string
@@ -192,47 +233,6 @@ class Pointer # === Fiddle::Pointer
       e 'Not registered type in .enable(): '+type.to_s
     end
   end
-
-  # ========================================================================= #
-  # === append                                          (append tag, add tag)
-  #
-  # This is simply a wrapper over UI.box_append().
-  # ========================================================================= #
-  def append(
-      this_widget,
-      padding_to_use = 1
-    )
-    current_widget = available_pointers?[self.object_id] # This will be an Array.
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :tab
-    #
-    # This is specifically for the notebook-tab. In this case the argument
-    # names do not make a lot of sense. For instance, this_widget is
-    # actually the text-title for the tab, and padding_to_use is the
-    # actual widget that will be embedded. Because this is, however had,
-    # the "minor use case", compared to the subsequent "else" clause, I
-    # will keep the name as-is. The comment here should be kept, in order
-    # to explain this peculiar oddity though.
-    # ======================================================================= #
-    when :tab
-      UI.tab_append(self, this_widget.to_s, padding_to_use)
-    # ======================================================================= #
-    # === :window
-    #
-    # Add support for the toplevel window here, as of September 2021.
-    # ======================================================================= #
-    when :window
-      UI.window_set_child(self, this_widget)
-    else # This is the default.
-      UI.box_append(
-        self, this_widget, padding_to_use
-      )
-    end
-  end; alias add append # === add
-       alias <<  append # === <<
 
   # ========================================================================= #
   # === set_text
