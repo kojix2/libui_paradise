@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">11.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:36:46</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">25.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">13:09:27</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1666,6 +1666,10 @@ This may look like so on Linux:
 
     LibUI.new_non_wrapping_multiline_entry
 
+If you want to make it read only then you can use an API like this:
+
+    LibUI.multiline_entry_set_read_only(text, 1)
+
 ## Coloured box examples
 
 Since as of November 2021 you can use the libui_paradise gem to
@@ -1680,9 +1684,9 @@ The API for this goes like so:
 
 ## Attributed Strings in LibUI
 
-An AttributedString is a string which also contains information
-about styles such as text color, font, font size. It can be drawn
-in a UiArea element.
+An **AttributedString** is a string that contains information
+about specific styles, such as text color, font, font size. It can be
+drawn in a **UiArea element**.
 
 Various ways to style such an attributed String is possible.
 

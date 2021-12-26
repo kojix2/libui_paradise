@@ -14,6 +14,25 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === delete_file
+  # ========================================================================= #
+  def delete_file(i)
+    if File.file?(i)
+      File.delete(i)
+    else
+      puts 'Not a file: '+i.to_s
+    end
+  end
+
+  # ========================================================================= #
+  # === copy
+  # ========================================================================= #
+  def copy(from, to)
+    require 'fileutils'
+    FileUtils.cp(from, to)
+  end
+
+  # ========================================================================= #
   # === ui_sync_connect
   #
   # This method can connect two widgets: the first one should be a

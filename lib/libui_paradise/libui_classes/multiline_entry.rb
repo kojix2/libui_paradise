@@ -2,6 +2,11 @@
 # Encoding: UTF-8
 # frozen_string_literal: true
 # =========================================================================== #
+# Upstream code for the linux-variant can be found here:
+#
+#   https://raw.githubusercontent.com/andlabs/libui/master/unix/multilineentry.c
+#
+# =========================================================================== #
 # require 'libui_paradise/libui_classes/multiline_entry.rb
 # =========================================================================== #
 module LibuiParadise
