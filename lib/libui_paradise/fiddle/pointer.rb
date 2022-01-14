@@ -18,6 +18,108 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === text?
+  #
+  # This method queries the content of any widget that may contain text, in
+  # particular entries such as a gtk-entry.
+  # ========================================================================= #
+  def text?(
+      type = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    if type.nil?
+      # ===================================================================== #
+      # In this case we must determine the type in use.
+      # ===================================================================== #
+      if hash.has_key? object_id
+        type = hash[object_id].last # The last entry contains the type.
+      end
+    end
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    #
+    # This is, I believe, synonymous to :textview.
+    # ======================================================================= #
+    when :multiline_entry,
+         :textview
+      return LibUI.multiline_entry_text(self).to_s
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      return LibUI.combobox_selected(self).to_s
+    else # This is the "historic" default. May have to be removed one day.
+      return LibUI.entry_text(self).to_s
+    end
+  end; alias buffer?   text? # === buffer?
+       alias selected? text? # === selected?
+
+  # ========================================================================= #
+  # === on_changed
+  #
+  # The idea for this method is to respond to on-changed events, in
+  # particular on a spinbox. Currently it is enabled only for :entry
+  # widgets. This may have to be expanded one day to add more widgets.
+  #
+  # For a combobox we may have to use this code:
+  #
+  #   LibUI.combobox_on_selected
+  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
+  #   end
+  #
+  # Be sure to pass the proc object into the method, in a block.
+  #
+  # Usage examples:
+  #
+  #   text_entry.on_changed { text_changed_callback }
+  #   slider.on_changed { slider_changed_callback }
+  #
+  # ========================================================================= #
+  def on_changed(&block)
+    current_widget = available_pointers?[self.object_id] # This will be an Array.
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      LibUI.entry_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :spinbox
+    # ======================================================================= #
+    when :spinbox
+      LibUI.spinbox_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :slider
+    #
+    # This is for a slider bar.
+    # ======================================================================= #
+    when :slider
+      LibUI.slider_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :colour_button
+    # ======================================================================= #
+    when :colour_button
+      LibUI.color_button_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      LibUI.combobox_on_selected(self, block.call, nil)
+    else
+      e 'Not registered type in .on_changed(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
   # === append                                          (append tag, add tag)
   #
   # This is simply a wrapper over UI.box_append().
@@ -65,64 +167,6 @@ class Pointer # === Fiddle::Pointer
   # ========================================================================= #
   def append_this_string(i)
     ::LibUI.attributed_string_append_unattributed(self, i)
-  end
-
-  # ========================================================================= #
-  # === on_changed
-  #
-  # The idea for this method is to respond to on-changed events, in
-  # particular on a spinbox. Currently it is enabled only for :entry
-  # widgets. This may have to be expanded one day to add more widgets.
-  #
-  # For a combobox we may have to use this code:
-  #
-  #   LibUI.combobox_on_selected
-  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
-  #   end
-  #
-  # Be sure to pass the proc object into the method, in a block.
-  #
-  # Usage examples:
-  #
-  #   text_entry.on_changed { text_changed_callback }
-  #   slider.on_changed { slider_changed_callback }
-  #
-  # ========================================================================= #
-  def on_changed(&block)
-    current_widget = available_pointers?[self.object_id] # This will be an Array.
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :spinbox
-    # ======================================================================= #
-    when :spinbox
-      LibUI.spinbox_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :slider
-    #
-    # This is for a slider bar.
-    # ======================================================================= #
-    when :slider
-      LibUI.slider_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :colour_button
-    # ======================================================================= #
-    when :colour_button
-      LibUI.color_button_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      LibUI.entry_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :combobox
-    # ======================================================================= #
-    when :combobox
-      LibUI.combobox_on_selected(self, block.call, nil)
-    else
-      e 'Not registered type in .on_changed(): '+type.to_s
-    end
   end
 
   # ========================================================================= #
@@ -286,39 +330,6 @@ class Pointer # === Fiddle::Pointer
     # else;  puts 'Unhandled case so far: '+type.to_s
     end
   end; alias set_content set_text # === set_content
-
-  # ========================================================================= #
-  # === text?
-  # ========================================================================= #
-  def text?(
-      type = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    if type.nil?
-      # ===================================================================== #
-      # In this case we must determine the type in use.
-      # ===================================================================== #
-      if hash.has_key? object_id
-        type = hash[object_id].last # The last entry contains the type.
-      end
-    end
-    case type
-    # ======================================================================= #
-    # === :textview
-    # ======================================================================= #
-    when :textview
-      return UI.multiline_entry_text(self).to_s
-    # ======================================================================= #
-    # === :combobox
-    # ======================================================================= #
-    when :combobox
-      return UI.combobox_selected(self).to_s
-    else # This is the "historic" default. May have to be removed one day.
-      return UI.entry_text(self).to_s
-    end
-  end; alias buffer?   text? # === buffer?
-       alias selected? text? # === selected?
 
   # ========================================================================= #
   # === @left_counter
@@ -870,5 +881,9 @@ class Pointer # === Fiddle::Pointer
     alias use_this_font=    try_to_use_this_font
     alias set_use_this_font try_to_use_this_font
   def horizontal_center; end
+  def light_green_background; end
+  def center; end
+  def align_to_center; end
+  def make_selectable; end
 
 end; end

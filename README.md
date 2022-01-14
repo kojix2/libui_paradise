@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">25.12.2021</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">13:09:27</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">14.01.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">03:49:07</span> o'clock.
 
 ## The libui_paradise project
 
@@ -892,11 +892,15 @@ of the window will be **bar.rb**.
 
 ## Entry
 
-An entry can be set read only (readOnly: Boolean, aka true or false).
-
 An entry in libui may look like this:
 
 <img src="https://raw.githubusercontent.com/parro-it/libui-node/master/docs/media/UiEntry.png" style="margin-left:1em">
+
+Such an entry can be set to be **read only** (readOnly: Boolean, aka true or false).
+
+The upstream C code for libui-entry, for **unix/**, can be seen here:
+
+https://github.com/andlabs/libui/blob/master/unix/entry.c
 
 ## Borderless windows
 
@@ -1319,7 +1323,12 @@ IMO.
 - May look like utter crap ... :-)
 - Some functionality is missing, such as a scrolled-window for every widget.
 - No way to use different fonts in the same application and choosing a font
-is needlessly complicated.
+is needlessly complicated. (This may not be completely correct, though -
+the glimmer-dsl-libui has example that seem to work. But if you ask me
+right now in 2021 how this works via a standalone example then I can
+happily tell you I have absolutely no idea. Which brings me to the
+next problem...)
+- Lack of documentation. This part is REALLY annoying ...
 
 Some more disadvantages relate to Fiddle::Pointer. You kind of need to
 know C fairly well as well as the GC in ruby, in order to understand
@@ -1632,12 +1641,21 @@ Available "**new**"-widgets in LibUI:
     LibUI.new_scrolling_area                       # this is a scrolling area
     LibUI.new_vertical_separator
     LibUI.new_font_button
-    LibUI.new_search_entry                         # this is a search entry
     LibUI.new_weight_attribute
     LibUI.new_form                                 # this is a form
     LibUI.new_size_attribute
     LibUI.new_window
     LibUI.new_slider                               # this is a slider
+
+## A search entry in LibUI
+
+The API is:
+
+    LibUI.new_search_entry # this is a search entry
+
+How does this look? The following image shows this:
+
+<img src="https://i.imgur.com/AueDc7l.png" style="margin: 1em">
 
 ## The slider widget
 

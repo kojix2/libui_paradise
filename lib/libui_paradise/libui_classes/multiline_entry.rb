@@ -33,6 +33,7 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_textview        multiline_entry } # === LibuiParadise::Extensions.ui_textview
        self.instance_eval { alias ui_text_buffer     multiline_entry } # === LibuiParadise::Extensions.ui_text_buffer
        self.instance_eval { alias input_field        multiline_entry } # === LibuiParadise::Extensions.input_field
+       self.instance_eval { alias input              multiline_entry } # === LibuiParadise::Extensions.input
 
   # ========================================================================= #
   # === multiline_entry
@@ -46,6 +47,7 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_textview        multiline_entry # === ui_textview
        alias ui_text_buffer     multiline_entry # === ui_text_buffer
        alias input_field        multiline_entry # === input_field
+       alias input              multiline_entry # === input
 
 end
 

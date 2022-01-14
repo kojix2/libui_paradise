@@ -26,10 +26,10 @@ save_menu_item_clicked = proc {
 menu = UI.new_menu('File')
 open_menu_item = UI.menu_append_item(menu, 'Open')
 UI.menu_item_on_clicked(open_menu_item, open_menu_item_clicked, nil)
-save_menu_item = UI.menu_append_item(menu, 'Save')
-UI.menu_item_on_clicked(save_menu_item, save_menu_item_clicked, nil)
-UI.menu_append_quit_item(menu)
-UI.on_should_quit(should_quit, nil)
+save_menu_item = LibUI.menu_append_item(menu, 'Save')
+LibUI.menu_item_on_clicked(save_menu_item, save_menu_item_clicked, nil)
+LibUI.menu_append_quit_item(menu)
+LibUI.on_should_quit(should_quit, nil)
 
 # =========================================================================== #
 # Create the 'Edit' menu
@@ -119,25 +119,25 @@ slider_changed_callback = proc { |ptr|
 UI.slider_on_changed(slider, slider_changed_callback, nil)
 UI.box_append(inner, slider, 0)
 
-progressbar = UI.new_progress_bar
-UI.box_append(inner, progressbar, 0)
+progressbar = LibUI.new_progress_bar
+LibUI.box_append(inner, progressbar, 0)
 
-group = UI.new_group('Lists')
-UI.group_set_margined(group, 1)
-UI.box_append(inner2, group, 0)
+group = LibUI.new_group('Lists')
+LibUI.group_set_margined(group, 1)
+LibUI.box_append(inner2, group, 0)
 
 inner = ui_padded_vbox
-UI.group_set_child(group, inner)
+LibUI.group_set_child(group, inner)
 
 combobox_selected_callback = proc { |ptr|
-  puts "New combobox selection: #{UI.combobox_selected(ptr)}"
+  puts "New combobox selection: #{LibUI.combobox_selected(ptr)}"
 }
 cbox = ui_combobox
-UI.combobox_append(cbox, 'combobox Item 1')
-UI.combobox_append(cbox, 'combobox Item 2')
-UI.combobox_append(cbox, 'combobox Item 3')
+LibUI.combobox_append(cbox, 'combobox Item 1')
+LibUI.combobox_append(cbox, 'combobox Item 2')
+LibUI.combobox_append(cbox, 'combobox Item 3')
 inner.add(cbox, 0)
-UI.combobox_on_selected(cbox, combobox_selected_callback, nil)
+LibUI.combobox_on_selected(cbox, combobox_selected_callback, nil)
 
 # Show an editable combobox next:
 ebox = ui_editable_combo_box

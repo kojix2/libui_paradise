@@ -17,7 +17,7 @@ module Extensions # === LibuiParadise::Extensions
   # === LibuiParadise::Extensions.new_progress_bar
   # ========================================================================= #
   def self.new_progress_bar
-    _ = LibUI.new_progress_bar
+    _ = ::LibUI.new_progress_bar
     add_to_the_registered_widgets(_, __method__)
     return _
   end

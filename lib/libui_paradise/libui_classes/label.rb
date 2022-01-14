@@ -55,6 +55,13 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
+  # === bold_text_left_aligned
+  # ========================================================================= #
+  def bold_text_left_aligned(i = '')
+    return label(i)
+  end
+
+  # ========================================================================= #
   # === fancy_text
   #
   # This text variant can be styled.
@@ -85,6 +92,6 @@ end; self.instance_eval { alias text     label } # === LibuiParadise.text
 # ========================================================================= #
 def self.string(i = '')
   return LibUI.new_attributed_string(i)
-end
+end; self.instance_eval { alias fancy_text string } # === LibuiParadise.fancy_text
 
 end
