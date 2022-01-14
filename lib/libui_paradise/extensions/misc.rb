@@ -523,6 +523,20 @@ module Extensions # === LibuiParadise::Extensions
     return box
   end
 
+  # ========================================================================= #
+  # === set_commandline_arguments
+  # ========================================================================= #
+  def set_commandline_arguments(i = ARGV)
+    @commandline_arguments = [i].flatten.compact
+  end
+
+  # ========================================================================= #
+  # === commandline_arguments?
+  # ========================================================================= #
+  def commandline_arguments?
+    @commandline_arguments
+  end
+
 end
 
 # =========================================================================== #

@@ -14,6 +14,9 @@ outer_vbox = ui_padded_vbox
 spinbutton = ui_spinbutton(0, 100)
 spinbutton.set_value(42)
 
+# =========================================================================== #
+# Add the on-spin event next:
+# =========================================================================== #
 spinbox_changed_callback = proc { |pointer|
   # ========================================================================= #
   # Notify the user that the spinbox-value has changed.

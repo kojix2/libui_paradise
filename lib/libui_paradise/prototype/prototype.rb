@@ -12,10 +12,13 @@ module LibUI
 
 class Prototype # === Foobar::GUI::LibUI::Prototype
 
+  alias e puts
+
   require 'libui_paradise'
   include LibuiParadise::Extensions
 
-  alias e puts
+  # require 'bioroebe/gui/shared_code/levensthein_distance/levensthein_distance_module.rb'
+  # include Bioroebe::GUI::LevenstheinDistanceModule
 
   # ========================================================================= #
   # === TITLE
@@ -55,12 +58,7 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
   # === run
   # ========================================================================= #
   def run
-    window = ui_padded_main_window(
-      title?,
-      width?,
-      height?,
-      0
-    )
+    window = ui_padded_main_window(title?, width?, height?, 0)
     outer_vbox = padded_vbox
     # ======================================================================= #
     # First add the two buttons on top:

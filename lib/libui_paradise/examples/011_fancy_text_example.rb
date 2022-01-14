@@ -7,28 +7,41 @@
 require 'libui_paradise/autoinclude'
 
 # =========================================================================== #
+# === USE_THIS_FONT
+# =========================================================================== #
+USE_THIS_FONT = 'Hack' # Or 'Courier New'.
+
+# =========================================================================== #
 # === append_with_attribute
 # =========================================================================== #
 def append_with_attribute(attr_str, what, attr1, attr2)
-  start_pos = UI.attributed_string_len(attr_str)
+  start_pos = LibUI.attributed_string_len(attr_str)
   end_pos = start_pos + what.length
-  UI.attributed_string_append_unattributed(attr_str, what)
-  UI.attributed_string_set_attribute(attr_str, attr1, start_pos, end_pos)
-  UI.attributed_string_set_attribute(attr_str, attr2, start_pos, end_pos) if attr2
+  LibUI.attributed_string_append_unattributed(attr_str, what)
+  LibUI.attributed_string_set_attribute(attr_str, attr1, start_pos, end_pos)
+  LibUI.attributed_string_set_attribute(attr_str, attr2, start_pos, end_pos) if attr2
 end
 
+# =========================================================================== #
+# === make_attribute_string
+#
+# Create a new attributed string.
+# =========================================================================== #
 def make_attribute_string
   attr_str = LibuiParadise.string(
     "Drawing strings with libui is done with the uiAttributedString and uiDrawTextLayout objects.\n" \
      'uiAttributedString lets you have a variety of attributes: '
   )
 
-  attr1 = UI.new_family_attribute('Courier New')
+  attr1 = UI.new_family_attribute(USE_THIS_FONT)
   append_with_attribute(attr_str, 'font family', attr1, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
-  attr1 = UI.new_size_attribute(18)
-  append_with_attribute(attr_str, 'font size', attr1, nil)
+  # ========================================================================= #
+  # === Use a bigger font next
+  # ========================================================================= #
+  bigger_font = UI.new_size_attribute(35)
+  append_with_attribute(attr_str, 'font size', bigger_font, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
   attr1 = UI.new_weight_attribute(UI::TextWeightBold)
@@ -134,19 +147,22 @@ handler.MouseCrossed = do_nothing
 handler.DragBroken   = do_nothing
 handler.KeyEvent     = key_event
 
-UI.on_should_quit do
+UI.on_should_quit {
   UI.control_destroy(main_window)
-end
+}
 
+# =========================================================================== #
+# Assign to the main attributed string next.
+# =========================================================================== #
 @attr_str = make_attribute_string
 
 main_window = UI.new_window('Text-Drawing Example', 640, 480, 1)
 UI.window_set_margined(main_window, 1)
-UI.window_on_closing(main_window) do
+UI.window_on_closing(main_window) {
   UI.control_destroy(main_window)
   UI.quit
   0
-end
+}
 
 hbox = UI.new_horizontal_box
 UI.box_set_padded(hbox, 1)
