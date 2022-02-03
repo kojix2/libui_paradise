@@ -10,6 +10,8 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === @hash_fiddle_pointer_widgets
+  #
+  # This hash will contain all widgets, via pointer.
   # ========================================================================= #
   @hash_fiddle_pointer_widgets = {}
 
@@ -22,6 +24,8 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === main_hash?
+  #
+  # Access the main hash defined above.
   # ========================================================================= #
   def main_hash?
     ::LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
@@ -32,29 +36,36 @@ module Extensions # === LibuiParadise::Extensions
   #
   # This method registers the particular widget in use.
   #
-  # Every new_* method available on UI.new* - actually on LibUI.new* -
-  # that creates a new widget has to be registered via this method here,
-  # by calling it. That way we have a main Hash that contains lots of
-  # Fiddle::Pointers and we can, at a later time, modify these
-  # Fiddle::Pointer or call toplevel methods with these registered
-  # pointers. This will only work if we have registered these pointers,
-  # though, which is why each method that creates a new libui-widget
-  # has to make use of this method here.
+  # Every new_* method available via LibUI.new* that creates a new widget
+  # has to be registered via this method here, by calling it.
+  #
+  # That way we have a main Hash that contains lots of Fiddle::Pointers
+  # and we can, at a later time, modify these Fiddle::Pointer or call
+  # toplevel methods with these registered pointers. This will only work
+  # if we have registered these pointers, though, which is why each
+  # method that creates a new libui-widget has to make use of this
+  # method here.
   #
   # The only exception to the above rule is the main window. The
   # main window is always stored in the @main_window variable instead.
-  # Perhaps it should also use the method here, but I found it simpler
-  # to just refer to it via @main_window. (Note that in future releases
-  # of the libui_paradise gem, @main_window will probably be removed
-  # and integrated just like any other libui-widget.)
   #
-  # The mandatory entries given to this method must be:
+  # Perhaps it should also use the method here, but I found it simpler
+  # to just refer to it via @main_window or main_window?. (Note that
+  # in future releases of the libui_paradise gem, @main_window will
+  # probably be removed and integrated just like any other
+  # libui-widget. But this has not been done yet, so it is retained
+  # as-is right now.)
+  #
+  # The mandatory entries given to this method must be of the
+  # following format:
   #
   #   object_id -> [:the_fiddle_pointer_widget, :the_type]
   #
-  # The object_id will be determined automatically, so it can be
-  # omitted. It is the value that is returned by calling
-  # .object_id.
+  # In other words, a key, and an Array as its value.
+  #
+  # The object_id will be determined automatically, so it can
+  # be omitted. It is the value that is simply returned by
+  # calling the .object_id method.
   #
   # The very last argument of the two-member Array should be a
   # symbol, such as :grid. This is automatically ensured via a
@@ -66,9 +77,12 @@ module Extensions # === LibuiParadise::Extensions
       the_fiddle_pointer_widget,
       the_type_of_the_widget = nil
     )
+    # ======================================================================= #
+    # Determine the object-id automatically next:
+    # ======================================================================= #
     object_id_to_use = the_fiddle_pointer_widget.object_id
     # ======================================================================= #
-    # Next, store it on the main Hash.
+    # Then, store it on the main Hash.
     # ======================================================================= #
     @hash_fiddle_pointer_widgets[object_id_to_use] =
       [

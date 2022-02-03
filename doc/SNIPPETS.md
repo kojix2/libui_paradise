@@ -1,9 +1,3 @@
-
-# How to instantiate libui:
-
-  UI = LibUI
-  init = UI.init
-
 # How to add a new main window:
                                              # width, height, hasMenubar
   main_window = UI.new_window('hello world', 300, 200, 1)
@@ -27,21 +21,10 @@
   # Or simpler:
   close_properly(main_window)
 
-# How to properly close via LibuiExtensions:
-
-  main_window = UI.window('Notepad', 500, 300, 1)
-  UI.close_properly(main_window)
-  # Or simpler:
-  close_properly(main_window)
-
 # Add the window to the main UI:
 
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
-
-# Set the padding on a grid:
-
-  UI.grid_set_padded(grid, 25)
 
 # Attach a new widget onto the grid:
 
@@ -60,12 +43,6 @@
     UI.exit_from(main_window)
   }
 
-# Create an attributed String:
-
-  string = UI.new_attributed_string
-  attributes = UI.new_family_attribute("Courier New 30")
-  attribute = UI.new_color_attribute(0.75, 0.25, 0.5, 0.75)
-  UI.append_with_attribute("text color", attribute, nil)
 
 # How to set a padded box:
 
@@ -80,11 +57,6 @@
     0: Left
     1: Top
     2: Right
-
-# Create a message-box and an error message box:
-
-  UI.msg_box(main_window, 'Information', 'You clicked the button')
-  UI.msg_box_error(main_window, 'Information', 'You clicked the button')
 
 # Add a checkbox (checkbox tag, checkbutton)
 
@@ -124,10 +96,6 @@
   text1 = UI.entry_text(entry1) # Obtain text. You may have to call .to_s on it, to guarantee the String.
   UI.multiline_entry_text # Obtain the text from a multiline entry.
 
-# Putting the text-entry into a hbox:
-
-  UI.box_append(hbox1, text_entry, 1)
-
 # Create a combobox (combo tag, combobox tag):
 
   combobox_selected_callback = proc { |ptr|
@@ -153,9 +121,7 @@
 
   UI.append() # .append() adds the named item to the end of the EditableCombobox.
 
-# How to run the main loop:
 
-  UI.main
 
 # How to quit:
 
@@ -165,10 +131,6 @@
 
   help_menu = UI.new_menu('Help')
   version_item = UI.menu_append_item(help_menu, 'Version')
-
-# Create a new image:
-
-  image = UI.new_image(width, height)
 
 # Fonts and LibUI:
 

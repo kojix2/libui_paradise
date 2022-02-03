@@ -16,6 +16,8 @@ module LibuiParadise
 
   # ========================================================================= #
   # === LibuiParadise.project_base_dir?
+  #
+  # Preferentially use this method rather than the constant above directly.
   # ========================================================================= #
   def self.project_base_dir?
     PROJECT_BASE_DIRECTORY

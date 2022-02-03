@@ -375,17 +375,17 @@ opening local files is a very common task in most GUIs. A
 single method probably should suffice for using such a
 specialized button.
 
-## How to quit from a ruby-libui widget
+## How to properly quit from a ruby-libui widget
 
 I found that:
 
-    UI.quit
+    LibUI.quit
 
 Works best overall. And seems to suffice as well.
 
 There are some other calls, such as destroy-control and similar
 actions, which are probably clean-up related - but by and large
-**UI.quit** seems to be the main part how to exit from a
+**LibUI.quit** seems to be the main part how to exit from a
 libui-application.
 
 I document this here in the event that I forget it in a few
@@ -401,6 +401,27 @@ following:
 
     a_quit_button = ui_quit_button(text: 'Open a local file') # That text description would be confusing though
     a_quit_button = ui_quit_button(text: 'Exit the application') # Much better now! \o/
+
+So, as a reminder:
+
+    main_window = LibUI.window('Notepad', 500, 300, 1)
+    LibUI.close_properly(main_window)
+    # Or simpler:
+    close_properly(main_window)
+
+# How to instantiate libui:
+
+    UI = LibUI
+    init = UI.init
+
+Or just:
+
+    LibUI.init
+
+Since as of 2022 I prefer the longer variant, e. g. **LibUI**init. The
+old UI constant ("alias") will be retained, but new code added to the
+libui_paradise gem will not use **UI** - instead the slightly longer
+**LibUI** is used.
 
 ## UI.new_button()
 
@@ -494,16 +515,30 @@ label / ui_text widget.
 
 ## Working with combo-boxes
 
-To create a combo-box, do:
+To create a combo-box in vanilla libui, do this:
+
+    alignment = LibUI.new_combobox
+    LibUI.combobox_append(alignment, 'Left')
+    LibUI.combobox_append(alignment, 'Center')
+    LibUI.combobox_append(alignment, 'Right')
+    LibUI.combobox_set_selected(alignment, 0)
+    LibUI.combobox_on_selected(alignment) { on_combobox_selected(@area) }
+
+This is a bit cumbersome, so if you use libui_paradise this
+can be simplified a bit.
+
+To create a combo-box do:
 
     combo_box = ui_combo_box
 
 You can fill it with an array of entries **on creation-time** via:
 
     combo_box = ui_combo_box([1,2,3,4]) # simply pass your Array here
+    combo_box = ui_combobox(%w( Left Center Right )) # three members of this Array
 
 This will also focus (aka **select**) on the very first element
-when doing so.
+when doing so by default, so you can get rid of 4-5 lines of 
+code. How fancy! \o/
 
 If you need to do so manually, and focus on another element,
 for example, then you can use the following toplevel method:
@@ -544,12 +579,13 @@ https://github.com/andlabs/libui/blob/master/unix/combobox.c
 ## Error messages and ui_error_message
 
 In LibUI respectively ruby-libui you can display error messages
-via a popup window.
+via a popup window. These are also called **message-box** and
+**error message box**, respectively.
 
 The API is something like this:
 
-    UI.msg_box(main_window, 'Information', 'You clicked the button')
-    UI.msg_box_error(main_window, 'Information', 'You clicked the button')
+    LibUI.msg_box(main_window, 'Information', 'You clicked the button')
+    LibUI.msg_box_error(main_window, 'Information', 'You clicked the button')
 
 The first line shows a normal message box; the second line shows how to
 use a message box specifically 'adapted' for displaying errors to the
@@ -837,6 +873,10 @@ bug or a feature really, but this was quite hilarious to see.
 In the event that I may forget this, I'll keep this here as
 a reference.
 
+If you want to pad the grid you can use the following method:
+
+    LibUI.grid_set_padded(grid, 25)
+
 ## Margins in LibUI
 
 The **margin** property specifies if the window content should have a
@@ -1108,7 +1148,9 @@ Fiddle::Pointer ... :)
 --------------------------------------------------------------------------------
 ## SNIPPETS.md
 
-Next, the content of the file called **SNIPPETS.md** will be shown.
+Next, the content of the file called **SNIPPETS.md** will be shown. Note
+that this file will eventually be integreated into this file, and then
+subsequently removed one day.
 
 EMBED_THIS_FILE /home/x/programming/ruby/src/libui_paradise/doc/SNIPPETS.md
 
@@ -1184,10 +1226,11 @@ really is.
 
 ## Width and Height of the main window
 
-Different computers have different display values (their monitor).
+Different computers / monitors have different display values
+(their monitor).
 
-I use a wide-screen LCD monitor, but I also have smaller laptops,
-and I want libui to work there just as well.
+I use a wide-screen LCD monitor, but I also have a smaller laptop,
+and I want **libui** to work there just as well.
 
 The following API can be used to set the width and height of the
 main window:
@@ -1197,7 +1240,7 @@ main window:
 
 You can also use something like '95%' as input. In that case the
 desired value will be calculated depending on the max-resolution
-of the current display. This presently only works on linux; if
+of the current display. This presently only works on **linux**; if
 someone knows how to make this work on windows and Mac OSX let
 me know. (On these systems it will instead default to a hardcoded
 value of 1024 for width and 800 for height).
@@ -1209,7 +1252,7 @@ The following example shows how to use a percentage value:
 ## Coloured Text
 
 At this point I only show how this may look on Win7, re-using
-the picture the kotlin-libui developers made available:
+the picture the **kotlin-libui developers** made available:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/drawtext/drawtext-windows7.png" style="margin-left: 2em">
 
@@ -1288,9 +1331,29 @@ to libui, be it in kotlin, python, ruby and so forth.
 
 ## DateTime Widget
 
-Only an image is shown how it may look on windows:
+Let's start with an image to show how the date-time picker may look
+on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
+
+The basic API is this:
+
+    LibUI.date_time_picker_time
+
+Or rather:
+
+    date_time_picker = LibUI.new_date_time_picker
+    time = LibUI::FFI::TM.malloc
+    LibUI.date_time_picker_on_changed(date_time_picker) {
+      LibUI.date_time_picker_time(date_time_picker, time)
+    }
+
+Modify this to suit your needs as-is.
+
+I tested this in **February 2022** on Linux. The next screenshot
+shows how this may look (on icewm):
+
+<img src="https://i.imgur.com/Jdbf6Jc.png" style="margin: 1em">
 
 ## radio-buttons in LibUI
 
@@ -1470,6 +1533,20 @@ How does this look? The following image shows this:
 
 <img src="https://i.imgur.com/AueDc7l.png" style="margin: 1em">
 
+## Creating a new image in LibUI:
+
+Use the following API for this:
+
+    image = LibUI.new_image(width, height)
+
+## Horizontal boxes
+
+A HBox represents a horizontal box. The API for putting 
+something into a hbox goes as follows, such as when you
+wish to put a text-entry into the hbox:
+
+    LibUI.box_append(hbox1, text_entry, 1)
+
 ## The slider widget
 
 If you use the LibuiParadise gem then you can create and use a new slider
@@ -1538,7 +1615,51 @@ For instance, the text-weight part accepts these values
     maximum
     # or  any number between minimum and maximum
 
-# Links related to libui or libui-based projects
+To create an attributed String you can use the following API:
+
+    string = LibUI.new_attributed_string
+    attributes = LibUI.new_family_attribute("Courier New 30") # Specify a certain font.
+    attribute = LibUI.new_color_attribute(0.75, 0.25, 0.5, 0.75) # And a certain colour.
+    LibUI.append_with_attribute("text color", attribute, nil)
+
+## How to run the main loop in libui
+
+    LibUI.main
+
+## Examples distributed in the libui_paradise gem
+
+In February 2022 the examples directory was re-arranged. There are now two
+different directories, called simple/ and complex/.
+
+Files in the simple/ directory may only use code that is made available
+via kojix2' libui bindings.
+
+Files in the complex/ directory may tap into code made available by the
+libui_paradise gem.
+
+This re-arrangement was done because some of the old examples were no
+longer working, and it was messy to try to find out whether there was
+a bug in the libui bindings, or whether I messed up. That way I can 
+now focus on the complex/ examples to showcase what libui_paradise
+can do, whereas the simple/ directory will show how you can work with
+"vanilla" libui in general.
+
+## Setting the title, width and height of a widget
+
+The libui_paradise gem comes with methods such as
+.set_title(), .set_width() and .set_height().
+
+This is a bit cumbersome to use as you need at the least
+three lines of code normally, as well as the constants.
+So the following compound method was added in February
+of 2022:
+
+    title_width_height()
+
+Now you can define title, width and height of your main
+window via one method call. \o/
+
+## Links related to libui or libui-based projects
 
 This subsection may contain a few links, in the event that other
 people want to see useful entries.

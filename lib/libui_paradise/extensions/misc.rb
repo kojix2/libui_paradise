@@ -14,13 +14,23 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === esystem
+  # ========================================================================= #
+  def esystem(i)
+    puts i
+    system i
+  end
+
+  # ========================================================================= #
   # === delete_file
+  #
+  # This method can be used if you want to quickly delete a (local) file.
   # ========================================================================= #
   def delete_file(i)
     if File.file?(i)
       File.delete(i)
     else
-      puts 'Not a file: '+i.to_s
+      puts "Not a file: #{i}"
     end
   end
 
@@ -66,14 +76,6 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === esystem
-  # ========================================================================= #
-  def esystem(i)
-    puts i
-    system i
-  end
-
-  # ========================================================================= #
   # === assumed_height?
   # ========================================================================= #
   def assumed_height?
@@ -86,30 +88,6 @@ module Extensions # === LibuiParadise::Extensions
   def assumed_width?
     return_the_resolution_using_xrandr.split('x').first.to_i
   end; alias assumed_max_width? assumed_width? # === assumed_max_width?
-
-  # ========================================================================= #
-  # === set_height
-  # ========================================================================= #
-  def set_height(
-      i = 800
-    )
-    case i
-    # ======================================================================= #
-    # === :max_width
-    # ======================================================================= #
-    when :max_height
-      i = assumed_max_height?
-    end
-    if i.is_a?(String) and i.include?('%')
-      # ===================================================================== #
-      # In this case we have to modify this a bit.
-      # ===================================================================== #
-      max_height = assumed_max_height?
-      i = (max_height.to_f * i.to_i) / 100.0
-    end
-    i = i.to_i
-    @height = i
-  end
 
   # ========================================================================= #
   # === set_width
@@ -152,6 +130,9 @@ module Extensions # === LibuiParadise::Extensions
   def try_to_parse_this_config_file(i)
     if File.exist? i
       dataset = File.readlines(i)
+      # ===================================================================== #
+      # Next check for width, height and title:
+      # ===================================================================== #
       width  = dataset.select {|line| line.include? 'width:' }.first.
                split(':').last.strip.to_i
       height = dataset.select {|line| line.include? 'height:' }.first.
@@ -169,27 +150,7 @@ module Extensions # === LibuiParadise::Extensions
   # === ui_draw_text_layout_params
   # ========================================================================= #
   def ui_draw_text_layout_params
-    return UI::FFI::DrawTextLayoutParams.malloc
-  end
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.set_title
-  #
-  # Simpler window-set-title functionality.
-  # ========================================================================= #
-  def self.set_title(
-      this_title, main_window = MAIN_WINDOW
-    )
-    window_set_title(main_window, this_title)
-  end
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.hello_world
-  #
-  # This is merely an ad-hoc test.
-  # ========================================================================= #
-  def self.hello_world
-    e 'Hello world!'
+    return ::LibUI::FFI::DrawTextLayoutParams.malloc
   end
 
   # ========================================================================= #
@@ -234,8 +195,8 @@ module Extensions # === LibuiParadise::Extensions
   def exit_from(
       main_window = ::LibuiParadise::Extensions.main_window?
     )
-    UI.control_destroy(main_window)
-    UI.quit
+    LibUI.control_destroy(main_window)
+    LibUI.quit
     0
   end
 
@@ -243,8 +204,17 @@ module Extensions # === LibuiParadise::Extensions
   # === main_then_quit
   # ========================================================================= #
   def main_then_quit
-    UI.main
-    UI.quit
+    LibUI.main
+    LibUI.quit
+  end
+  
+  # ========================================================================= #
+  # === LibuiParadise::Extensions.hello_world
+  #
+  # This is merely an ad-hoc test.
+  # ========================================================================= #
+  def self.hello_world
+    e 'Hello world!'
   end
 
   # ========================================================================= #
@@ -253,8 +223,8 @@ module Extensions # === LibuiParadise::Extensions
   def close_properly(
       main_window = LibuiParadise::Extensions.main_window?
     )
-    UI.window_on_closing(main_window) {
-      UI.exit_from(main_window)
+    LibUI.window_on_closing(main_window) {
+      LibUI.exit_from(main_window)
     }
   end; alias simple_exit close_properly # === simple_exit
 
@@ -271,7 +241,7 @@ module Extensions # === LibuiParadise::Extensions
   def self.initializer
     LibuiParadise::Extensions.register_sigint
     Object.const_set('UI', LibUI) # This is equal to: UI = LibUI
-    UI.extend(LibuiParadise::Extensions) # This call will also trigger the extended-hook.
+    ::LibUI.extend(LibuiParadise::Extensions) # This call will also trigger the extended-hook.
   end
 
   # ========================================================================= #
@@ -293,10 +263,15 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === set_title
+  # === LibuiParadise::Extensions.set_title
+  #
+  # Simpler window-set-title functionality.
   # ========================================================================= #
-  def set_title(i)
-    @title = i
+  def self.set_title(
+      this_title,
+      main_window = MAIN_WINDOW
+    )
+    window_set_title(main_window, this_title)
   end
 
   # ========================================================================= #
@@ -536,6 +511,57 @@ module Extensions # === LibuiParadise::Extensions
   def commandline_arguments?
     @commandline_arguments
   end
+
+  # ========================================================================= #
+  # === title_width_height
+  # ========================================================================= #
+  def title_width_height(
+      title, width = 1024, height = 800
+    )
+    set_title(title)
+    set_width(width)
+    set_height(height)
+  end
+
+  # ========================================================================= #
+  # === set_height
+  # ========================================================================= #
+  def set_height(
+      i = 800
+    )
+    case i
+    # ======================================================================= #
+    # === :max_width
+    # ======================================================================= #
+    when :max_height
+      i = assumed_max_height?
+    end
+    if i.is_a?(String) and i.include?('%')
+      # ===================================================================== #
+      # In this case we have to modify this a bit.
+      # ===================================================================== #
+      max_height = assumed_max_height?
+      i = (max_height.to_f * i.to_i) / 100.0
+    end
+    i = i.to_i
+    @height = i
+  end
+
+  # ========================================================================= #
+  # === set_title
+  # ========================================================================= #
+  def set_title(i)
+    @title = i
+  end
+
+  # ========================================================================= #
+  # === chdir
+  # ========================================================================= #
+  def chdir(i)
+    if i and File.directory?(i)
+      Dir.chdir(i)
+    end
+  end; alias cd chdir # === cd
 
 end
 
