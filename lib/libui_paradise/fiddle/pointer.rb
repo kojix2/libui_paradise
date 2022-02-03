@@ -8,7 +8,7 @@
 # really not recommended to do this.
 #
 # A cleaner solution would be to modify just in-place, such as via
-# refinements, but I don't like the syntax of refinements really,
+# refinements, but I don't quite like the syntax of refinements,
 # so I opted for the simpler toplevel modification instead.
 # =========================================================================== #
 # require 'libui_paradise/fiddle/pointer.rb'
@@ -16,6 +16,26 @@
 module Fiddle
 
 class Pointer # === Fiddle::Pointer
+
+  # ========================================================================= #
+  # === is_read_only
+  # ========================================================================= #
+  def is_read_only(
+      current_widget = available_pointers?[self.object_id] # This will be an Array.
+    )
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_set_read_only(self, 1)
+    else
+      pp caller()
+      puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
+    end
+  end
 
   # ========================================================================= #
   # === text?
@@ -122,7 +142,7 @@ class Pointer # === Fiddle::Pointer
   # ========================================================================= #
   # === append                                          (append tag, add tag)
   #
-  # This is simply a wrapper over UI.box_append().
+  # This is simply a wrapper over LibUI.box_append().
   # ========================================================================= #
   def append(
       this_widget,
@@ -144,16 +164,16 @@ class Pointer # === Fiddle::Pointer
     # to explain this peculiar oddity though.
     # ======================================================================= #
     when :tab
-      UI.tab_append(self, this_widget.to_s, padding_to_use)
+      LibUI.tab_append(self, this_widget.to_s, padding_to_use)
     # ======================================================================= #
     # === :window
     #
     # Add support for the toplevel window here, as of September 2021.
     # ======================================================================= #
     when :window
-      UI.window_set_child(self, this_widget)
+      LibUI.window_set_child(self, this_widget)
     else # This is the default.
-      UI.box_append(
+      LibUI.box_append(
         self, this_widget, padding_to_use
       )
     end
@@ -215,18 +235,18 @@ class Pointer # === Fiddle::Pointer
     # This entry point probably does not work, so don't use it.
     # ======================================================================= #
     when :button
-      UI.box_set_padded(self, pad_n_px)
+      LibUI.box_set_padded(self, pad_n_px)
     # ======================================================================= #
     # === :vbox
     # ======================================================================= #
     when :vbox,
          :hbox
-      UI.box_set_padded(self, pad_n_px)
+      LibUI.box_set_padded(self, pad_n_px)
     # ======================================================================= #
     # === :grid
     # ======================================================================= #
     when :grid
-      UI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
+      LibUI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
     # ======================================================================= #
     # === :entry
     # ======================================================================= #
@@ -235,7 +255,7 @@ class Pointer # === Fiddle::Pointer
       # This method does not seem to exist. We'll leave this here for the
       # time being.
       # ===================================================================== #
-      # UI.entry_set_padded(self, pad_n_px) # This line should be changed at a later time.
+      # LibUI.entry_set_padded(self, pad_n_px) # This line should be changed at a later time.
     else
       pp caller()
       puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
@@ -298,7 +318,7 @@ class Pointer # === Fiddle::Pointer
     # This is a text-view widget actually.
     # ======================================================================= #
     when :multiline_entry
-      UI.multiline_entry_set_text(
+      LibUI.multiline_entry_set_text(
         this_widget,
         display_this_text.to_s
       )
@@ -307,7 +327,7 @@ class Pointer # === Fiddle::Pointer
     # ======================================================================= #
     when :text,
          :label
-      UI.label_set_text(
+      LibUI.label_set_text(
         this_widget,
         display_this_text.to_s
       )
@@ -315,7 +335,7 @@ class Pointer # === Fiddle::Pointer
     # === :textview
     # ======================================================================= #
     when :textview
-      UI.multiline_entry_set_text(
+      LibUI.multiline_entry_set_text(
         this_widget,
         display_this_text.to_s
       )
@@ -323,7 +343,7 @@ class Pointer # === Fiddle::Pointer
     # === :entry
     # ======================================================================= #
     when :entry
-      UI.entry_set_text(
+      LibUI.entry_set_text(
         this_widget,
         display_this_text.to_s
       )
@@ -483,7 +503,7 @@ class Pointer # === Fiddle::Pointer
     # left, top, xspan, yspan, hexpand, halign, vexpand, valign
     #  0,    0,    2,     1,      0,      0,       1,      0
     # ======================================================================= #
-    UI.grid_append(
+    LibUI.grid_append(
       this_widget,
       widget_to_append,
       left,
@@ -524,8 +544,8 @@ class Pointer # === Fiddle::Pointer
   # === main_then_quit
   # ========================================================================= #
   def main_then_quit
-    UI.main
-    UI.quit
+    LibUI.main
+    LibUI.quit
   end
 
   # ========================================================================= #
@@ -534,7 +554,7 @@ class Pointer # === Fiddle::Pointer
   # This method ultimately combines three other method calls.
   # ========================================================================= #
   def show_then_main_then_quit
-    UI.control_show(self)
+    LibUI.control_show(self)
     main_then_quit
   end; alias elegant_exit           show_then_main_then_quit # === elegant_exit
        alias complex_finalizer      show_then_main_then_quit # === complex_finalizer
@@ -548,7 +568,7 @@ class Pointer # === Fiddle::Pointer
   # This method is in general called on a button-widget.
   # ========================================================================= #
   def on_clicked(&block)
-    UI.button_on_clicked(self, &block)
+    LibUI.button_on_clicked(self, &block)
   end; alias on_click_event on_clicked # === on_click_event
 
   # ========================================================================= #
@@ -593,7 +613,7 @@ class Pointer # === Fiddle::Pointer
     # === :spinbox
     # ======================================================================= #
     when :spinbox
-      UI.spinbox_set_value(
+      LibUI.spinbox_set_value(
         this_widget,
         new_value.to_i # Must be an Integer.
       )
@@ -617,9 +637,9 @@ class Pointer # === Fiddle::Pointer
     # ======================================================================= #
     when :combobox
       array.each {|this_entry|
-        UI.combobox_append(self, this_entry)
+        LibUI.combobox_append(self, this_entry)
       }
-      UI.combobox_set_selected(self, 0) # The first one will be active too.    
+      LibUI.combobox_set_selected(self, 0) # The first one will be active too.    
     end
   end
 
@@ -719,7 +739,7 @@ class Pointer # === Fiddle::Pointer
     # === :checkbox
     # ======================================================================= #
     when :checkbox
-      UI.checkbox_set_checked(pointer, 1)
+      LibUI.checkbox_set_checked(pointer, 1)
     end
   end; alias is_active     set_active # === is_active
        alias is_now_active set_active # === is_now_active
@@ -736,7 +756,7 @@ class Pointer # === Fiddle::Pointer
     # === :checkbox
     # ======================================================================= #
     when :checkbox
-      UI.checkbox_set_checked(pointer, 0)
+      LibUI.checkbox_set_checked(pointer, 0)
     end
   end; alias is_inactive     set_inactive # === is_inactive
        alias is_now_inactive set_inactive # === is_now_inactive
@@ -747,7 +767,7 @@ class Pointer # === Fiddle::Pointer
   # This method should only be called on a LibUI-Window.
   # ========================================================================= #
   def child(child_widget)
-    UI.window_set_child(self, child_widget)
+    LibUI.window_set_child(self, child_widget)
   end; alias children= child # === children=
        alias child=    child # === child=
 
@@ -755,7 +775,7 @@ class Pointer # === Fiddle::Pointer
   # === show_the_controls
   # ========================================================================= #
   def show_the_controls
-    UI.control_show(self)
+    LibUI.control_show(self)
   end; alias control_show show_the_controls # === control_show
 
   # ========================================================================= #
@@ -767,8 +787,8 @@ class Pointer # === Fiddle::Pointer
   #
   # ========================================================================= #
   def close_properly
-    UI.window_on_closing(self) {
-      UI.exit_from(self)
+    LibUI.window_on_closing(self) {
+      LibUI.exit_from(self)
     }
   end; alias simple_exit close_properly # === simple_exit
        alias sane_exit   close_properly # === sane_exit
@@ -792,7 +812,7 @@ class Pointer # === Fiddle::Pointer
       # === :window
       # ===================================================================== #
       when :window
-        UI.window_set_margined(_.first, 1)
+        LibUI.window_set_margined(_.first, 1)
       else
         e 'The type '+type.to_s+' in is_margined() is currently not supported.'
       end
@@ -821,15 +841,15 @@ class Pointer # === Fiddle::Pointer
   def bblack1; end
   def bblack2; end
   def bblack3; end
-  def pad1px; end
-  def pad2px; end
-  def pad3px; end
-  def pad4px; end
-  def pad5px; end
-  def pad6px; end
-  def pad7px; end
-  def pad8px; end
-  def pad9px; end
+  def pad1px;  end
+  def pad2px;  end
+  def pad3px;  end
+  def pad4px;  end
+  def pad5px;  end
+  def pad6px;  end
+  def pad7px;  end
+  def pad8px;  end
+  def pad9px;  end
   def pad10px; end
   def yellow_background; end
   def hint=(i = nil); end

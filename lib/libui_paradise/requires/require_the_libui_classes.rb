@@ -10,6 +10,9 @@ module LibuiParadise
 
   # ========================================================================= #
   # === LibuiParadise.do_require_the_libui_classes
+  #
+  # This method will batch-require all libui-paradise classes under
+  # the libui_classes/ subdirectory.
   # ========================================================================= #
   def self.do_require_the_libui_classes
     target = LibuiParadise.project_base_dir?+'libui_classes/*.rb'

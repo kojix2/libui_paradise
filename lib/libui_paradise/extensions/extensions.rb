@@ -15,7 +15,7 @@ module Extensions # === LibuiParadise::Extensions
 
   require 'libui_paradise/extensions/hash_fiddle_pointer_widgets.rb'
   require 'libui_paradise/fiddle/pointer.rb'
-  require 'libui_paradise/libui_classes/window.rb'
+  require 'libui_paradise/libui_classes/libui_classes.rb'
   require 'libui_paradise/extensions/misc.rb'
 
 end; end

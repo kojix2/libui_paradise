@@ -49,9 +49,7 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
   # === reset                                                     (reset tag)
   # ========================================================================= #
   def reset
-    set_title(TITLE)
-    set_width(WIDTH)
-    set_height(HEIGHT)
+    title_width_height(TITLE, WIDTH, HEIGHT)
   end
 
   # ========================================================================= #
