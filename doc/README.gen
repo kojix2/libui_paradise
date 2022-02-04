@@ -1336,6 +1336,10 @@ on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
 
+Here is another image, from Win10:
+
+<img src="https://i.imgur.com/Vkn4Vmg.jpg" style="margin: 1em; margin-left: 2em">
+
 The basic API is this:
 
     LibUI.date_time_picker_time
