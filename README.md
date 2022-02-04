@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">03.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">01:14:29</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">03.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:29:29</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1484,6 +1484,10 @@ Let's start with an image to show how the date-time picker may look
 on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/datetime/datetime-windows7.png" style="margin-left: 2em">
+
+Here is another image, from Win10:
+
+<img src="https://i.imgur.com/Vkn4Vmg.jpg" style="margin: 1em; margin-left: 2em">
 
 The basic API is this:
 
