@@ -26,10 +26,6 @@
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
 
-# Attach a new widget onto the grid:
-
-  UI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0)
-
 # How to add a click-action to the button:
 
   UI.button_on_clicked(button) {

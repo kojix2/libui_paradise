@@ -15,10 +15,15 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === esystem
+  #
+  # This method can be used to run system(), with output. Thread.new is
+  # used because that seems to work better in a GUI.
   # ========================================================================= #
   def esystem(i)
     puts i
-    system i
+    Thread.new {
+      system i
+    }
   end
 
   # ========================================================================= #

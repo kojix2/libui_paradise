@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">03.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:29:29</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:15:15</span> o'clock.
 
 ## The libui_paradise project
 
@@ -231,7 +231,7 @@ In my own projects I tend to use the above autoinclude variant
 most of the time, because that way I can write less code (omit
 a few lines).
 
-## How to require libui itself:
+## How to require libui itself
 
 Simply do:
 
@@ -363,7 +363,7 @@ I came up with the following solution for now:
     outer_vbox = padded_vbox
     button_open_file = button('Open file')
     button_open_file.on_clicked {
-      filename = open_file(window).to_s # This is the part that will open a local file.
+      filename = ui_open_file(window).to_s # This is the part that will open a local file.
     }
     outer_vbox << button_open_file # Add the button to the outer-vbox.
 
@@ -812,9 +812,10 @@ coloured text.
 
 The API is quite complex and hard to remember:
 
-    UI.grid_append(grid, entry1, 0, 0, 2, 1, 0, 0, 1, 0)
+    LibUI.grid_append(grid, entry1, 0, 0, 2, 1, 0, 0, 1, 0)
+    LibUI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0) # text() can be used if you use the libui_paradise gem
 
-Who can remember offhand what these values mean?
+Who can remember offhand what these values mean, though?
 
 The upstream struct is this:
 
@@ -1184,10 +1185,6 @@ subsequently removed one day.
 
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
-
-# Attach a new widget onto the grid:
-
-  UI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0)
 
 # How to add a click-action to the button:
 

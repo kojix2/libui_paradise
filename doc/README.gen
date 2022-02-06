@@ -228,7 +228,7 @@ In my own projects I tend to use the above autoinclude variant
 most of the time, because that way I can write less code (omit
 a few lines).
 
-## How to require libui itself:
+## How to require libui itself
 
 Simply do:
 
@@ -360,7 +360,7 @@ I came up with the following solution for now:
     outer_vbox = padded_vbox
     button_open_file = button('Open file')
     button_open_file.on_clicked {
-      filename = open_file(window).to_s # This is the part that will open a local file.
+      filename = ui_open_file(window).to_s # This is the part that will open a local file.
     }
     outer_vbox << button_open_file # Add the button to the outer-vbox.
 
@@ -809,9 +809,10 @@ coloured text.
 
 The API is quite complex and hard to remember:
 
-    UI.grid_append(grid, entry1, 0, 0, 2, 1, 0, 0, 1, 0)
+    LibUI.grid_append(grid, entry1, 0, 0, 2, 1, 0, 0, 1, 0)
+    LibUI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0) # text() can be used if you use the libui_paradise gem
 
-Who can remember offhand what these values mean?
+Who can remember offhand what these values mean, though?
 
 The upstream struct is this:
 
