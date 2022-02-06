@@ -8,6 +8,17 @@ module LibuiParadise
 
 module Extensions # === LibuiParadise::Extensions
 
+  require 'libui_paradise/libui_classes/grid.rb'
+
+  # ========================================================================= #
+  # === ui_open_file
+  # ========================================================================= #
+  def ui_open_file(
+      main_window = ::LibuiParadise::Extensions.main_window?
+    )
+    return ::LibuiParadise::Extensions.open_file(main_window)
+  end
+
   # ========================================================================= #
   # === message_box_error
   # ========================================================================= #
@@ -122,15 +133,6 @@ module Extensions # === LibuiParadise::Extensions
     add_to_the_registered_widgets(_, __method__)
     return _
   end; self.instance_eval { alias ui_open_file open_file } # === LibuiParadise::Extensions.ui_open_file
-
-  # ========================================================================= #
-  # === ui_open_file
-  # ========================================================================= #
-  def ui_open_file(
-      main_window = ::LibuiParadise::Extensions.main_window?
-    )
-    return ::LibuiParadise::Extensions.open_file(main_window)
-  end
 
   # ========================================================================= #
   # === open_file
@@ -443,43 +445,6 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === ui_padded_grid
-  # ========================================================================= #
-  def ui_padded_grid
-    _ = ui_grid
-    _.is_padded
-    return _
-  end; alias padded_grid  ui_padded_grid # === padded_grid
-       alias default_grid ui_padded_grid # === default_grid
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.grid                             (grid tag)
-  #
-  # To insert into a grid, try to use this API:
-  #
-  #   uiGridInsertAt(
-  #     uiGrid *g,
-  #     uiControl *c,
-  #     uiControl *existing,
-  #     uiAt at,
-  #     int xspan,
-  #     int yspan,
-  #     int hexpand,
-  #     uiAlign halign, int vexpand, uiAlign valign
-  #   )
-  #
-  # Example to add a new entry onto the grid:
-  #
-  #   UI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0)
-  #
-  # ========================================================================= #
-  def self.grid
-    _ = ::LibUI.new_grid
-    add_to_the_registered_widgets(_, __method__)
-    return _
-  end; self.instance_eval { alias ui_grid grid } # === LibuiParadise::Extensions.ui_grid
-
-  # ========================================================================= #
   # === LibuiParadise::Extensions.font                  (font tag, fonts tag)
   # ========================================================================= #
   def self.font(&block)
@@ -536,13 +501,6 @@ module Extensions # === LibuiParadise::Extensions
     LibuiParadise::Extensions.font(&block)
   end; alias ui_font         font # === ui_font
        alias font_descriptor font # === font_descriptor
-
-  # ========================================================================= #
-  # === grid
-  # ========================================================================= #
-  def grid
-    ::LibuiParadise::Extensions.grid
-  end; alias ui_grid grid # === ui_grid
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.non_wrapping_multiline_entry
@@ -1046,6 +1004,17 @@ module Extensions # === LibuiParadise::Extensions
       # ===================================================================== #
       if optional_arguments.has_key? :text
         use_this_text = optional_arguments.delete(:text)
+      end
+    end
+    if block_given?
+      yielded = yield
+      case yielded
+      # ===================================================================== #
+      # === :with_emoji
+      # ===================================================================== #
+      when :with_emoji
+        use_this_text = use_this_text.to_s.dup
+        use_this_text << ' 🛑'
       end
     end
     quit_button = button(use_this_text)
