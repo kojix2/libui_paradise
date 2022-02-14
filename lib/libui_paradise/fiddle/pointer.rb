@@ -18,6 +18,74 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === set_text
+  #
+  # This method can be used to set the text of a particular libui-widget,
+  # in particular entries.
+  # ========================================================================= #
+  def set_text(
+      display_this_text = '', # This is the text that will be used.
+      type              = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    if type.nil?
+      type = hash[object_id].last # This should be :grid. But it is not used here.
+    end
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    #
+    # This is a text-view widget actually.
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :text
+    # ======================================================================= #
+    when :text,
+         :label
+      LibUI.label_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :textview
+    # ======================================================================= #
+    when :textview
+      LibUI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      LibUI.entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :search_entry
+    #
+    # This is specifically for a search-entry.
+    # ======================================================================= #
+    when :search_entry
+      LibUI.entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    else
+      puts 'Unhandled case in set_text(): '+
+           type.to_s
+    end
+  end; alias set_content set_text # === set_content
+
+  # ========================================================================= #
   # === is_read_only
   # ========================================================================= #
   def is_read_only(
@@ -297,59 +365,6 @@ class Pointer # === Fiddle::Pointer
       e 'Not registered type in .enable(): '+type.to_s
     end
   end
-
-  # ========================================================================= #
-  # === set_text
-  # ========================================================================= #
-  def set_text(
-      display_this_text = '', # This is the text that will be used.
-      type              = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    if type.nil?
-      type = hash[object_id].last # This should be :grid. But it is not used here.
-    end
-    case type
-    # ======================================================================= #
-    # === :multiline_entry
-    #
-    # This is a text-view widget actually.
-    # ======================================================================= #
-    when :multiline_entry
-      LibUI.multiline_entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :text
-    # ======================================================================= #
-    when :text,
-         :label
-      LibUI.label_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :textview
-    # ======================================================================= #
-    when :textview
-      LibUI.multiline_entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      LibUI.entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # else;  puts 'Unhandled case so far: '+type.to_s
-    end
-  end; alias set_content set_text # === set_content
 
   # ========================================================================= #
   # === @left_counter
