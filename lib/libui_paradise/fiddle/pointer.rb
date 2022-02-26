@@ -899,7 +899,6 @@ class Pointer # === Fiddle::Pointer
   def set_size_request(a = 42, b = 42); end
   def the_first_entry_is_active; end
   def clear_old_datapoints; end
-  def very_light_yellow_background; end
   def width_height(a = 500, b = 500); end
   def row_spacing=(i = 10); end
   def line_spacing=(i = 10); end
@@ -920,5 +919,9 @@ class Pointer # === Fiddle::Pointer
   def center; end
   def align_to_center; end
   def make_selectable; end
+  def very_light_yellow_background; end
+  def very_light_yellowish_background; end
+  def remove_background; end
+  def rounded_border(a = '', b = '', c = ''); end
 
 end; end

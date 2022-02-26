@@ -408,28 +408,14 @@ module Extensions # === LibuiParadise::Extensions
   # a font then this can be enabled.
   # ========================================================================= #
   def try_to_use_this_font(i = nil); end
-    alias use_this_font=    try_to_use_this_font
-    alias set_use_this_font try_to_use_this_font
+    alias use_this_font=    try_to_use_this_font # === use_this_font=
+    alias set_use_this_font try_to_use_this_font # === set_use_this_font
 
   # ========================================================================= #
   # === abort_on_exception
   # ========================================================================= #
   def abort_on_exception
     Thread.abort_on_exception
-  end
-
-  # ========================================================================= #
-  # === create_skeleton_then_connect_skeleton
-  # ========================================================================= #
-  def create_skeleton_then_connect_skeleton
-    create_skeleton
-    connect_skeleton
-  end
-
-  # ========================================================================= #
-  # === run_main
-  # ========================================================================= #
-  def run_main
   end
 
   # ========================================================================= #
@@ -453,10 +439,16 @@ module Extensions # === LibuiParadise::Extensions
       rescue LoadError; end
     end
     case width
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
     when :default
       width = 25
     end
     case height
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
     when :default
       height = 25
     end
@@ -521,7 +513,9 @@ module Extensions # === LibuiParadise::Extensions
   # === title_width_height
   # ========================================================================= #
   def title_width_height(
-      title, width = 1024, height = 800
+      title,
+      width  = 1024,
+      height =  800
     )
     set_title(title)
     set_width(width)
@@ -560,13 +554,35 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
-  # === chdir
+  # === chdir                                             (cd tag, chdir tag)
   # ========================================================================= #
   def chdir(i)
     if i and File.directory?(i)
       Dir.chdir(i)
     end
   end; alias cd chdir # === cd
+
+  # ========================================================================= #
+  # === create_skeleton_then_connect_skeleton
+  # ========================================================================= #
+  def create_skeleton_then_connect_skeleton
+    create_skeleton
+    connect_skeleton
+  end
+
+  # ========================================================================= #
+  # === connect_skeleton
+  #
+  # This is a stub method, because we want to allow the user to modify it.
+  # ========================================================================= #
+  def connect_skeleton
+  end
+
+  # ========================================================================= #
+  # === run_main
+  # ========================================================================= #
+  def run_main
+  end
 
 end
 
