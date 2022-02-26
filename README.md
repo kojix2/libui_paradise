@@ -2,7 +2,7 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">14.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">03:40:27</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">26.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">04:04:59</span> o'clock.
 
 ## The libui_paradise project
 

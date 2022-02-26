@@ -2,15 +2,15 @@
 # Encoding: UTF-8
 # frozen_string_literal: true
 # =========================================================================== #
-# === Foobar::GUI::LibUI::Prototype
+# === LibuiParadise::GUI::LibUI::Prototype
 # =========================================================================== #
-module Foobar
+module LibuiParadise
 
 module GUI
 
 module LibUI
 
-class Prototype # === Foobar::GUI::LibUI::Prototype
+class Prototype # === LibuiParadise::GUI::LibUI::Prototype
 
   alias e puts
 
@@ -53,10 +53,20 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
   end
 
   # ========================================================================= #
+  # === create_skeleton                            (create tag, skeleton tag)
+  # ========================================================================= #
+  def create_skeleton
+    # ======================================================================= #
+    # === @window
+    # ======================================================================= #
+    @window = ui_padded_main_window(title?, width?, height?, 0)
+  end
+
+  # ========================================================================= #
   # === run
   # ========================================================================= #
   def run
-    window = ui_padded_main_window(title?, width?, height?, 0)
+    create_skeleton_then_connect_skeleton
     outer_vbox = padded_vbox
     # ======================================================================= #
     # First add the two buttons on top:
@@ -81,17 +91,17 @@ class Prototype # === Foobar::GUI::LibUI::Prototype
       # left, top, xspan, yspan, hexpand, halign, vexpand, valign
       #  0,    0,    2,     1,      0,      0,       1,      0
       # ===================================================================== #
-      grid.ui_grid_append(text(index.to_s),   0, 1+index, 1, 1, 1, 1, 1, 1)
+      grid.ui_grid_append(text(index.to_s), 0, 1+index, 1, 1, 1, 1, 1, 1)
       label_exam_topic = text(entry.to_s)
       grid.ui_grid_append(label_exam_topic, 1, 1+index, 1, 1, 1, 1, 1, 1)
     }
     outer_vbox.maximal(grid)
-    window.add(outer_vbox)
-    window.intelligent_exit
+    @window.add(outer_vbox)
+    @window.intelligent_exit
   end
 
 end; end; end; end
 
 if __FILE__ == $PROGRAM_NAME
-  Foobar::GUI::LibUI::Prototype.new  
+  LibuiParadise::GUI::LibUI::Prototype.new  
 end
