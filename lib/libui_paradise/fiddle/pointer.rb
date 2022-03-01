@@ -18,6 +18,33 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === empty?
+  # ========================================================================= #
+  def empty?(
+      type = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    if type.nil?
+      # ===================================================================== #
+      # In this case we must determine the type in use.
+      # ===================================================================== #
+      if hash.has_key? object_id
+        type = hash[object_id].last # The last entry contains the type.
+      end
+    end
+    case type
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      self.text?.empty?
+    else
+      return true
+    end
+  end
+
+  # ========================================================================= #
   # === set_text
   #
   # This method can be used to set the text of a particular libui-widget,
@@ -663,6 +690,15 @@ class Pointer # === Fiddle::Pointer
   # ========================================================================= #
   def maximal(this_widget, optional_padding = 1)
     add(this_widget, optional_padding)
+  end
+
+  # ========================================================================= #
+  # === group_maximal
+  # ========================================================================= #
+  def group_maximal(*i)
+    i.flatten.each {|entry|
+      maximal(entry)
+    }
   end
 
   # ========================================================================= #
