@@ -39,5 +39,12 @@ box = padded_vbox
 box << @combo_box
 box << @entry
 
+button_clear_the_combo_box = LibuiParadise.button('Clear the combo box')
+button_clear_the_combo_box.on_clicked {
+  e 'Trying to clear the combo-box next.'
+  @combo_box.clear
+}
+
+box.minimal(button_clear_the_combo_box)
 main_window.child = box
 main_window.intelligent_exit

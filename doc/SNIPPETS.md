@@ -26,20 +26,6 @@
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
 
-# How to add a click-action to the button:
-
-  UI.button_on_clicked(button) {
-    UI.msg_box(main_window, 'Information', 'You clicked the button')
-    0
-  }
-
-# How to exit easily:
-
-  UI.window_on_closing(main_window) {
-    UI.exit_from(main_window)
-  }
-
-
 # How to set a padded box:
 
   UI.box_set_padded(box, 1) # The value is either 0 or 1.
@@ -109,30 +95,13 @@
     ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
   }
 
-  # Select the first entry:
-
-  UI.combobox_set_selected(combobox, 0) # The first one will be active too.
 
 # Add content to an editable combox:
 
   UI.append() # .append() adds the named item to the end of the EditableCombobox.
-
-
-
-# How to quit:
-
-  UI.quit
 
 # How to build a menu-interface (menu tag):
 
   help_menu = UI.new_menu('Help')
   version_item = UI.menu_append_item(help_menu, 'Version')
 
-# Fonts and LibUI:
-
-  font_descriptor = UI::FFI::FontDescriptor.malloc
-  p 'Font family: '+font_descriptor.Family.to_s+
-    'Font size: '+font_descriptor.Size+
-    'Font weight: '+font_descriptor.Weight+
-    'Font italic: '+font_descriptor.Italic+
-    'Font stretch: '+font_descriptor.Stretch

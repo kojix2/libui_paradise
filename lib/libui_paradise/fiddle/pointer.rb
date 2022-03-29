@@ -18,6 +18,40 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === clear
+  # ========================================================================= #
+  def clear(
+      current_widget = available_pointers?[self.object_id] # This will be an Array.
+    )
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    if type.nil?
+      type = hash[object_id].last # This should be :grid. But it is not used here.
+    end
+    case type
+    # ======================================================================= #
+    # === :combobox
+    #
+    # This currently does not work; it depends on libui-ng, which has not
+    # yet been added completely.
+    # ======================================================================= #
+    when :combobox
+    #   LibUI.multiline_entry_set_text(
+    #     this_widget,
+    #     display_this_text.to_s
+    #   )
+    else
+      puts 'Unhandled case in clear(): '+
+           type.to_s
+    end
+  end
+# try_extern 'void uiComboboxClear(uiCombobox *c)'
+
+  # ========================================================================= #
   # === empty?
   # ========================================================================= #
   def empty?(
