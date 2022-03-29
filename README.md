@@ -2,18 +2,17 @@
 [![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">28.02.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">23:37:58</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">29.03.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:32:52</span> o'clock.
 
 ## The libui_paradise project
 
-<img src="https://i.imgur.com/hYf3sum.png" style="margin: 1em; padding: 8px">
-
+<img src="https://i.imgur.com/hYf3sum.png" style="margin: 0.75em; padding: 8px">
 (This image has been partially auto-generated via **cfdg**, then modified
 by me via **gimp** and ImageMagick - the rounded borders were
-done via ImageMagick. You can re-use this image if you want to, including
-the colour-pattern, via a **CC BY 3.0** licence. See the following link
-for that licence: https://creativecommons.org/licenses/by/3.0/. For
-cfdg itself, have a look at: https://www.contextfreeart.org/gallery/)
+done via ImageMagick. You can re-use this image if you would like to,
+including the colour-pattern, via a **CC BY 3.0** licence. See the following
+link for that licence: https://creativecommons.org/licenses/by/3.0/. For
+**cfdg** itself, have a look at: https://www.contextfreeart.org/gallery/)
 
 The **libui_paradise project** aims to enhance the official (upstream)
 ruby-libui bindings a little bit.
@@ -412,7 +411,13 @@ So, as a reminder:
     # Or simpler:
     close_properly(main_window)
 
-# How to instantiate libui:
+You can also directly use a toplevel API such as:
+
+    LibUI.window_on_closing(main_window) {
+      LibUI.exit_from(main_window)
+    }
+
+## How to instantiate libui:
 
     UI = LibUI
     init = UI.init
@@ -546,11 +551,15 @@ code. How fancy! \o/
 If you need to do so manually, and focus on another element,
 for example, then you can use the following toplevel method:
 
-    UI.combobox_set_selected()
+    LibUI.combobox_set_selected()
 
+For instance:
+
+    LibUI.combobox_set_selected(combobox, 0) # The first one will be active too.
+  
 To **query the currently selected value**, use:
 
-    UI.combobox_selected(pointer)
+    LibUI.combobox_selected(pointer)
 
 This is usually done via a **proc {}** object. See kojix2' examples.
 
@@ -1186,20 +1195,6 @@ subsequently removed one day.
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
 
-# How to add a click-action to the button:
-
-  UI.button_on_clicked(button) {
-    UI.msg_box(main_window, 'Information', 'You clicked the button')
-    0
-  }
-
-# How to exit easily:
-
-  UI.window_on_closing(main_window) {
-    UI.exit_from(main_window)
-  }
-
-
 # How to set a padded box:
 
   UI.box_set_padded(box, 1) # The value is either 0 or 1.
@@ -1269,33 +1264,16 @@ subsequently removed one day.
     ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
   }
 
-  # Select the first entry:
-
-  UI.combobox_set_selected(combobox, 0) # The first one will be active too.
 
 # Add content to an editable combox:
 
   UI.append() # .append() adds the named item to the end of the EditableCombobox.
-
-
-
-# How to quit:
-
-  UI.quit
 
 # How to build a menu-interface (menu tag):
 
   help_menu = UI.new_menu('Help')
   version_item = UI.menu_append_item(help_menu, 'Version')
 
-# Fonts and LibUI:
-
-  font_descriptor = UI::FFI::FontDescriptor.malloc
-  p 'Font family: '+font_descriptor.Family.to_s+
-    'Font size: '+font_descriptor.Size+
-    'Font weight: '+font_descriptor.Weight+
-    'Font italic: '+font_descriptor.Italic+
-    'Font stretch: '+font_descriptor.Stretch
 
 </pre>
 
@@ -1772,6 +1750,15 @@ To create an attributed String you can use the following API:
     attribute = LibUI.new_color_attribute(0.75, 0.25, 0.5, 0.75) # And a certain colour.
     LibUI.append_with_attribute("text color", attribute, nil)
 
+## Using fonts in LibUI:
+
+    font_descriptor = UI::FFI::FontDescriptor.malloc
+    p 'Font family: '+font_descriptor.Family.to_s+
+      'Font size: '+font_descriptor.Size+
+      'Font weight: '+font_descriptor.Weight+
+      'Font italic: '+font_descriptor.Italic+
+      'Font stretch: '+font_descriptor.Stretch
+
 ## How to run the main loop in libui
 
     LibUI.main
@@ -1797,17 +1784,60 @@ can do, whereas the simple/ directory will show how you can work with
 ## Setting the title, width and height of a widget
 
 The libui_paradise gem comes with methods such as
-.set_title(), .set_width() and .set_height().
+<b>.set_title()</b>, <b>.set_width()</b> and 
+<b>.set_height()</b>.
 
-This is a bit cumbersome to use as you need at the least
-three lines of code normally, as well as the constants.
-So the following compound method was added in February
-of 2022:
+This is a bit cumbersome to use as you need at the least three lines
+of code normally, as well as the constants. So the following compound
+method was added in **February** of **2022**:
 
     title_width_height()
 
-Now you can define title, width and height of your main
-window via one method call. \o/
+Now you can define title, width and height of your main window
+via one method call. \o/
+
+## Click-actions for buttons
+
+This subsection just shows some code how main libui handles
+click actions on buttons.
+
+    LibUI.button_on_clicked(button) {
+      LibUI.msg_box(main_window, 'Information', 'You clicked the button')
+      0
+    }
+
+## libui-ng
+
+In **2022**, some developers contributed patches to **libui**. This is
+**work-in-progress**.
+
+Some API was added or modified, such as:
+
+    uiTableColumnWidth() API
+    uiTableColumnSetWidth() API
+    uiComboboxNumItems() API
+    uiOpenFolder() API
+    uiSliderHasToolTip() API
+    uiSliderSetHasToolTip() API
+    uiSliderSetRange() API
+    uiTableHeaderSortIndicator() API
+    uiTableHeaderSetSortIndicator() API
+    uiTableHeaderOnClicked() API
+    uiTableHeaderVisible() API
+    uiTableHeaderSetVisible() API
+    uiBoxNumChildren() API
+    uiFormNumChildren() API
+    uiComboboxInsertAt() API
+    uiComboboxDelete() API
+    uiComboboxClear() API
+    uiWindowResizeable() API
+    uiWindowSetResizeable() API
+    uiDrawPathEnded() API
+    uiFreeFontDescriptor() API
+    uiLoadControlFont() API
+
+Not all of this is supported in kojix2' libui as of
+yet, but it may be supported eventually. 
 
 ## Links related to libui or libui-based projects
 
