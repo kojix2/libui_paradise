@@ -510,6 +510,13 @@ module Extensions # === LibuiParadise::Extensions
   end
 
   # ========================================================================= #
+  # === set_title
+  # ========================================================================= #
+  def set_title(i)
+    @title = i
+  end
+
+  # ========================================================================= #
   # === title_width_height
   # ========================================================================= #
   def title_width_height(
@@ -520,7 +527,7 @@ module Extensions # === LibuiParadise::Extensions
     set_title(title)
     set_width(width)
     set_height(height)
-  end
+  end; alias set_title_width_height title_width_height # === title_width_height
 
   # ========================================================================= #
   # === set_height
@@ -544,13 +551,6 @@ module Extensions # === LibuiParadise::Extensions
     end
     i = i.to_i
     @height = i
-  end
-
-  # ========================================================================= #
-  # === set_title
-  # ========================================================================= #
-  def set_title(i)
-    @title = i
   end
 
   # ========================================================================= #

@@ -28,7 +28,6 @@ class Pointer # === Fiddle::Pointer
 
     object_id = self.object_id
     hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
     if type.nil?
       type = hash[object_id].last # This should be :grid. But it is not used here.
     end
@@ -49,7 +48,6 @@ class Pointer # === Fiddle::Pointer
            type.to_s
     end
   end
-# try_extern 'void uiComboboxClear(uiCombobox *c)'
 
   # ========================================================================= #
   # === empty?
