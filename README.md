@@ -1,12 +1,13 @@
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://www.gobolinux.org/)
-[![forthebadge](http://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://www.gobolinux.org/)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">29.03.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:32:52</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">16.07.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">13:11:32</span> o'clock.
 
 ## The libui_paradise project
 
 <img src="https://i.imgur.com/hYf3sum.png" style="margin: 0.75em; padding: 8px">
+
 (This image has been partially auto-generated via **cfdg**, then modified
 by me via **gimp** and ImageMagick - the rounded borders were
 done via ImageMagick. You can re-use this image if you would like to,
@@ -1871,28 +1872,43 @@ Similar to the first one, but uses a different layout, which
 may be helpful.
 
 
-## Contact information
+## Contact information and mandatory 2FA coming up in 2022
 
-If your creative mind has ideas and specific suggestions to make this
-gem more useful in general, feel free to drop me an email at any
-time, via:
+If your creative mind has ideas and specific suggestions to make this gem
+more useful in general, feel free to drop me an email at any time, via:
 
     shevy@inbox.lt
 
 Before that email I used an email account at Google gmail, but in **2021** I
-decided to slowly abandon gmail for various reasons. In part this is because
-the UI annoys me (on non-chrome browser loading takes too long), but also
-because of Google's attempt to establish mass surveillance via its
-federated cohorts sniffing (FLoC). I do not know what happened at Google,
-but enough is enough - there is only so much you can take while supporting
-greed. When it comes to data mining done by private groups, ultimately
-the user became the product.
+decided to slowly abandon gmail for various reasons. In order to limit this
+explanation here, allow me to just briefly state that I do not feel as if I
+want to promote any Google service anymore, for various reasons.
 
-Do keep in mind that responding to emails may take some time,
-depending on the amount of work I may have at that moment, due
-to reallife time constraints. I will, however had, read feedback
-eventually. Patches and code changes are welcome too, of course,
-as long as they are in the spirit of the project at hand, e. g.
-fitting to the general theme. For this I may make use of github
-as a discussion site, but this has a low priority right now.
+Do keep in mind that responding to emails may take some time, depending on
+the amount of work I may have at that moment.
+
+In 2022 rubygems.org decided to make 2FA mandatory for every gem owner:
+see https://blog.rubygems.org/2022/06/13/making-packages-more-secure.html
+
+As I can not use 2FA, for reasons I will skip explaining here (see
+various github issue discussions in the past), this effectively means that
+Betty Li and others who run the show at rubygems.org will perma-ban me
+from using rubygems as a developer.
+
+As I disagree with that decision completely, this will mean that all my
+gems will be removed from rubygems.org prior to that sunset date, e. g.
+before they permanently lock me out from the code that I used
+to maintain. It is pointless to want to discuss this with them anymore -
+they have made up their minds and decided that you can only use
+the code if 2FA is in place, even though the code itself works just
+fine. If you don't use 2FA you are effectively locked out from your
+own code; I consider this a malicious attack. See also how they limited
+discussions to people with mandatory 2FA on the ruby-bugtracker, thus
+banning everyone permanently without 2FA:  
+
+https://bugs.ruby-lang.org/issues/18800
+
+Guess it may indeed be time to finally abandon ruby - not because
+ruby is a bad language, but there are people now in charge who
+really should not be part of ruby in the first place.
 
