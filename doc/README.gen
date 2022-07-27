@@ -752,59 +752,6 @@ not necessarily recommending this be done, but **if** you ever have
 such a use case then you can use it - which is another reason why
 I added this screenshot, so that I don't forget. :)
 
-## Entries in LibUI (ui_entry)
-
-The official source for an ui_entry for Unix (including Linux) can be read
-here:
-
-https://github.com/andlabs/libui/blob/master/unix/entry.c
-
-Personally I tend to create a new entry element in this way:
-
-    entry = ui_entry
-
-To set new content to it, do:
-
-    entry.set_text('foobar') # Make sure it is a String; that seems to work better.
-
-To query the text content of such an entry, you can use the following API,
-if you use the libui_paradise gem:
-
-    entry.text?
-
-To respond to events look at **OnChanged**.
-
-To see an example where the user may input a password entry, have a
-look at the following file:
-
-    libui_paradise/examples/028_password_entry_example.rb
-
-It can be set read only via:
-
-    entry.read_only # This has not been added into libui-paradise yet.
-
-To respond to on-changed events, you can use:
-
-   UI.entry_on_changed()
-
-Complete example:
-
-    text_changed_callback = proc { |ptr|
-      puts "Current textbox data: '#{UI.entry_text(ptr)}'"
-    }
-
-    text_entry = ui_entry
-    text_entry.set_text('Please enter a command')
-    text_entry.on_changed {
-      text_changed_callback
-    }
-
-The Proc object has to be passed into the {} block variation.
-
-The latter uses:
-
-    UI.entry_on_changed(text_entry, text_changed_callback, nil)
-
 ## LibUI::FFI::DrawTextLayoutParams.malloc
 
 LibUI::FFI::DrawTextLayoutParams.malloc can be used to draw
@@ -814,79 +761,6 @@ coloured text.
     params.to_ptr.free = Fiddle::RUBY_FREE
 
     params.Align = 'Left' # Use left alignment here.
-
-## Grids in LibUI
-
-The API is quite complex and hard to remember:
-
-    LibUI.grid_append(grid, entry1, 0, 0, 2, 1, 0, 0, 1, 0)
-    LibUI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0) # text() can be used if you use the libui_paradise gem
-
-Who can remember offhand what these values mean, though?
-
-The upstream struct is this:
-
-    struct gridChild {
-	    uiControl *c;
-	    int left;
-	    int top;
-	    int xspan;
-	    int yspan;
-	    int hexpand;
-	    uiAlign halign;
-	    int vexpand;
-	    uiAlign valign;
-
-	    // have these here so they don't need to be reallocated each relayout
-	    int finalx, finaly;
-	    int finalwidth, finalheight;
-	    int minwidth, minheight;
-    };
-
-The documentation for Go has this signature:
-
-    func (g *Grid) Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
-
-Append adds the given control to the Grid, at the given coordinate. 
-
-I assume that **uiControl c** refers to the widget that is to be embedded
-into the grid, so the numbers that follow afterwards are the ones
-that are important. Let's have a look at them, based on the above API
-call, and only list these again, without the **()**:
-
-    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
-    #  0,    0,    2,     1,      0,      0,       1,      0
-
-xspan and yspan refer to width; left and top refer to the position
-in the grid. hexpand and vexpand means whether the grid-cell will
-expand horizontally or vertically. halign and valign, I think,
-are used to align the grid-cell horizontally and vertically, so you
-can position them exactly in the middle.
-
-Recently (August 2021) I discovered that you can actually put 
-a button-in-a-button. I don't know whether this is a bug or
-a feature, but it is hilarious.
-
-The 'raw' code I used for this was the following:
-
-    UI.grid_append(grid, UI.new_button('3'),0,1,1,1,1,1,1,1)
-    UI.grid_append(grid, UI.new_button('4'),1,1,1,1,1,1,1,1)
-    UI.grid_append(grid, UI.new_button('5'),0,1,1,1,1,0,1,0)
-    UI.grid_append(grid, UI.new_button('6'),1,1,1,1,1,0,1,0)
-
-This led to the following image:
-
-<img src="https://i.imgur.com/6sWwWKh.png" style="margin-left: 1em">
-
-The smaller buttons and the larger buttons can be clicked. They
-reside in the same grid-cell. I don't know whether this is a 
-bug or a feature really, but this was quite hilarious to see.
-In the event that I may forget this, I'll keep this here as
-a reference.
-
-If you want to pad the grid you can use the following method:
-
-    LibUI.grid_set_padded(grid, 25)
 
 ## Margins in LibUI
 
@@ -1587,11 +1461,23 @@ This may look like so on Linux:
 
 ## Creating a textview in LibUI:
 
+First, let's have a look how this may look:
+
+<img src="https://i.imgur.com/v287z2k.png" style="margin: 1em">
+
+Next, here is the toplevel API to create a new multiline entry:
+
     LibUI.new_non_wrapping_multiline_entry
 
 If you want to make it read only then you can use an API like this:
 
     LibUI.multiline_entry_set_read_only(text, 1)
+
+If you make use of the LibuiParadise gem then the above can be
+simplified to:
+
+    text = multiline_entry('Hello world! This can be set to read only via .is_read_only().')
+    text.is_read_only # Now it is read-only.
 
 ## Coloured box examples
 
@@ -1756,5 +1642,138 @@ such as kotlin libui bindings and others.)
 
 Similar to the first one, but uses a different layout, which
 may be helpful.
+
+## Entries in LibUI (ui_entry)
+
+The official source for an <b>ui_entry</b> for Unix (including Linux systems)
+can be read here:
+
+https://github.com/libui-ng/libui-ng/blob/master/unix/entry.c
+
+Personally I tend to create a new entry element in this way:
+
+    entry = ui_entry
+
+To set new content to it, do:
+
+    entry.set_text('foobar') # Make sure it is a String; that seems to work better.
+
+To query the text content of such an entry, you can use the following API,
+if you use the libui_paradise gem:
+
+    entry.text?
+
+To respond to events look at **OnChanged**.
+
+To see an example where the user may input a password entry, have a
+look at the following file:
+
+    libui_paradise/examples/028_password_entry_example.rb
+
+It can be set read only via:
+
+    entry.read_only # This has not been added into libui-paradise yet.
+
+To respond to on-changed events, you can use:
+
+   UI.entry_on_changed()
+
+Complete example:
+
+    text_changed_callback = proc { |ptr|
+      puts "Current textbox data: '#{UI.entry_text(ptr)}'"
+    }
+
+    text_entry = ui_entry
+    text_entry.set_text('Please enter a command')
+    text_entry.on_changed {
+      text_changed_callback
+    }
+
+The Proc object has to be passed into the {} block variation.
+
+The latter uses:
+
+    UI.entry_on_changed(text_entry, text_changed_callback, nil)
+
+## Grids in LibUI
+
+The API for creating a new grid in libui is quite complex and
+hard to remember:
+
+    LibUI.grid_append(grid, entry1,      0, 0, 2, 1, 0, 0, 1, 0)
+    LibUI.grid_append(grid, text('Yo2'), 1, 0, 1, 1, 0, 0, 1, 0) # text() can be used if you use the libui_paradise gem
+
+Who can remember offhand what these values mean, though?
+
+The upstream struct is this:
+
+    struct gridChild {
+	    uiControl *c;
+	    int left;
+	    int top;
+	    int xspan;
+	    int yspan;
+	    int hexpand;
+	    uiAlign halign;
+	    int vexpand;
+	    uiAlign valign;
+
+	    // have these here so they don't need to be reallocated each relayout
+	    int finalx, finaly;
+	    int finalwidth, finalheight;
+	    int minwidth, minheight;
+    };
+
+The documentation for Go has this signature:
+
+    func (g *Grid) Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
+
+Append adds the given control to the Grid, at the given coordinate. 
+
+I assume that **uiControl c** refers to the widget that is to be embedded
+into the grid, so the numbers that follow afterwards are the ones
+that are important. Let's have a look at them, based on the above API
+call, and only list these again, without the **()**:
+
+    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
+    #  0,    0,    2,     1,      0,      0,       1,      0
+
+xspan and yspan refer to width; left and top refer to the position
+in the grid. hexpand and vexpand means whether the grid-cell will
+expand horizontally or vertically. halign and valign, I think,
+are used to align the grid-cell horizontally and vertically, so you
+can position them exactly in the middle.
+
+Recently (August 2021) I discovered that you can actually put 
+a button-in-a-button. I don't know whether this is a bug or
+a feature, but it is hilarious.
+
+The 'raw' code I used for this was the following:
+
+    UI.grid_append(grid, UI.new_button('3'),0,1,1,1,1,1,1,1)
+    UI.grid_append(grid, UI.new_button('4'),1,1,1,1,1,1,1,1)
+    UI.grid_append(grid, UI.new_button('5'),0,1,1,1,1,0,1,0)
+    UI.grid_append(grid, UI.new_button('6'),1,1,1,1,1,0,1,0)
+
+This led to the following image:
+
+<img src="https://i.imgur.com/6sWwWKh.png" style="margin-left: 1em">
+
+The smaller buttons and the larger buttons can be clicked. They
+reside in the same grid-cell. I don't know whether this is a 
+bug or a feature really, but this was quite hilarious to see.
+In the event that I may forget this, I'll keep this here as
+a reference.
+
+If you want to pad the grid you can use the following method:
+
+    LibUI.grid_set_padded(grid, 25)
+
+You can specify the alignment for an individual grid. For
+instance, via <b>uiAlignCenter</b> you can align a grid
+to the center. (It seems as if uiAlignCenter is only
+used in a grid, though, so it seems as if we can not
+align it elsewhere.)
 
 ADD_CONTACT_INFORMATION
