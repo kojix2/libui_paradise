@@ -355,6 +355,9 @@ the function.
 
 ## How to use an 'Open File' button
 
+Most graphical user interfaces have an "open a local file"
+functionality.
+
 I came up with the following solution for now:
 
     outer_vbox = padded_vbox

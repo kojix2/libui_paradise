@@ -273,12 +273,31 @@ class Pointer # === Fiddle::Pointer
   # ========================================================================= #
   def append(
       this_widget,
-      padding_to_use = 1
+      padding_to_use = 1,
+      *remaining_arguments
     )
     current_widget = available_pointers?[self.object_id] # This will be an Array.
     _pointer = current_widget.first # Not used currently in this method.
     type     = current_widget.last
     case type
+    # ======================================================================= #
+    # === :grid
+    #
+    # This entry-point is specifically for a ui-grid element.
+    # ======================================================================= #
+    when :grid
+      LibUI.grid_append(
+        self,
+        this_widget.to_s,
+        padding_to_use,
+        remaining_arguments[0],
+        remaining_arguments[1],
+        remaining_arguments[2],
+        remaining_arguments[3],
+        remaining_arguments[4],
+        remaining_arguments[5],
+        remaining_arguments[6]
+      )
     # ======================================================================= #
     # === :tab
     #
@@ -991,5 +1010,8 @@ class Pointer # === Fiddle::Pointer
   def very_light_yellowish_background; end
   def remove_background; end
   def rounded_border(a = '', b = '', c = ''); end
+  def bblack4; end
+  def on_mouse_click_select_everything; end
+  def font=(i = ''); end
 
 end; end
