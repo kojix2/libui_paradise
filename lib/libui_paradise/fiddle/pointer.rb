@@ -273,12 +273,31 @@ class Pointer # === Fiddle::Pointer
   # ========================================================================= #
   def append(
       this_widget,
-      padding_to_use = 1
+      padding_to_use = 1,
+      *remaining_arguments
     )
     current_widget = available_pointers?[self.object_id] # This will be an Array.
     _pointer = current_widget.first # Not used currently in this method.
     type     = current_widget.last
     case type
+    # ======================================================================= #
+    # === :grid
+    #
+    # This entry-point is specifically for a ui-grid element.
+    # ======================================================================= #
+    when :grid
+      LibUI.grid_append(
+        self,
+        this_widget.to_s,
+        padding_to_use,
+        remaining_arguments[0],
+        remaining_arguments[1],
+        remaining_arguments[2],
+        remaining_arguments[3],
+        remaining_arguments[4],
+        remaining_arguments[5],
+        remaining_arguments[6]
+      )
     # ======================================================================= #
     # === :tab
     #
@@ -646,20 +665,6 @@ class Pointer # === Fiddle::Pointer
   end; alias on_click_event on_clicked # === on_click_event
 
   # ========================================================================= #
-  # === on_key_press_event
-  # ========================================================================= #
-  def on_key_press_event(&block)
-    e 'NOT YET IMPLEMENTED.'
-  end
-
-  # ========================================================================= #
-  # === on_button_press_event
-  # ========================================================================= #
-  def on_button_press_event(&block)
-    e 'NOT YET IMPLEMENTED'
-  end
-
-  # ========================================================================= #
   # === available_pointers?
   # ========================================================================= #
   def available_pointers?
@@ -916,10 +921,13 @@ class Pointer # === Fiddle::Pointer
   # === Skeleton methods:
   #
   # A "skeleton" method is one that doesn't do anything right now. These
-  # were added to increase compatibility with the gtk_paradise gem. Some
-  # of these skeleton methods may become real methods one day, depending
-  # on how sophisticated the libui code will be - but until then we will
-  # simply use different options on different toolkits.
+  # were added to increase compatibility with the gtk_paradise gem in
+  # particular.
+  #
+  # Some of these skeleton methods may become real methods one day,
+  # depending on how sophisticated the libui code will be - but
+  # until then we will simply use different options on different
+  # toolkits.
   # ========================================================================= #
   def bblack1; end
   def bblack2; end
@@ -991,5 +999,33 @@ class Pointer # === Fiddle::Pointer
   def very_light_yellowish_background; end
   def remove_background; end
   def rounded_border(a = '', b = '', c = ''); end
+  def bblack4; end
+  def on_mouse_click_select_everything; end
+  def font=(i = ''); end
+  def set_activates_default(i = true); end
+  def enable_events; end
+  def do_focus; end
+  def border(i = '', *a); end
+  def fancy_hint(i = ''); end
+  def fancy_hints(i = ''); end
+  def fancy_hint=(i = ''); end
+  def fancy_hints=(i = ''); end
+  def shadow_hint=(i = ''); end
+  def on_enter_key(i = ''); end
+  def signal_connect(i = ''); end
+
+  # ========================================================================= #
+  # === on_key_press_event
+  # ========================================================================= #
+  def on_key_press_event(&block)
+    # e 'NOT YET IMPLEMENTED.'
+  end
+
+  # ========================================================================= #
+  # === on_button_press_event
+  # ========================================================================= #
+  def on_button_press_event(&block)
+    # e 'NOT YET IMPLEMENTED'
+  end
 
 end; end

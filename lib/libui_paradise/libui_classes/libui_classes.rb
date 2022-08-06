@@ -1087,6 +1087,14 @@ module Extensions # === LibuiParadise::Extensions
   def self.label(
       i = ''
     )
+    if i.include? '</'
+      # ===================================================================== #
+      # For now we must remove "HTML tags" from the given input. Perhaps
+      # at some later point in time we can retain them.
+      # ===================================================================== #
+      i = i.dup if i.frozen?
+      i.gsub!(%r{<[^>]+>}, '')
+    end
     _ = ::LibUI.new_label(i.to_s)
     add_to_the_registered_widgets(_, __method__)
     return _
@@ -1096,14 +1104,19 @@ module Extensions # === LibuiParadise::Extensions
 
   # ========================================================================= #
   # === label
+  #
+  # The last two aliases, left_aligned_label, should be different, but
+  # right now I don't know how to do this in libui.
   # ========================================================================= #
   def label(
       i = ''
     )
     ::LibuiParadise::Extensions.label(i)
-  end; alias text     label # === text
-       alias ui_text  label # === ui_text
-       alias ui_label label # === ui_label
+  end; alias text               label # === text
+       alias ui_text            label # === ui_text
+       alias ui_label           label # === ui_label
+       alias left_aligned_label label # === left_aligned_label
+       alias left_aligned_text  label # === left_aligned_text
 
   # ========================================================================= #
   # === bold_label
@@ -1218,6 +1231,13 @@ module Extensions # === LibuiParadise::Extensions
     )
     return ::LibuiParadise::Extensions.area(i)
   end; alias area_handler area # === area_handler
+
+  # ========================================================================= #
+  # === is_on_windows?
+  # ========================================================================= #
+  def is_on_windows?
+    Gem.win_platform?
+  end
 
 end
 
