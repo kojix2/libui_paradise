@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">27.07.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">01:37:26</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">06.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:41:16</span> o'clock.
 
 ## The libui_paradise project
 
@@ -357,6 +357,9 @@ So, again - it is best to split up the skeleton UI from
 the function.
 
 ## How to use an 'Open File' button
+
+Most graphical user interfaces have an "open a local file"
+functionality.
 
 I came up with the following solution for now:
 
