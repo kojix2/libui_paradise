@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">06.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:41:16</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">06.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">19:04:21</span> o'clock.
 
 ## The libui_paradise project
 
@@ -284,7 +284,7 @@ and because I'd otherwise may have to use "button = button" aka "button = button
 which may be confusing- Thus, using **ui_button()** appeared to make more
 sense in this regard.
 
-## How to add a margin in LibUI:
+## How to add a margin in LibUI
 
 Use something like:
 
@@ -358,7 +358,7 @@ the function.
 
 ## How to use an 'Open File' button
 
-Most graphical user interfaces have an "open a local file"
+Most <b>graphical user interfaces</b> have an "open a local file"
 functionality.
 
 I came up with the following solution for now:
@@ -434,15 +434,6 @@ Since as of 2022 I prefer the longer variant, e. g. **LibUI**init. The
 old UI constant ("alias") will be retained, but new code added to the
 libui_paradise gem will not use **UI** - instead the slightly longer
 **LibUI** is used.
-
-## UI.new_button()
-
-UI.new_button allows us to create a new button.
-
-Examples:
-
-    button1 = UI.new_button('Text')
-    button2 = UI.new_button('▶')
   
 ## Subclassing
 
@@ -893,6 +884,24 @@ Here is an image, from kotlin-libui, how this may look on windows:
 
 <img src="https://raw.githubusercontent.com/msink/kotlin-libui/master/samples/controlgallery/controlgallery-windows7.png" style="margin-left: 2em">
 
+## LibUI.new_button() - how to work with buttons in LibUI
+
+<b>LibUI.new_button</b> allows us to create a new button.
+
+Examples:
+
+    button1 = LibUI.new_button('Text')
+    button2 = LibUI.new_button('▶')
+
+Now, we need to "tell" this button what to do when it is
+clicked. This is done via Libui.button_on_clicked().
+
+Example:
+
+    LibUI.button_on_clicked(button) do
+      LibUI.msg_box(MAIN_WINDOW, 'Information', 'You clicked the button')
+    end
+
 ## Enabling / Disabling buttons in libui
 
 This is, assumingly, already possible via:
@@ -912,7 +921,8 @@ In ruby-libui this should be possible via:
     LibUI.control_disable()
     UI.control_disable()
 
-See the example **029_two_buttons_showing_how_to_enable_and_disable_them.rb**
+See the example
+**libui_paradise/examples/complex/011_two_buttons_showing_how_to_enable_and_disable_them.rb**
 in how this works.
 
 ## libui and ruby-libui internals
