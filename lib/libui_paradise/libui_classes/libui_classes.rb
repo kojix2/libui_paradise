@@ -12,51 +12,26 @@ module Extensions # === LibuiParadise::Extensions
   require 'libui_paradise/libui_classes/grid.rb'
 
   # ========================================================================= #
-  # === ui_open_file
+  # === ui_msg_box
+  #
+  # This method is a convenience-wrapper over UI.msg_box().
   # ========================================================================= #
-  def ui_open_file(
-      main_window = ::LibuiParadise::Extensions.main_window?
-    )
-    return ::LibuiParadise::Extensions.open_file(main_window)
-  end
-
-  # ========================================================================= #
-  # === message_box_error
-  # ========================================================================= #
-  def message_box_error(
-      main_window  = LibuiParadise.main_window?,
+  def ui_msg_box(
+      main_window  = :default_window,
       title_to_use = '',
       whatever     = ''
     )
-    return ::LibuiParadise::Extensions.message_box_error(
+    ::LibuiParadise::Extensions.msg_box(
       main_window,
       title_to_use,
       whatever
     )
-  end; alias ui_msg_box_error          message_box_error # === ui_msg_box_error
-       alias ui_error_msg              message_box_error # === ui_error_msg
-       alias ui_error_message          message_box_error # === ui_error_message
-       alias error_message_to_the_user message_box_error # === error_message_to_the_user
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.message_box_error
-  # ========================================================================= #
-  def self.message_box_error(
-      main_window  = LibuiParadise.main_window?,
-      title_to_use = '',
-      whatever     = ''
-    )
-    _ = ::LibUI.msg_box_error(
-      main_window,
-      title_to_use,
-      whatever
-    )
-    add_to_the_registered_widgets(_, __method__)
-    return _
-  end; self.instance_eval { alias ui_msg_box_error          message_box_error } # === LibuiParadise::Extensions.ui_msg_box_error
-       self.instance_eval { alias ui_error_msg              message_box_error } # === LibuiParadise::Extensions.ui_error_msg
-       self.instance_eval { alias ui_error_message          message_box_error } # === LibuiParadise::Extensions.ui_error_message
-       self.instance_eval { alias error_message_to_the_user message_box_error } # === LibuiParadise::Extensions.error_message_to_the_user
+  end; alias message_to_the_user    ui_msg_box # === message_to_the_user
+       alias message_box            ui_msg_box # === message_box
+       alias popup_over_this_widget ui_msg_box # === popup_over_this_widget
+       alias popup_message          ui_msg_box # === popup_message
+       # alias msg_box                ui_msg_box # === msg_box
+       # ^^^ this would lead to an error.
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.msg_box
@@ -103,37 +78,72 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias popup_over_this_widget msg_box } # === LibuiParadise::Extensions.popup_over_this_widget
 
   # ========================================================================= #
-  # === ui_msg_box
-  #
-  # This method is a convenience-wrapper over UI.msg_box().
+  # === LibuiParadise::Extensions.message_box_error
   # ========================================================================= #
-  def ui_msg_box(
-      main_window  = :default_window,
+  def self.message_box_error(
+      main_window  = LibuiParadise.main_window?,
       title_to_use = '',
       whatever     = ''
     )
-    ::LibuiParadise::Extensions.msg_box(
+    _ = ::LibUI.msg_box_error(
       main_window,
       title_to_use,
       whatever
     )
-  end; alias message_to_the_user    ui_msg_box # === message_to_the_user
-       alias message_box            ui_msg_box # === message_box
-       alias popup_over_this_widget ui_msg_box # === popup_over_this_widget
-       alias popup_message          ui_msg_box # === popup_message
-       # alias msg_box                ui_msg_box # === msg_box
-       # ^^^ this would lead to an error.
+    add_to_the_registered_widgets(_, __method__)
+    return _
+  end; self.instance_eval { alias ui_msg_box_error          message_box_error } # === LibuiParadise::Extensions.ui_msg_box_error
+       self.instance_eval { alias ui_error_msg              message_box_error } # === LibuiParadise::Extensions.ui_error_msg
+       self.instance_eval { alias ui_error_message          message_box_error } # === LibuiParadise::Extensions.ui_error_message
+       self.instance_eval { alias error_message_to_the_user message_box_error } # === LibuiParadise::Extensions.error_message_to_the_user
+
+  # ========================================================================= #
+  # === message_box_error
+  # ========================================================================= #
+  def message_box_error(
+      main_window  = LibuiParadise.main_window?,
+      title_to_use = '',
+      whatever     = ''
+    )
+    return ::LibuiParadise::Extensions.message_box_error(
+      main_window,
+      title_to_use,
+      whatever
+    )
+  end; alias ui_msg_box_error          message_box_error # === ui_msg_box_error
+       alias ui_error_msg              message_box_error # === ui_error_msg
+       alias ui_error_message          message_box_error # === ui_error_message
+       alias error_message_to_the_user message_box_error # === error_message_to_the_user
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.open_file
+  #
+  # This method can be used to open a local file, via a button, the
+  # "open-file" button. Furthermore a begin/rescue clause is used to
+  # avoid "NULL pointer given" errors. At a later time we may
+  # have to fine-tune this, but for now this shall suffice.
   # ========================================================================= #
   def self.open_file(
       main_window = ::LibuiParadise::Extensions.main_window?
     )
-    _ = ::LibUI.open_file(main_window)
-    add_to_the_registered_widgets(_, __method__)
-    return _
+    begin
+      _ = ::LibUI.open_file(main_window)
+      add_to_the_registered_widgets(_, __method__)
+      return _
+    rescue ArgumentError => _error # Rescue #<ArgumentError: NULL pointer given> here.
+      # pp _error
+      return nil
+    end
   end; self.instance_eval { alias ui_open_file open_file } # === LibuiParadise::Extensions.ui_open_file
+
+  # ========================================================================= #
+  # === ui_open_file
+  # ========================================================================= #
+  def ui_open_file(
+      main_window = ::LibuiParadise::Extensions.main_window?
+    )
+    return ::LibuiParadise::Extensions.open_file(main_window)
+  end
 
   # ========================================================================= #
   # === open_file
@@ -1346,15 +1356,6 @@ def self.checkbox(i = '')
 end
 
 # =========================================================================== #
-# === LibuiParadise.open_file
-# =========================================================================== #
-def self.open_file(
-    main_window = LibuiParadise::Extensions.main_window?
-  )
-  return ::LibuiParadise::Extensions.open_file(main_window)
-end; self.instance_eval { alias ui_open_file open_file } # === LibuiParadise.ui_open_file
-
-# =========================================================================== #
 # === LibuiParadise.msg_box
 # =========================================================================== #
 def self.msg_box(
@@ -1362,6 +1363,11 @@ def self.msg_box(
     title_to_use = '',
     whatever     = ''
   )
+  if main_window.is_a?(String) and title_to_use.is_a?(String) and
+    title_to_use.empty?
+    title_to_use = main_window.dup
+    main_window = :default_window
+  end
   ::LibuiParadise::Extensions.msg_box(
     main_window,
     title_to_use,
@@ -1507,5 +1513,23 @@ def self.entry(
   )
   ::LibuiParadise::Extensions.entry(optional_text)
 end; self.instance_eval { alias ui_entry entry } # === LibuiParadise.ui_entry
+
+# =========================================================================== #
+# === LibuiParadise.open_file
+#
+# Simple delegator towards LibuiParadise::Extensions.open_file().
+# =========================================================================== #
+def self.open_file(
+    main_window = LibuiParadise::Extensions.main_window?
+  )
+  return ::LibuiParadise::Extensions.open_file(main_window)
+end; self.instance_eval { alias ui_open_file open_file } # === LibuiParadise.ui_open_file
+
+# =========================================================================== #
+# === LibuiParadise.set_main_window
+# =========================================================================== #
+def self.set_main_window(i)
+  ::LibuiParadise::Extensions.set_main_window(i)
+end
 
 end

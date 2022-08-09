@@ -28,12 +28,12 @@ class Prototype # === LibuiParadise::GUI::LibUI::Prototype
   # ========================================================================= #
   # === WIDTH
   # ========================================================================= #
-  WIDTH = 600
+  WIDTH = 680
 
   # ========================================================================= #
   # === HEIGHT
   # ========================================================================= #
-  HEIGHT = 480
+  HEIGHT = 520
 
   # ========================================================================= #
   # === initialize
@@ -74,15 +74,15 @@ class Prototype # === LibuiParadise::GUI::LibUI::Prototype
     hbox_on_top = padded_hbox
     button_refresh = ui_button('Refresh')
     button_refresh.on_clicked {
-      e 'TODO: Refresh this...'
+      e 'TODO: Refresh this ... or add any other functionality.'
     }
-    button_quit = quit_button
     hbox_on_top.maximal(button_refresh)
-    hbox_on_top.maximal(button_quit)
+    hbox_on_top.maximal(quit_button)
     outer_vbox.minimal(hbox_on_top)
     outer_vbox.add_hsep
 
     grid = ui_padded_grid
+    #                         widget, left, top, xspan, yspan, hexpand, halign, vexpand, valign
     grid.ui_grid_append(text('Left'),  0, 0, 1, 1, 0, 0.5, 1, 0)
     grid.ui_grid_append(text('Right'), 1, 0, 1, 1, 0, 0.5, 1, 0)
 
