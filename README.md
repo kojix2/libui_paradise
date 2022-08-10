@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">08.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">14:36:17</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">20:39:03</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1902,6 +1902,33 @@ instance, via <b>uiAlignCenter</b> you can align a grid
 to the center. (It seems as if uiAlignCenter is only
 used in a grid, though, so it seems as if we can not
 align it elsewhere.)
+
+In <b>August 2022</b> I got fed up with the API, so I
+added a new API to Libui-grid using a Hash.
+
+The available keywords are, to keep it simple, the
+following:
+
+    left
+    top
+    xspan
+    yspan
+    hexpand
+    halign
+    vexpand
+    valign
+
+The file <b>examples/complex/016_grid_example.rb</b>
+shows this new API, mixed with the old, original
+API.
+
+Usage example for the new API:
+
+    grid = libui_grid
+    grid.hash_grid(
+      text('Yo7'),
+      { left: 2, top: 3, xspan: 3, yspan: 3, hexpand: 0, halign: 0, vexpand: 0, valign: 0 }
+    )
 
 
 ## Contact information and mandatory 2FA coming up in 2022
