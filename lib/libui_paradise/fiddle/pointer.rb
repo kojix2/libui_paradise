@@ -18,6 +18,195 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === hash_grid
+  #
+  # Usage example:
+  #
+  #   hash_grid(text('Yo6'), { left: 0, top: 3, xspan: 1, yspan: 1, hexpand: 0, halign: 0, vexpand: 0, valign: 0 })
+  #
+  # ========================================================================= #
+  def hash_grid(
+      pass_this_widget,
+      hash = {}
+    )
+    array_to_be_passed = []
+    # ======================================================================= #
+    # === :left
+    # ======================================================================= #
+    if hash.has_key? :left
+      array_to_be_passed << hash[:left]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :top
+    # ======================================================================= #
+    if hash.has_key? :top
+      array_to_be_passed << hash[:top]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :xspan
+    # ======================================================================= #
+    if hash.has_key? :xspan
+      array_to_be_passed << hash[:xspan]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :yspan
+    # ======================================================================= #
+    if hash.has_key? :yspan
+      array_to_be_passed << hash[:yspan]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :hexpand
+    # ======================================================================= #
+    if hash.has_key? :hexpand
+      array_to_be_passed << hash[:hexpand]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :halign
+    # ======================================================================= #
+    if hash.has_key? :halign
+      array_to_be_passed << hash[:halign]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :vexpand
+    # ======================================================================= #
+    if hash.has_key? :vexpand
+      array_to_be_passed << hash[:vexpand]
+    else
+      array_to_be_passed << 0
+    end
+    # ======================================================================= #
+    # === :valign
+    # ======================================================================= #
+    if hash.has_key? :valign
+      array_to_be_passed << hash[:valign]
+    else
+      array_to_be_passed << 0
+    end
+    ui_grid_append(pass_this_widget, *array_to_be_passed)
+  end
+
+  # ========================================================================= #
+  # === ui_grid_append
+  #
+  # This method can be used to append onto a grid in LibUI.
+  #
+  # Usage example:
+  #
+  #   grid.grid_append(text('Right'), 1, 0, 1, 1, 0, 0.5, 1, 0)
+  #
+  # ========================================================================= #
+  def ui_grid_append(
+      widget_to_append,
+      left    = 0,
+      top     = 0,
+      xspan   = 1,
+      yspan   = 1,     # 
+      hexpand = 0, # A "boolean". 0 means false here.
+      halign  = 0,
+      vexpand = 0, # A "boolean". 0 means false here.
+      valign  = 0
+    )
+    # ======================================================================= #
+    # The signature in Go is:
+    #
+    #   Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
+    #
+    # ======================================================================= #
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    _type       = hash[object_id].last # This should be :grid. But it is not used here.
+    # ======================================================================= #
+    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
+    #  0,    0,    2,     1,      0,      0,       1,      0
+    # ======================================================================= #
+    LibUI.grid_append(
+      this_widget,
+      widget_to_append,
+      left,
+      top,
+      xspan,
+      yspan,
+      hexpand,
+      halign,
+      vexpand,
+      valign
+    )
+  end; alias grid_append ui_grid_append # === grid_append
+
+  # ========================================================================= #
+  # === append                                          (append tag, add tag)
+  #
+  # This is simply a wrapper over LibUI.box_append().
+  # ========================================================================= #
+  def append(
+      this_widget,
+      padding_to_use = 1,
+      *remaining_arguments
+    )
+    current_widget = available_pointers?[self.object_id] # This will be an Array.
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :grid
+    #
+    # This entry-point is specifically for a ui-grid element.
+    # ======================================================================= #
+    when :grid
+      LibUI.grid_append(
+        self,
+        this_widget.to_s,
+        padding_to_use,
+        remaining_arguments[0],
+        remaining_arguments[1],
+        remaining_arguments[2],
+        remaining_arguments[3],
+        remaining_arguments[4],
+        remaining_arguments[5],
+        remaining_arguments[6]
+      )
+    # ======================================================================= #
+    # === :tab
+    #
+    # This is specifically for the notebook-tab. In this case the argument
+    # names do not make a lot of sense. For instance, this_widget is
+    # actually the text-title for the tab, and padding_to_use is the
+    # actual widget that will be embedded. Because this is, however had,
+    # the "minor use case", compared to the subsequent "else" clause, I
+    # will keep the name as-is. The comment here should be kept, in order
+    # to explain this peculiar oddity though.
+    # ======================================================================= #
+    when :tab
+      LibUI.tab_append(self, this_widget.to_s, padding_to_use)
+    # ======================================================================= #
+    # === :window
+    #
+    # Add support for the toplevel window here, as of September 2021.
+    # ======================================================================= #
+    when :window
+      LibUI.window_set_child(self, this_widget)
+    else # This is the default.
+      LibUI.box_append(
+        self, this_widget, padding_to_use
+      )
+    end
+  end; alias add append # === add
+       alias <<  append # === <<
+
+  # ========================================================================= #
   # === clear
   # ========================================================================= #
   def clear(
@@ -267,66 +456,6 @@ class Pointer # === Fiddle::Pointer
   end
 
   # ========================================================================= #
-  # === append                                          (append tag, add tag)
-  #
-  # This is simply a wrapper over LibUI.box_append().
-  # ========================================================================= #
-  def append(
-      this_widget,
-      padding_to_use = 1,
-      *remaining_arguments
-    )
-    current_widget = available_pointers?[self.object_id] # This will be an Array.
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :grid
-    #
-    # This entry-point is specifically for a ui-grid element.
-    # ======================================================================= #
-    when :grid
-      LibUI.grid_append(
-        self,
-        this_widget.to_s,
-        padding_to_use,
-        remaining_arguments[0],
-        remaining_arguments[1],
-        remaining_arguments[2],
-        remaining_arguments[3],
-        remaining_arguments[4],
-        remaining_arguments[5],
-        remaining_arguments[6]
-      )
-    # ======================================================================= #
-    # === :tab
-    #
-    # This is specifically for the notebook-tab. In this case the argument
-    # names do not make a lot of sense. For instance, this_widget is
-    # actually the text-title for the tab, and padding_to_use is the
-    # actual widget that will be embedded. Because this is, however had,
-    # the "minor use case", compared to the subsequent "else" clause, I
-    # will keep the name as-is. The comment here should be kept, in order
-    # to explain this peculiar oddity though.
-    # ======================================================================= #
-    when :tab
-      LibUI.tab_append(self, this_widget.to_s, padding_to_use)
-    # ======================================================================= #
-    # === :window
-    #
-    # Add support for the toplevel window here, as of September 2021.
-    # ======================================================================= #
-    when :window
-      LibUI.window_set_child(self, this_widget)
-    else # This is the default.
-      LibUI.box_append(
-        self, this_widget, padding_to_use
-      )
-    end
-  end; alias add append # === add
-       alias <<  append # === <<
-
-  # ========================================================================= #
   # === append_this_string
   #
   # This method can be used to append a String to an existing String.
@@ -376,6 +505,11 @@ class Pointer # === Fiddle::Pointer
     end
     case type
     # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      LibUI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
+    # ======================================================================= #
     # === :button
     #
     # This entry point probably does not work, so don't use it.
@@ -388,11 +522,6 @@ class Pointer # === Fiddle::Pointer
     when :vbox,
          :hbox
       LibUI.box_set_padded(self, pad_n_px)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      LibUI.grid_set_padded(self, pad_n_px) # This line should be changed at a later time.
     # ======================================================================= #
     # === :entry
     # ======================================================================= #
@@ -560,55 +689,6 @@ class Pointer # === Fiddle::Pointer
     else
     end
   end
-
-  # ========================================================================= #
-  # === ui_grid_append
-  #
-  # This method can be used to append onto a grid in LibUI.
-  #
-  # Usage example:
-  #
-  #   grid.grid_append(text('Right'), 1, 0, 1, 1, 0, 0.5, 1, 0)
-  #
-  # ========================================================================= #
-  def ui_grid_append(
-      widget_to_append,
-      left    = 0,
-      top     = 0,
-      xspan   = 1,
-      yspan   = 1,     # 
-      hexpand = false, # A "boolean".
-      halign  = 0,
-      vexpand = false, # A "boolean".
-      valign  = 0
-    )
-    # ======================================================================= #
-    # The signature in Go is:
-    #
-    #   Append(child Control, left, top int, xspan, yspan int, hexpand bool, halign Align, vexpand bool, valign Align)
-    #
-    # ======================================================================= #
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    _type       = hash[object_id].last # This should be :grid. But it is not used here.
-    # ======================================================================= #
-    # left, top, xspan, yspan, hexpand, halign, vexpand, valign
-    #  0,    0,    2,     1,      0,      0,       1,      0
-    # ======================================================================= #
-    LibUI.grid_append(
-      this_widget,
-      widget_to_append,
-      left,
-      top,
-      xspan,
-      yspan,
-      hexpand,
-      halign,
-      vexpand,
-      valign
-    )
-  end; alias grid_append ui_grid_append # === grid_append
 
   # ========================================================================= #
   # === populate

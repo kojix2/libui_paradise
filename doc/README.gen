@@ -1789,4 +1789,31 @@ to the center. (It seems as if uiAlignCenter is only
 used in a grid, though, so it seems as if we can not
 align it elsewhere.)
 
+In <b>August 2022</b> I got fed up with the API, so I
+added a new API to Libui-grid using a Hash.
+
+The available keywords are, to keep it simple, the
+following:
+
+    left
+    top
+    xspan
+    yspan
+    hexpand
+    halign
+    vexpand
+    valign
+
+The file <b>examples/complex/016_grid_example.rb</b>
+shows this new API, mixed with the old, original
+API.
+
+Usage example for the new API:
+
+    grid = libui_grid
+    grid.hash_grid(
+      text('Yo7'),
+      { left: 2, top: 3, xspan: 3, yspan: 3, hexpand: 0, halign: 0, vexpand: 0, valign: 0 }
+    )
+
 ADD_CONTACT_INFORMATION
