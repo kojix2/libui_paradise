@@ -49,30 +49,33 @@ def make_attribute_string
   # ========================================================================= #
   # === Use a bigger font next
   # ========================================================================= #
-  bigger_font = UI.new_size_attribute(35)
+  bigger_font = UI.new_size_attribute(45)
   append_with_attribute(attr_str, 'font size', bigger_font, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
-  attr1 = UI.new_weight_attribute(UI::TextWeightBold)
+  # ========================================================================= #
+  # === Make bold text next                                        (bold tag)
+  # ========================================================================= #
+  attr1 = LibUI.new_weight_attribute(LibUI::TextWeightBold)
   append_with_attribute(attr_str, 'font weight', attr1, nil)
-  UI.attributed_string_append_unattributed(attr_str, ', ')
+  LibUI.attributed_string_append_unattributed(attr_str, ', ')
 
-  attr1 = UI.new_italic_attribute(UI::TextItalicItalic)
+  attr1 = LibUI.new_italic_attribute(UI::TextItalicItalic)
   append_with_attribute(attr_str, 'font italicness', attr1, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
-  attr1 = UI.new_stretch_attribute(UI::TextStretchCondensed)
+  attr1 = LibUI.new_stretch_attribute(UI::TextStretchCondensed)
   append_with_attribute(attr_str, 'font stretch', attr1, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
   # ========================================================================= #
   # Influence the text-colour via RGB values.
   # ========================================================================= #
-  attr1 = UI.new_color_attribute(0.75, 0.25, 0.5, 0.75)
+  attr1 = LibUI.new_color_attribute(0.75, 0.25, 0.5, 0.75)
   append_with_attribute(attr_str, 'text color', attr1, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
-  attr1 = UI.new_background_attribute(0.5, 0.5, 0.25, 0.5)
+  attr1 = LibUI.new_background_attribute(0.5, 0.5, 0.25, 0.5)
   append_with_attribute(attr_str, 'text background color', attr1, nil)
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
@@ -81,14 +84,14 @@ def make_attribute_string
   UI.attributed_string_append_unattributed(attr_str, ', ')
 
   UI.attributed_string_append_unattributed(attr_str, 'and ')
-  attr1 = UI.new_underline_attribute(UI::UnderlineDouble)
-  attr2 = UI.new_underline_color_attribute(UI::UnderlineColorCustom, 1.0, 0.0, 0.5, 1.0)
+  attr1 = LibUI.new_underline_attribute(UI::UnderlineDouble)
+  attr2 = LibUI.new_underline_color_attribute(UI::UnderlineColorCustom, 1.0, 0.0, 0.5, 1.0)
   append_with_attribute(attr_str, 'underline color', attr1, attr2)
   UI.attributed_string_append_unattributed(attr_str, '. ')
 
   UI.attributed_string_append_unattributed(attr_str, 'Furthermore, there are attributes allowing for ')
-  attr1 = UI.new_underline_attribute(UI::UnderlineSuggestion)
-  attr2 = UI.new_underline_color_attribute(UI::UnderlineColorSpelling, 0, 0, 0, 0)
+  attr1 = LibUI.new_underline_attribute(UI::UnderlineSuggestion)
+  attr2 = LibUI.new_underline_color_attribute(UI::UnderlineColorSpelling, 0, 0, 0, 0)
   append_with_attribute(attr_str, 'special underlines for indicating spelling errors', attr1, attr2)
   UI.attributed_string_append_unattributed(attr_str, ' (and other types of errors) ')
 
@@ -106,19 +109,27 @@ def make_attribute_string
   UI.attributed_string_append_unattributed(attr_str, ").\n")
 
   UI.attributed_string_append_unattributed(attr_str,
-                                           'Use the controls opposite to the text to control properties of the text.')
+                                           'Use the controls '\
+                                           'opposite to the text '\
+                                           'to control properties of the text.')
   attr_str
 end
 
+# =========================================================================== #
 # === on_font_changed
+# =========================================================================== #
 def on_font_changed(area)
   UI.area_queue_redraw_all(area)
 end
 
+# =========================================================================== #
+# === on_combobox_selected
+# =========================================================================== #
 def on_combobox_selected(area)
   UI.area_queue_redraw_all(area)
 end
 
+# === draw_event
 def draw_event(adp, attr_str, font_button, alignment)
   area_draw_params = UI::FFI::AreaDrawParams.new(adp)
   default_font = UI::FFI::FontDescriptor.malloc
@@ -143,7 +154,6 @@ UI.init
 
 handler = UI::FFI::AreaHandler.malloc
 handler.to_ptr.free = Fiddle::RUBY_FREE
-
 handler_draw_event = Fiddle::Closure::BlockCaller.new(0, [1, 1, 1]) do |_, _area, adp|
   draw_event(adp, @attr_str, @font_button, @alignment)
 end

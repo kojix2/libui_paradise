@@ -12,6 +12,30 @@ module Extensions # === LibuiParadise::Extensions
   require 'libui_paradise/libui_classes/grid.rb'
 
   # ========================================================================= #
+  # === LibuiParadise::Extensions.wrapper_new_progress_bar
+  #
+  # The name of this method contains "wrapper_" because there already
+  # exists a method called LibUI.new_progress_bar().
+  #
+  # The upstream C API for the libui-progressbar can be found here:
+  #
+  #   https://github.com/andlabs/libui/blob/master/unix/progressbar.c
+  #
+  # ========================================================================= #
+  def self.wrapper_new_progress_bar
+    _ = ::LibUI.new_progress_bar
+    add_to_the_registered_widgets(_, :new_progress_bar)
+    return _
+  end
+
+  # ========================================================================= #
+  # === wrapper_new_progress_bar
+  # ========================================================================= #
+  def wrapper_new_progress_bar
+    return ::LibuiParadise::Extensions.wrapper_new_progress_bar
+  end; alias progress_bar wrapper_new_progress_bar # === progress_bar
+
+  # ========================================================================= #
   # === ui_msg_box
   #
   # This method is a convenience-wrapper over UI.msg_box().
@@ -296,27 +320,6 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_main_window        ui_margined_main_window # === ui_main_window
        alias ui_window             ui_margined_main_window # === ui_window
        alias window_or_vbox        ui_margined_main_window # === window_or_vbox
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.new_progress_bar
-  #
-  # The upstream C API for the libui-progressbar can be found here:
-  #
-  #   https://github.com/andlabs/libui/blob/master/unix/progressbar.c
-  #
-  # ========================================================================= #
-  def self.new_progress_bar
-    _ = ::LibUI.new_progress_bar
-    add_to_the_registered_widgets(_, __method__)
-    return _
-  end
-
-  # ========================================================================= #
-  # === new_progress_bar
-  # ========================================================================= #
-  def new_progress_bar
-    return ::LibuiParadise::Extensions.new_progress_bar
-  end
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.slider

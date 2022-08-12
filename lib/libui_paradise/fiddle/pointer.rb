@@ -18,6 +18,176 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === set_text
+  #
+  # This method can be used to set the text of a particular libui-widget,
+  # in particular entries.
+  # ========================================================================= #
+  def set_text(
+      display_this_text = '', # This is the text that will be used.
+      type              = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    if type.nil?
+      type = hash[object_id].last # This should be :grid. But it is not used here.
+    end
+    case type
+    # ======================================================================= #
+    # === :new_progress_bar
+    # ======================================================================= #
+    when :new_progress_bar
+      # This currently does nothing.
+    # ======================================================================= #
+    # === :multiline_entry
+    #
+    # This is a text-view widget actually.
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :text
+    # ======================================================================= #
+    when :text,
+         :label
+      LibUI.label_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :textview
+    # ======================================================================= #
+    when :textview
+      LibUI.multiline_entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      LibUI.entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    # ======================================================================= #
+    # === :search_entry
+    #
+    # This is specifically for a search-entry.
+    # ======================================================================= #
+    when :search_entry
+      LibUI.entry_set_text(
+        this_widget,
+        display_this_text.to_s
+      )
+    else
+      puts 'Unhandled case in set_text(): '+
+           type.to_s
+    end
+  end; alias set_content set_text # === set_content
+
+  # ========================================================================= #
+  # === text?
+  #
+  # This method queries the content of any widget that may contain text, in
+  # particular entries such as a gtk-entry.
+  # ========================================================================= #
+  def text?(
+      type = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    if type.nil?
+      # ===================================================================== #
+      # In this case we must determine the type in use.
+      # ===================================================================== #
+      if hash.has_key? object_id
+        type = hash[object_id].last # The last entry contains the type.
+      end
+    end
+    case type
+    # ======================================================================= #
+    # === :new_progress_bar
+    #
+    # This is actually a progress-bar.
+    # ======================================================================= #
+    when :new_progress_bar,
+         :progress_bar
+      return LibUI.progress_bar_value(self).to_s
+    # ======================================================================= #
+    # === :multiline_entry
+    #
+    # This is, I believe, synonymous to :textview.
+    # ======================================================================= #
+    when :multiline_entry,
+         :textview
+      return LibUI.multiline_entry_text(self).to_s
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      return LibUI.combobox_selected(self).to_s
+    else # This is the "historic" default. May have to be removed one day.
+      return LibUI.entry_text(self).to_s
+    end
+  end; alias buffer?   text? # === buffer?
+       alias selected? text? # === selected?
+       alias value?    text? # === value?
+
+  # ========================================================================= #
+  # === set_value
+  #
+  # This method has initially been created to assign a value to a
+  # spinbutton. That way the following API is made possible:
+  #
+  #   spinbutton.set_value(42)
+  #
+  # ========================================================================= #
+  def set_value(
+      new_value
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    this_widget = hash[object_id].first
+    type = hash[object_id].last
+    case type
+    # ======================================================================= #
+    # === :new_progress_bar
+    #
+    # This is actually a progress-bar.
+    # ======================================================================= #
+    when :new_progress_bar,
+         :progress_bar
+      LibUI.progress_bar_set_value(this_widget, new_value.to_i)
+    # ======================================================================= #
+    # === :spinbox
+    # ======================================================================= #
+    when :spinbox
+      LibUI.spinbox_set_value(
+        this_widget,
+        new_value.to_i # Must be an Integer.
+      )
+    else
+      e 'Not registered type: '+type.to_s
+    end
+  end; alias value=          set_value # === value=
+       alias start_position= set_value # === start_position=
+
+  # ========================================================================= #
+  # === fraction=
+  #
+  # This is mostly a wrapper to reach ruby-gtk3 compatibility.
+  # ========================================================================= #
+  def fraction=(i = '')
+    i = i.to_i * 100
+    set_value(i)
+  end
+
+  # ========================================================================= #
   # === hash_grid
   #
   # Usage example:
@@ -266,74 +436,6 @@ class Pointer # === Fiddle::Pointer
   end
 
   # ========================================================================= #
-  # === set_text
-  #
-  # This method can be used to set the text of a particular libui-widget,
-  # in particular entries.
-  # ========================================================================= #
-  def set_text(
-      display_this_text = '', # This is the text that will be used.
-      type              = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    if type.nil?
-      type = hash[object_id].last # This should be :grid. But it is not used here.
-    end
-    case type
-    # ======================================================================= #
-    # === :multiline_entry
-    #
-    # This is a text-view widget actually.
-    # ======================================================================= #
-    when :multiline_entry
-      LibUI.multiline_entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :text
-    # ======================================================================= #
-    when :text,
-         :label
-      LibUI.label_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :textview
-    # ======================================================================= #
-    when :textview
-      LibUI.multiline_entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      LibUI.entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    # ======================================================================= #
-    # === :search_entry
-    #
-    # This is specifically for a search-entry.
-    # ======================================================================= #
-    when :search_entry
-      LibUI.entry_set_text(
-        this_widget,
-        display_this_text.to_s
-      )
-    else
-      puts 'Unhandled case in set_text(): '+
-           type.to_s
-    end
-  end; alias set_content set_text # === set_content
-
-  # ========================================================================= #
   # === is_read_only
   # ========================================================================= #
   def is_read_only(
@@ -352,45 +454,6 @@ class Pointer # === Fiddle::Pointer
       puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
     end
   end
-
-  # ========================================================================= #
-  # === text?
-  #
-  # This method queries the content of any widget that may contain text, in
-  # particular entries such as a gtk-entry.
-  # ========================================================================= #
-  def text?(
-      type = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    if type.nil?
-      # ===================================================================== #
-      # In this case we must determine the type in use.
-      # ===================================================================== #
-      if hash.has_key? object_id
-        type = hash[object_id].last # The last entry contains the type.
-      end
-    end
-    case type
-    # ======================================================================= #
-    # === :multiline_entry
-    #
-    # This is, I believe, synonymous to :textview.
-    # ======================================================================= #
-    when :multiline_entry,
-         :textview
-      return LibUI.multiline_entry_text(self).to_s
-    # ======================================================================= #
-    # === :combobox
-    # ======================================================================= #
-    when :combobox
-      return LibUI.combobox_selected(self).to_s
-    else # This is the "historic" default. May have to be removed one day.
-      return LibUI.entry_text(self).to_s
-    end
-  end; alias buffer?   text? # === buffer?
-       alias selected? text? # === selected?
 
   # ========================================================================= #
   # === on_changed
@@ -752,37 +815,6 @@ class Pointer # === Fiddle::Pointer
   end; alias main_hash? available_pointers? # === main_hash?
 
   # ========================================================================= #
-  # === set_value
-  #
-  # This method has initially been created to assign a value to a
-  # spinbutton. That way the following API is made possible:
-  #
-  #   spinbutton.set_value(42)
-  #
-  # ========================================================================= #
-  def set_value(
-      new_value
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    this_widget = hash[object_id].first
-    type = hash[object_id].last
-    case type
-    # ======================================================================= #
-    # === :spinbox
-    # ======================================================================= #
-    when :spinbox
-      LibUI.spinbox_set_value(
-        this_widget,
-        new_value.to_i # Must be an Integer.
-      )
-    else
-      e 'Not registered type: '+type.to_s
-    end
-  end; alias value=          set_value # === value=
-       alias start_position= set_value # === start_position=
-
-  # ========================================================================= #
   # === append_this_array
   # ========================================================================= #
   def append_this_array(array)
@@ -1093,6 +1125,7 @@ class Pointer # === Fiddle::Pointer
   def shadow_hint=(i = ''); end
   def on_enter_key(i = ''); end
   def signal_connect(i = ''); end
+  # def fraction=(i = ''); end
 
   # ========================================================================= #
   # === on_key_press_event
