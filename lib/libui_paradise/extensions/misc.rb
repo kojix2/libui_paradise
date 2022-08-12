@@ -2,6 +2,11 @@
 # Encoding: UTF-8
 # frozen_string_literal: true
 # =========================================================================== #
+# This file should only contain changes that are specific to libui-widgets.
+#
+# Other, more generic helper-code should be in the toplevel_methods/
+# directory instead.
+# =========================================================================== #
 # require 'libui_paradise/extensions/misc.rb
 # =========================================================================== #
 module LibuiParadise
@@ -14,11 +19,18 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === use_gtk3?
+  # ========================================================================= #
+  def use_gtk3?
+    Object.const_defined?(:Gtk)
+  end; alias use_gtk?   use_gtk3? # === use_gtk?
+
+  # ========================================================================= #
   # === gtk3?
   # ========================================================================= #
   def gtk3?
     false
-  end
+  end; alias is_on_gtk? gtk3? # === is_on_gtk?
 
   # ========================================================================= #
   # === return_pwd
@@ -190,13 +202,6 @@ module Extensions # === LibuiParadise::Extensions
       UI.combobox_append(that_combobox, this_entry)
     }
   end
-
-  # ========================================================================= #
-  # === use_gtk3?
-  # ========================================================================= #
-  def use_gtk3?
-    Object.const_defined?(:Gtk)
-  end; alias use_gtk? use_gtk3? # === use_gtk?
 
   # ========================================================================= #
   # === new_brush

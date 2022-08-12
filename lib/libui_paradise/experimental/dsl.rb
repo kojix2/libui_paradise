@@ -10,8 +10,8 @@ end
 
 window {
 
- button {
+  button {
   
- }
+  }
 
 }

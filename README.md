@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">20:39:03</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">11.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:43:42</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1411,12 +1411,6 @@ For "raw" libui, use this:
 
     LibUI.new_password_entry
 
-## Progress Bars in LibUI
-
-Here an image how this may look:
-
-<img src="https://i.imgur.com/i1i4ppZ.png" style="margin-left: 2em">
-
 ## Tables in LibUI
 
 You may be able to create a new table via:
@@ -1929,6 +1923,28 @@ Usage example for the new API:
       text('Yo7'),
       { left: 2, top: 3, xspan: 3, yspan: 3, hexpand: 0, halign: 0, vexpand: 0, valign: 0 }
     )
+
+## Progress Bars in LibUI
+
+Here an image how this may look:
+
+<img src="https://i.imgur.com/i1i4ppZ.png" style="margin-left: 2em">
+
+If you use the LibuiParadise project then you can create a new
+instance of a progress bar via <b>wrapper_new_progress_bar</b>.
+
+Example:
+
+    progress_bar = wrapper_new_progress_bar
+
+To then set a new value, use:
+
+    progress_bar.set_value()
+    progress_bar.set_value(50) # will be 50%
+
+You can then query this value via:
+
+    @progress_bar.value? # This will return a String, though.
 
 
 ## Contact information and mandatory 2FA coming up in 2022
