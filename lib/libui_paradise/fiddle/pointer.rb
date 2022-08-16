@@ -18,6 +18,80 @@ module Fiddle
 class Pointer # === Fiddle::Pointer
 
   # ========================================================================= #
+  # === on_changed
+  #
+  # The idea for this method is to respond to on-changed events, in
+  # particular on a spinbox. Currently it is enabled for a few
+  # widgets, including :entry. This may be expanded at a later time
+  # to add on-changed support for more widgets.
+  #
+  # For a combobox we may have to use this code:
+  #
+  #   LibUI.combobox_on_selected
+  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
+  #   end
+  #
+  # Be sure to pass the proc object into the method, in a block.
+  #
+  # Usage examples:
+  #
+  #   text_entry.on_changed { text_changed_callback }
+  #   slider.on_changed { slider_changed_callback }
+  #
+  # ========================================================================= #
+  def on_changed(&block)
+    current_widget = available_pointers?[self.object_id] # This will be an Array.
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      LibUI.entry_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :multiline_entry
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :spinbox
+    # ======================================================================= #
+    when :spinbox
+      LibUI.spinbox_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :slider
+    #
+    # This is for a slider bar.
+    # ======================================================================= #
+    when :slider
+      LibUI.slider_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :colour_button
+    # ======================================================================= #
+    when :colour_button
+      LibUI.color_button_on_changed(self, block.call, nil)
+    # ======================================================================= #
+    # === :combobox
+    # ======================================================================= #
+    when :combobox
+      LibUI.combobox_on_selected(self, block.call, nil)
+    else
+      e 'Not registered type in .on_changed(): '+type.to_s
+    end
+  end
+
+  # ========================================================================= #
+  # === fraction=
+  #
+  # This is mostly a wrapper to reach ruby-gtk3 compatibility.
+  # ========================================================================= #
+  def fraction=(i = '')
+    i = i * 100
+    set_value(i)
+  end
+
+  # ========================================================================= #
   # === set_text
   #
   # This method can be used to set the text of a particular libui-widget,
@@ -176,16 +250,6 @@ class Pointer # === Fiddle::Pointer
     end
   end; alias value=          set_value # === value=
        alias start_position= set_value # === start_position=
-
-  # ========================================================================= #
-  # === fraction=
-  #
-  # This is mostly a wrapper to reach ruby-gtk3 compatibility.
-  # ========================================================================= #
-  def fraction=(i = '')
-    i = i.to_i * 100
-    set_value(i)
-  end
 
   # ========================================================================= #
   # === hash_grid
@@ -452,69 +516,6 @@ class Pointer # === Fiddle::Pointer
     else
       pp caller()
       puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
-    end
-  end
-
-  # ========================================================================= #
-  # === on_changed
-  #
-  # The idea for this method is to respond to on-changed events, in
-  # particular on a spinbox. Currently it is enabled only for :entry
-  # widgets. This may have to be expanded one day to add more widgets.
-  #
-  # For a combobox we may have to use this code:
-  #
-  #   LibUI.combobox_on_selected
-  #     UI.spinbox_on_changed(self, spinbox_changed_callback, nil)
-  #   end
-  #
-  # Be sure to pass the proc object into the method, in a block.
-  #
-  # Usage examples:
-  #
-  #   text_entry.on_changed { text_changed_callback }
-  #   slider.on_changed { slider_changed_callback }
-  #
-  # ========================================================================= #
-  def on_changed(&block)
-    current_widget = available_pointers?[self.object_id] # This will be an Array.
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :multiline_entry
-    # ======================================================================= #
-    when :multiline_entry
-      LibUI.multiline_entry_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      LibUI.entry_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :spinbox
-    # ======================================================================= #
-    when :spinbox
-      LibUI.spinbox_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :slider
-    #
-    # This is for a slider bar.
-    # ======================================================================= #
-    when :slider
-      LibUI.slider_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :colour_button
-    # ======================================================================= #
-    when :colour_button
-      LibUI.color_button_on_changed(self, block.call, nil)
-    # ======================================================================= #
-    # === :combobox
-    # ======================================================================= #
-    when :combobox
-      LibUI.combobox_on_selected(self, block.call, nil)
-    else
-      e 'Not registered type in .on_changed(): '+type.to_s
     end
   end
 
