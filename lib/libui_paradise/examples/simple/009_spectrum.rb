@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
-#
-# Please play your favorite music or video on your computer
-# when running this spectrum example.
-
+# =========================================================================== #
 require 'libui'
 require 'ffi-portaudio'  # https://github.com/nanki/ffi-portaudio
 require 'numo/pocketfft' # https://github.com/yoshoku/numo-pocketfft
 
+# =========================================================================== #
+# === FFTStream
+# =========================================================================== #
 class FFTStream < FFI::PortAudio::Stream
   def process(input, _output, frame_count, _time_info, _status_flags, _user_data)
     i = Numo::Int16.cast(input.read_array_of_int16(frame_count))
@@ -18,7 +18,7 @@ class FFTStream < FFI::PortAudio::Stream
     @spec || [0] * 512
   end
 end
-
+    
 FFI::PortAudio::API.Pa_Initialize
 
 input = FFI::PortAudio::API::PaStreamParameters.new

@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">11.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:43:42</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">15.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">12:43:26</span> o'clock.
 
 ## The libui_paradise project
 
@@ -821,10 +821,14 @@ The upstream C code for libui-entry, for **unix/**, can be seen here:
 
 https://github.com/andlabs/libui/blob/master/unix/entry.c
 
-## Borderless windows
+## Borderless windows and fullscreen windows
 
 A window that is **borderless: true** will not show any title or
 outside frame. This may be useful for games and what not.
+
+To set the main window to full screen (occupy the whole monitor) do:
+
+   LibUI.window_set_fullscreen(main_window, 1)
 
 ## Spinbutton / Spinbox
 
@@ -1764,59 +1768,6 @@ such as kotlin libui bindings and others.)
 Similar to the first one, but uses a different layout, which
 may be helpful.
 
-## Entries in LibUI (ui_entry)
-
-The official source for an <b>ui_entry</b> for Unix (including Linux systems)
-can be read here:
-
-https://github.com/libui-ng/libui-ng/blob/master/unix/entry.c
-
-Personally I tend to create a new entry element in this way:
-
-    entry = ui_entry
-
-To set new content to it, do:
-
-    entry.set_text('foobar') # Make sure it is a String; that seems to work better.
-
-To query the text content of such an entry, you can use the following API,
-if you use the libui_paradise gem:
-
-    entry.text?
-
-To respond to events look at **OnChanged**.
-
-To see an example where the user may input a password entry, have a
-look at the following file:
-
-    libui_paradise/examples/028_password_entry_example.rb
-
-It can be set read only via:
-
-    entry.read_only # This has not been added into libui-paradise yet.
-
-To respond to on-changed events, you can use:
-
-   UI.entry_on_changed()
-
-Complete example:
-
-    text_changed_callback = proc { |ptr|
-      puts "Current textbox data: '#{UI.entry_text(ptr)}'"
-    }
-
-    text_entry = ui_entry
-    text_entry.set_text('Please enter a command')
-    text_entry.on_changed {
-      text_changed_callback
-    }
-
-The Proc object has to be passed into the {} block variation.
-
-The latter uses:
-
-    UI.entry_on_changed(text_entry, text_changed_callback, nil)
-
 ## Grids in LibUI
 
 The API for creating a new grid in libui is quite complex and
@@ -1945,6 +1896,74 @@ To then set a new value, use:
 You can then query this value via:
 
     @progress_bar.value? # This will return a String, though.
+
+## Entries in LibUI (ui_entry)
+
+The official source for an <b>ui_entry</b> for UNIX (including Linux systems)
+can be read here:
+
+https://github.com/libui-ng/libui-ng/blob/master/unix/entry.c
+
+Personally I tend to <b>create a new entry element</b> in this way:
+
+    entry = ui_entry
+
+    # or, if it shall be more GUI-agnostic, I do this:
+
+    entry1 = entry # where entry is entry() actually, and works for many GUI toolkits then
+
+To <b>set new content</b> to such an entry, do make use
+of the following method call:
+
+    entry.set_text('foobar') # Make sure it is a String; that seems to work better.
+
+To <b>query</b> the text content of such an entry, you can use the following API,
+if you use the libui_paradise gem:
+
+    entry.text?
+
+To respond to events look at the **OnChanged** event.
+
+To see a specific example where the user may input a password entry, have
+a look at the following file that is distributed within the libui_paradise
+gem:
+
+    libui_paradise/examples/complex/012_password_entry_example.rb
+
+An entry can be <b>set read only</b> via:
+
+    entry.read_only # This has not been added into libui-paradise yet.
+
+To <b>respond</b> to <b>on-changed events</b>, you can use:
+
+   LibUI.entry_on_changed()
+
+A more complete example of this:
+
+    text_changed_callback = proc { |ptr|
+      puts "Current textbox data: '#{UI.entry_text(ptr)}'"
+    }
+
+    text_entry = ui_entry
+    text_entry.set_text('Please enter a command')
+    text_entry.on_changed {
+      text_changed_callback
+    }
+
+The Proc object has to be passed into the {} block variation.
+
+The latter uses:
+
+    LibUI.entry_on_changed(text_entry, text_changed_callback, nil)
+
+If you use the libui_paradise gem, and only need to obtain the
+(changed) text of an entry in LibUI, then you can use the
+following simplified method call instead:
+
+    entry = ui_entry
+    entry.on_changed {
+      puts 'The text is now: '+entry.text?
+    }
 
 
 ## Contact information and mandatory 2FA coming up in 2022
