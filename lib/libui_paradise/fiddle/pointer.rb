@@ -329,7 +329,7 @@ class Pointer # === Fiddle::Pointer
       array_to_be_passed << 0
     end
     ui_grid_append(pass_this_widget, *array_to_be_passed)
-  end
+  end; alias hash hash_grid # === hash
 
   # ========================================================================= #
   # === ui_grid_append
@@ -778,14 +778,6 @@ class Pointer # === Fiddle::Pointer
   end
 
   # ========================================================================= #
-  # === main_then_quit
-  # ========================================================================= #
-  def main_then_quit
-    LibUI.main
-    LibUI.quit
-  end
-
-  # ========================================================================= #
   # === show_then_main_then_quit
   #
   # This method ultimately combines three other method calls.
@@ -980,22 +972,6 @@ class Pointer # === Fiddle::Pointer
   end; alias control_show show_the_controls # === control_show
 
   # ========================================================================= #
-  # === close_properly
-  #
-  # This can be invoked via, for instance:
-  #
-  #   main_window.simple_exit
-  #
-  # ========================================================================= #
-  def close_properly
-    LibUI.window_on_closing(self) {
-      LibUI.exit_from(self)
-    }
-  end; alias simple_exit close_properly # === simple_exit
-       alias sane_exit   close_properly # === sane_exit
-       alias should_quit close_properly # === should_quit
-
-  # ========================================================================= #
   # === is_margined                                (margin tag, margined tag)
   #
   # For now this only works on @main_window.
@@ -1029,6 +1005,33 @@ class Pointer # === Fiddle::Pointer
     end
   end; alias uses_a_margin is_margined # === uses_a_margin
        alias has_margin    is_margined # === has_margin
+
+  # ========================================================================= #
+  # === main_then_quit
+  #
+  # We use ::LibUI just in case to avoid any possible name-collisions.
+  # ========================================================================= #
+  def main_then_quit
+    ::LibUI.main
+    ::LibUI.quit
+  end
+
+  # ========================================================================= #
+  # === close_properly
+  #
+  # This can be invoked via, for instance:
+  #
+  #   main_window.simple_exit
+  #
+  # ========================================================================= #
+  def close_properly
+    LibUI.window_on_closing(self) {
+      LibUI.exit_from(self)
+    }
+  end; alias simple_exit close_properly # === simple_exit
+       alias sane_exit   close_properly # === sane_exit
+       alias should_quit close_properly # === should_quit
+       alias do_quit     close_properly # === should_quit
 
   # ========================================================================= #
   # === Skeleton methods:
@@ -1126,6 +1129,8 @@ class Pointer # === Fiddle::Pointer
   def shadow_hint=(i = ''); end
   def on_enter_key(i = ''); end
   def signal_connect(i = ''); end
+  def spacing1=(i = 2); end
+  def spacing2=(i = 2); end
   # def fraction=(i = ''); end
 
   # ========================================================================= #
