@@ -417,7 +417,11 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   # === entry                                                     (entry tag)
   #
-  # This method is tapping into UI.new_entry.
+  # This method is tapping into LibUI.new_entry.
+  #
+  # An alias exists to this method, called hcentered_entry. This currently
+  # does not work for libui, and is thus only added for compatibility
+  # reasons.
   #
   # Usage example:
   #
@@ -428,7 +432,8 @@ module Extensions # === LibuiParadise::Extensions
       optional_text = ''
     )
     ::LibuiParadise::Extensions.entry(optional_text)
-  end; alias ui_entry entry # === ui_entry
+  end; alias ui_entry        entry # === ui_entry
+       alias hcentered_entry entry # === hcentered_entry
 
   # ========================================================================= #
   # === text?
@@ -658,10 +663,11 @@ module Extensions # === LibuiParadise::Extensions
       end_point   = 100
     )
     ::LibuiParadise::Extensions.spinbox(start_point, end_point)
-  end; alias ui_spinbox          spinbox # === ui_spinbox
-       alias ui_spinbutton       spinbox # === ui_spinbutton
-       alias up_and_down_counter spinbox # === up_and_down_counter
-       alias spinbutton          spinbox # === spinbutton
+  end; alias ui_spinbox           spinbox # === ui_spinbox
+       alias ui_spinbutton        spinbox # === ui_spinbutton
+       alias up_and_down_counter  spinbox # === up_and_down_counter
+       alias spinbutton           spinbox # === spinbutton
+       alias centered_spin_button spinbox # === centered_spin_button
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.table

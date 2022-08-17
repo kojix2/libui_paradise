@@ -29,7 +29,7 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def main_hash?
     ::LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-  end
+  end; alias toplevel_hash? main_hash? # === toplevel_hash?
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.register_this_fiddle_pointer_widget
@@ -41,10 +41,10 @@ module Extensions # === LibuiParadise::Extensions
   #
   # That way we have a main Hash that contains lots of Fiddle::Pointers
   # and we can, at a later time, modify these Fiddle::Pointer or call
-  # toplevel methods with these registered pointers. This will only work
-  # if we have registered these pointers, though, which is why each
-  # method that creates a new libui-widget has to make use of this
-  # method here.
+  # toplevel methods with these registered pointers. This will only
+  # work if we have registered these pointers, though, which is why
+  # each method that creates a new libui-widget has to make use of
+  # this method here.
   #
   # The only exception to the above rule is the main window. The
   # main window is always stored in the @main_window variable instead.
@@ -61,11 +61,13 @@ module Extensions # === LibuiParadise::Extensions
   #
   #   object_id -> [:the_fiddle_pointer_widget, :the_type]
   #
-  # In other words, a key, and an Array as its value.
+  # In other words, a key (as an Integer), and an Array as
+  # its primary value.
   #
   # The object_id will be determined automatically, so it can
   # be omitted. It is the value that is simply returned by
-  # calling the .object_id method.
+  # calling the .object_id method, so we do not have to do
+  # anything else here.
   #
   # The very last argument of the two-member Array should be a
   # symbol, such as :grid. This is automatically ensured via a
@@ -92,6 +94,13 @@ module Extensions # === LibuiParadise::Extensions
   end; self.instance_eval { alias add_to_the_registered_widgets register_this_fiddle_pointer_widget } # === LibuiParadise::Extensions.add_to_the_registered_widgets
 
   # ========================================================================= #
+  # === LibuiParadise::Extensions.current_widget_pointer?
+  # ========================================================================= #
+  def self.current_widget_pointer?
+    LibuiParadise::Extensions.hash_fiddle_pointer_widgets?.values.last.first
+  end
+
+  # ========================================================================= #
   # === last_pointer?
   #
   # This used to return the "current" widget pointer, but past September
@@ -102,13 +111,6 @@ module Extensions # === LibuiParadise::Extensions
     LibuiParadise::Extensions.current_widget_pointer?
   end; alias current_pointer?        last_pointer? # === current_pointer?
        alias current_widget_pointer? last_pointer? # === current_widget_pointer?
-
-  # ========================================================================= #
-  # === LibuiParadise::Extensions.current_widget_pointer?
-  # ========================================================================= #
-  def self.current_widget_pointer?
-    LibuiParadise::Extensions.hash_fiddle_pointer_widgets?.values.last.first
-  end
 
   # ========================================================================= #
   # === current_widget_pointer_type?
