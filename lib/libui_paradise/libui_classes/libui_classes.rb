@@ -109,6 +109,13 @@ module Extensions # === LibuiParadise::Extensions
       title_to_use = '',
       whatever     = ''
     )
+    case main_window
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
+    when :default
+      main_window = LibuiParadise.main_window?
+    end
     _ = ::LibUI.msg_box_error(
       main_window,
       title_to_use,
@@ -120,6 +127,7 @@ module Extensions # === LibuiParadise::Extensions
        self.instance_eval { alias ui_error_msg              message_box_error } # === LibuiParadise::Extensions.ui_error_msg
        self.instance_eval { alias ui_error_message          message_box_error } # === LibuiParadise::Extensions.ui_error_message
        self.instance_eval { alias error_message_to_the_user message_box_error } # === LibuiParadise::Extensions.error_message_to_the_user
+       self.instance_eval { alias error_msg                 message_box_error } # === LibuiParadise::Extensions.error_msg
 
   # ========================================================================= #
   # === message_box_error
@@ -135,9 +143,16 @@ module Extensions # === LibuiParadise::Extensions
       whatever
     )
   end; alias ui_msg_box_error          message_box_error # === ui_msg_box_error
-       alias ui_error_msg              message_box_error # === ui_error_msg
        alias ui_error_message          message_box_error # === ui_error_message
+       alias ui_error_msg              message_box_error # === ui_error_msg
        alias error_message_to_the_user message_box_error # === error_message_to_the_user
+
+  # ========================================================================= #
+  # === error_msg
+  # ========================================================================= #
+  def error_msg(text)
+    message_box_error(:default, text)
+  end
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.open_file
@@ -705,6 +720,15 @@ module Extensions # === LibuiParadise::Extensions
        alias ui_check_button checkbox # === ui_check_button
 
   # ========================================================================= #
+  # === checked_checkbox
+  # ========================================================================= #
+  def checked_checkbox(i = '')
+    _ = checkbox(i)
+    _.is_active
+    return _
+  end
+
+  # ========================================================================= #
   # === LibuiParadise::Extensions.button                         (button tag)
   #
   # The upstream API for buttons, in C, can be found here:
@@ -1162,7 +1186,7 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def bold_text_left_aligned(i = '')
     return label(i)
-  end
+  end; alias left_aligned_bold_label bold_text_left_aligned # === left_aligned_bold_label
 
   # ========================================================================= #
   # === fancy_text
