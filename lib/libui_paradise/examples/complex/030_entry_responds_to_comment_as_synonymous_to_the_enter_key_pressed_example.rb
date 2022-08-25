@@ -72,17 +72,7 @@ class EntryRespondsToCommentAsSynonymousToTheEnterKeyPressedExample # === LibuiP
 
     grid = ui_padded_grid
     #                         widget, left, top, xspan, yspan, hexpand, halign, vexpand, valign
-    grid.hash_grid(
-      text('Input something, then input "#" as the last character → '),
-      left: 0,
-      top: 0,
-      xspan: 1,
-      yspan: 1,
-      hexpand: 0,
-      halign: 0.5,
-      vexpand: 1,
-      valign:  0
-    )
+    grid.left( text('Input something, then input "#" as the last character → '))
     @entry = entry
     grid.hash_grid(
       @entry,

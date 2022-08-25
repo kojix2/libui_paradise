@@ -114,6 +114,17 @@ module Extensions # === LibuiParadise::Extensions
   end; alias assumed_max_height? assumed_height? # === assumed_max_height?
 
   # ========================================================================= #
+  # === without_trailing_comment
+  # ========================================================================= #
+  def without_trailing_comment(i)
+    i = i.dup
+    if i and i.end_with?('#')
+      i = i[0 .. -2]
+    end
+    return i
+  end
+
+  # ========================================================================= #
   # === assumed_width?
   # ========================================================================= #
   def assumed_width?
