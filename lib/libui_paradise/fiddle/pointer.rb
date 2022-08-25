@@ -17,6 +17,8 @@ module Fiddle
 
 class Pointer # === Fiddle::Pointer
 
+  require 'libui_paradise/extensions/counters.rb'
+
   # ========================================================================= #
   # === on_changed
   #
@@ -250,6 +252,117 @@ class Pointer # === Fiddle::Pointer
     end
   end; alias value=          set_value # === value=
        alias start_position= set_value # === start_position=
+
+  # ========================================================================= #
+  # === right                                                     (right tag)
+  # ========================================================================= #
+  def right(
+      widget,
+      left  = LibuiParadise.counter_left?,
+      top   = LibuiParadise.counter_top?,
+      xspan = 1,
+      yspan = 1
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case left
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
+    when :default
+      left  = LibuiParadise.counter_left?
+    end
+    case type
+    # ======================================================================= #
+    # === :vbox
+    # ======================================================================= #
+    when :vbox
+      add(widget)
+    # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      hash_grid(
+        widget,
+        {
+          left:    left,
+          top:     top,
+          xspan:   xspan,
+          yspan:   yspan,
+          hexpand: 0,
+          halign:  0,
+          vexpand: 0,
+          valign:  0
+        }
+      )
+      LibuiParadise.counter_left += 1
+    else
+    end
+  end
+
+  # ========================================================================= #
+  # === left                                                       (left tag)
+  # ========================================================================= #
+  def left(
+      widget,
+      left  = LibuiParadise.counter_left?,
+      top   = LibuiParadise.counter_top?,
+      xspan = 1,
+      yspan = 1
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case left
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
+    when :default
+      left = LibuiParadise.counter_left?
+    end
+    case top
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
+    when :default
+      top = LibuiParadise.counter_top?
+    end
+    case type
+    # ======================================================================= #
+    # === :vbox
+    # ======================================================================= #
+    when :vbox
+      add(widget)
+    # ======================================================================= #
+    # === :grid
+    # ======================================================================= #
+    when :grid
+      hash_grid(
+        widget,
+        {
+          left:    left,
+          top:     top,
+          xspan:   xspan,
+          yspan:   yspan,
+          hexpand: 0,
+          halign:  0,
+          vexpand: 0,
+          valign:  0
+        }
+      )
+      LibuiParadise.counter_left += 1
+    else
+    end
+  end
+
+  # ========================================================================= #
+  # === new_row
+  # ========================================================================= #
+  def new_row
+    LibuiParadise.counter_left = 0
+    LibuiParadise.counter_top += 1
+  end
 
   # ========================================================================= #
   # === hash_grid
@@ -634,123 +747,6 @@ class Pointer # === Fiddle::Pointer
       LibUI.control_enable(self)
     else
       e 'Not registered type in .enable(): '+type.to_s
-    end
-  end
-
-  # ========================================================================= #
-  # === @left_counter
-  # ========================================================================= #
-  @left_counter = 0
-
-  # ========================================================================= #
-  # === Fiddle::Pointer.reset_the_left_counter
-  # ========================================================================= #
-  def self.reset_the_left_counter
-    @left_counter = 0
-  end
-
-  # ========================================================================= #
-  # === Fiddle::Pointer.increment_the_left_counter
-  # ========================================================================= #
-  def self.increment_the_left_counter
-    @left_counter += 1
-  end
-
-  # ========================================================================= #
-  # === Fiddle::Pointer.left_counter?
-  # ========================================================================= #
-  def self.left_counter?
-    @left_counter
-  end
-
-  # ========================================================================= #
-  # === @top_counter
-  # ========================================================================= #
-  @top_counter = 0
-
-  # ========================================================================= #
-  # === Fiddle::Pointer.increment_the_top_counter
-  # ========================================================================= #
-  def self.increment_the_top_counter
-    @top_counter += 1
-  end
-
-  # ========================================================================= #
-  # === Fiddle::Pointer.top_counter?
-  # ========================================================================= #
-  def self.top_counter?
-    @top_counter
-  end
-
-  # ========================================================================= #
-  # === right                                                     (right tag)
-  # ========================================================================= #
-  def right(
-      widget,
-      left  = Fiddle::Pointer.left_counter?,
-      top   = Fiddle::Pointer.top_counter?,
-      xspan = 1,
-      yspan = 1
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last # The last entry contains the type.
-    case type
-    # ======================================================================= #
-    # === :vbox
-    # ======================================================================= #
-    when :vbox
-      self.add(widget)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      self.ui_grid_append(
-        widget,
-        left, # left
-        top,  # top
-        xspan,
-        yspan
-      )
-      Fiddle::Pointer.reset_the_left_counter
-      Fiddle::Pointer.increment_the_top_counter
-    else
-    end
-  end
-
-  # ========================================================================= #
-  # === left                                                       (left tag)
-  # ========================================================================= #
-  def left(
-      widget,
-      left  = Fiddle::Pointer.left_counter?,
-      top   = Fiddle::Pointer.top_counter?,
-      xspan = 1,
-      yspan = 1
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last # The last entry contains the type.
-    case type
-    # ======================================================================= #
-    # === :vbox
-    # ======================================================================= #
-    when :vbox
-      self.add(widget)
-    # ======================================================================= #
-    # === :grid
-    # ======================================================================= #
-    when :grid
-      self.ui_grid_append(
-        widget,
-        self,
-        left, # left
-        top,  # top
-        xspan,
-        yspan
-      )
-      Fiddle::Pointer.increment_the_left_counter
-    else
     end
   end
 

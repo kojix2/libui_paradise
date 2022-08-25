@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">21.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:29:16</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">24.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">22:12:34</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1874,6 +1874,44 @@ Usage example for the new API:
       text('Yo7'),
       { left: 2, top: 3, xspan: 3, yspan: 3, hexpand: 0, halign: 0, vexpand: 0, valign: 0 }
     )
+
+In the closing days of <b>August 2022</b> I went on
+to improve the above. Three new methods were "added"
+to grid (actually Fiddle::Pointer, but hopefully one
+day I can find out how to work on a grid directly
+in libui; right now I seem to only have to work with
+raw pointers, which confuses me).
+
+These three methods are:
+
+    .left()
+    .right()
+    .new_line()
+
+So, let's picture a grid. The very first cell is on the
+top left, so we can use .left() to add a widget.
+
+For instance:
+
+    grid.left(text('Hello world!'))
+
+Then we can add more elements, and for doing so we will
+use .right() such as in:
+
+    grid.right(text('There is more to come!'))
+    grid.right(text('Still more'))
+
+Once you want to move to the next row, you have to use:
+
+    grid.new_line()
+
+This is still not ideal, but for the time being it
+has to suffice. Note how much simpler it is compared
+to .attach() or .hash_grid().
+
+Not every value can be set right now; at a later time
+that API may become more flexible. But for now this
+has to suffice.
 
 ## Progress Bars in LibUI
 

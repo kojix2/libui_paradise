@@ -60,11 +60,15 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   # === LibuiParadise::Extensions.msg_box
   #
-  # Official API documentation for dialogs can be found here:
+  # Official API documentation for dialogs in libui can be found here:
   #
   #   https://github.com/andlabs/libui/blob/master/unix/stddialogs.c
   #
-  # The API signature of msgbox is:
+  # For libui-ng it can be found here:
+  #
+  #   https://github.com/libui-ng/libui-ng/blob/master/unix/stddialogs.c
+  #
+  # The API signature for msgbox in Libui is as follows:
   #
   #   GtkWindow *parent
   #   const char *title
@@ -72,15 +76,36 @@ module Extensions # === LibuiParadise::Extensions
   #   GtkMessageType type
   #   GtkButtonsType buttons
   #
-  # So the first string is the title and the second string is the description.
+  # So the first string is the title and the second string is the
+  # description that will be shown to the user.
   #
-  # This method is a convenience-wrapper over UI.msg_box().
+  # The following method is a convenience-wrapper over UI.msg_box().
+  #
+  # A Hash can also be passed into this method, to allow for more
+  # flexibility. The following line of code will demonstrate how
+  # this can then be used, via a Hash:
+  #
+  #   message_box(
+  #      text: 'Hello world!'
+  #   )
+  #
   # ========================================================================= #
   def self.msg_box(
       main_window        = :default_window,
       title_to_use       = '',
       description_to_use = ''
     )
+    if main_window.is_a? Hash
+      # ===================================================================== #
+      # === :text
+      # ===================================================================== #
+      if main_window.has_key? :text
+        description_to_use = main_window.delete(:text)
+      end
+      if main_window and main_window.empty? # Handle empty Hashes as well here.
+        main_window = :default_window
+      end
+    end
     case main_window
     # ======================================================================= #
     # === :default_window
