@@ -13,6 +13,8 @@ module LibuiParadise
 
 module Extensions # === LibuiParadise::Extensions
 
+  require 'fileutils'
+
   # ========================================================================= #
   # === COLOUR_BLUE
   # ========================================================================= #
@@ -621,6 +623,13 @@ module Extensions # === LibuiParadise::Extensions
   def copy_file(from, to)
     FileUtils.cp(from, to)
   end; alias cp_file copy_file # === cp_file
+
+  # ========================================================================= #
+  # === create_directory
+  # ========================================================================= #
+  def create_directory(i)
+    FileUtils.mkdir_p(i)
+  end; alias mkdir create_directory # === mkdir
 
   # ========================================================================= #
   # === run_main

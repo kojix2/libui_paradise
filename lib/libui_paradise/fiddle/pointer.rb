@@ -271,7 +271,14 @@ class Pointer # === Fiddle::Pointer
     # === :default
     # ======================================================================= #
     when :default
-      left  = LibuiParadise.counter_left?
+      left = LibuiParadise.counter_left?
+    end
+    case top
+    # ======================================================================= #
+    # === :default
+    # ======================================================================= #
+    when :default
+      top = LibuiParadise.counter_top?
     end
     case type
     # ======================================================================= #
