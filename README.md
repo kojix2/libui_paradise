@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">27.08.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">03:39:59</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">04.09.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">02:39:21</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1863,9 +1863,8 @@ following:
     vexpand
     valign
 
-The file <b>examples/complex/016_grid_example.rb</b>
-shows this new API, mixed with the old, original
-API.
+The file <b>examples/complex/016_grid_example.rb</b> shows
+this new API, mixed with the old, original API.
 
 Usage example for the new API:
 
