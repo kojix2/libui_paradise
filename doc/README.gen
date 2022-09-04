@@ -1749,9 +1749,8 @@ following:
     vexpand
     valign
 
-The file <b>examples/complex/016_grid_example.rb</b>
-shows this new API, mixed with the old, original
-API.
+The file <b>examples/complex/016_grid_example.rb</b> shows
+this new API, mixed with the old, original API.
 
 Usage example for the new API:
 

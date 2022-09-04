@@ -12,50 +12,19 @@ module Extensions # === LibuiParadise::Extensions
   require 'libui_paradise/libui_classes/grid.rb'
 
   # ========================================================================= #
-  # === LibuiParadise::Extensions.wrapper_new_progress_bar
+  # === button                                                   (button tag)
   #
-  # The name of this method contains "wrapper_" because there already
-  # exists a method called LibUI.new_progress_bar().
-  #
-  # The upstream C API for the libui-progressbar can be found here:
-  #
-  #   https://github.com/andlabs/libui/blob/master/unix/progressbar.c
-  #
+  # This method will create a libui-button.
   # ========================================================================= #
-  def self.wrapper_new_progress_bar
-    _ = ::LibUI.new_progress_bar
-    add_to_the_registered_widgets(_, :new_progress_bar)
-    return _
-  end
-
-  # ========================================================================= #
-  # === wrapper_new_progress_bar
-  # ========================================================================= #
-  def wrapper_new_progress_bar
-    return ::LibuiParadise::Extensions.wrapper_new_progress_bar
-  end; alias progress_bar wrapper_new_progress_bar # === progress_bar
-
-  # ========================================================================= #
-  # === ui_msg_box
-  #
-  # This method is a convenience-wrapper over UI.msg_box().
-  # ========================================================================= #
-  def ui_msg_box(
-      main_window  = :default_window,
-      title_to_use = '',
-      whatever     = ''
+  def button(
+      text = ''
     )
-    ::LibuiParadise::Extensions.msg_box(
-      main_window,
-      title_to_use,
-      whatever
-    )
-  end; alias message_to_the_user    ui_msg_box # === message_to_the_user
-       alias message_box            ui_msg_box # === message_box
-       alias popup_over_this_widget ui_msg_box # === popup_over_this_widget
-       alias popup_message          ui_msg_box # === popup_message
-       # alias msg_box                ui_msg_box # === msg_box
-       # ^^^ this would lead to an error.
+    text = text.to_s.dup
+    if text.start_with? '_'
+      text[0,1] = '' # Right now we do not support accelerators.
+    end
+    ::LibuiParadise::Extensions.button(text)
+  end; alias ui_button button # === ui_button
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.msg_box
@@ -89,18 +58,31 @@ module Extensions # === LibuiParadise::Extensions
   #      text: 'Hello world!'
   #   )
   #
+  # Or more verbose:
+  #
+  #   LibuiParadise::Extensions.message_box(text: 'Hello world!')
+  #
   # ========================================================================= #
   def self.msg_box(
       main_window        = :default_window,
       title_to_use       = '',
       description_to_use = ''
     )
+    # ======================================================================= #
+    # === Handle Hashes first
+    # ======================================================================= #
     if main_window.is_a? Hash
       # ===================================================================== #
       # === :text
       # ===================================================================== #
       if main_window.has_key? :text
         description_to_use = main_window.delete(:text)
+      end
+      # ===================================================================== #
+      # === :title_to_use
+      # ===================================================================== #
+      if main_window.has_key? :title_to_use
+        title_to_use = main_window.delete(:title_to_use)
       end
       if main_window and main_window.empty? # Handle empty Hashes as well here.
         main_window = :default_window
@@ -178,6 +160,52 @@ module Extensions # === LibuiParadise::Extensions
   def error_msg(text)
     message_box_error(:default, text)
   end
+
+  # ========================================================================= #
+  # === ui_msg_box
+  #
+  # This method is a convenience-wrapper over UI.msg_box().
+  # ========================================================================= #
+  def ui_msg_box(
+      main_window  = :default_window,
+      title_to_use = '',
+      whatever     = ''
+    )
+    ::LibuiParadise::Extensions.msg_box(
+      main_window,
+      title_to_use,
+      whatever
+    )
+  end; alias message_to_the_user    ui_msg_box # === message_to_the_user
+       alias message_box            ui_msg_box # === message_box
+       alias popup_over_this_widget ui_msg_box # === popup_over_this_widget
+       alias popup_message          ui_msg_box # === popup_message
+       # alias msg_box                ui_msg_box # === msg_box
+       # ^^^ this would lead to an error.
+
+  # ========================================================================= #
+  # === LibuiParadise::Extensions.wrapper_new_progress_bar
+  #
+  # The name of this method contains "wrapper_" because there already
+  # exists a method called LibUI.new_progress_bar().
+  #
+  # The upstream C API for the libui-progressbar can be found here:
+  #
+  #   https://github.com/andlabs/libui/blob/master/unix/progressbar.c
+  #
+  # ========================================================================= #
+  def self.wrapper_new_progress_bar
+    _ = ::LibUI.new_progress_bar
+    add_to_the_registered_widgets(_, :new_progress_bar)
+    return _
+  end
+
+  # ========================================================================= #
+  # === wrapper_new_progress_bar
+  # ========================================================================= #
+  def wrapper_new_progress_bar
+    return ::LibuiParadise::Extensions.wrapper_new_progress_bar
+  end; alias progress_bar wrapper_new_progress_bar # === progress_bar
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.open_file
@@ -1011,17 +1039,6 @@ module Extensions # === LibuiParadise::Extensions
   def bold_button(i)
     button(i)
   end
-
-  # ========================================================================= #
-  # === button                                                   (button tag)
-  # ========================================================================= #
-  def button(text)
-    text = text.to_s.dup
-    if text.start_with? '_'
-      text[0,1] = '' # Right now we do not support accelerators.
-    end
-    ::LibuiParadise::Extensions.button(text)
-  end; alias ui_button button # === ui_button
 
   # ========================================================================= #
   # === quit_button                                                (quit tag)

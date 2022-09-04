@@ -21,6 +21,22 @@ module Extensions # === LibuiParadise::Extensions
   COLOUR_BLUE = 0x1E90FF
 
   # ========================================================================= #
+  # === LibuiParadise::Extensions.notification
+  #
+  # This method can be used to show a quick message box to the end
+  # user.
+  # ========================================================================= #
+  def self.notification(
+      text         = 'Backup complete!',
+      title_to_use = ''
+    )
+    ::LibuiParadise::Extensions.message_box(
+      text:         text,
+      title_to_use: title_to_use
+    )
+  end
+
+  # ========================================================================= #
   # === use_gtk3?
   # ========================================================================= #
   def use_gtk3?
@@ -650,4 +666,72 @@ def self.draw_rectangle(
   ::LibuiParadise::Extensions.draw_rectangle(width, height, colour)
 end
 
+# =========================================================================== #
+# === LibuiParadise.notification
+# =========================================================================== #
+def self.notification(
+    text         = 'Backup complete!',
+    title_to_use = ''
+  )
+  ::LibuiParadise::Extensions.message_box(
+    :default_window,
+    text,
+    title_to_use
+  )
+end
+
+# =========================================================================== #
+# === LibuiParadise.generic_window
+#
+# Usage example:
+#
+#   x = LibuiParadise.generic_window(LibuiParadise.button('1'), LibuiParadise.button('2'))
+#   x = LibuiParadise.generic_window(LibuiParadise.button('1'), LibuiParadise.button('2')) {{ height: 50 }}
+#
+# =========================================================================== #
+def self.generic_window(
+    *use_these_widgets,
+    &block
+  )
+  unless LibuiParadise.respond_to?(:GenericWindow)
+    require 'libui_paradise/generic_window/generic_window.rb'
+  end
+  generic_window = LibuiParadise::GenericWindow.new { :do_not_run_yet }
+  # ========================================================================= #
+  # === Handle blocks next
+  # ========================================================================= #
+  if block_given?
+    yielded = yield
+    if yielded.is_a? Hash
+      # ===================================================================== #
+      # === :height
+      # ===================================================================== #
+      if yielded.has_key?(:height)
+        generic_window.set_height(
+          yielded[:height]
+        )
+        generic_window.update_the_main_window
+      end
+      # ===================================================================== #
+      # === :width
+      # ===================================================================== #
+      if yielded.has_key?(:width)
+        generic_window.set_width(
+          yielded[:width]
+        )
+        generic_window.update_the_main_window
+      end
+    end
+  end
+  # ========================================================================= #
+  # Next prepare adding more widgets to this generic window:
+  # ========================================================================= #
+  use_these_widgets.flatten!
+  use_these_widgets.compact!
+  if use_these_widgets.is_a?(Array) and !use_these_widgets.empty?
+    generic_window.add_these_widgets(use_these_widgets)
+  end
+  return generic_window
+end
+ 
 end
