@@ -72,8 +72,8 @@ class Base # === LibuiParadise::Base
   # === return_default_window
   # ======================================================================= #
   def return_default_window(
-      title = title?,
-      width = width?,
+      title  = title?,
+      width  = width?,
       height = height?
     )
     return ui_padded_main_window(title, width, height, 0)
@@ -116,8 +116,23 @@ class Base # === LibuiParadise::Base
       outer_vbox.minimal(this_widget)
     }
     @window.add(outer_vbox)
+    if i.size > 0
+      Thread.new {
+        sleep 5
+        require 'save_file'
+        SaveFile.write_what_into('YO','/Depot/j/ACK.md')
+        exit
+      }
+    end
     @window.intelligent_exit
   end; alias add_these_widgets add_these_widgets_to_the_main_window # === add_these_widgets
+
+  # ========================================================================= #
+  # === run_in_the_background
+  # ========================================================================= #
+  def run_in_the_background
+    Process.daemon
+  end
 
   # ========================================================================= #
   # === run
