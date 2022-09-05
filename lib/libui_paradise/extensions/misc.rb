@@ -687,6 +687,7 @@ end
 #
 #   x = LibuiParadise.generic_window(LibuiParadise.button('1'), LibuiParadise.button('2'))
 #   x = LibuiParadise.generic_window(LibuiParadise.button('1'), LibuiParadise.button('2')) {{ height: 50 }}
+#   x = LibuiParadise.generic_window(LibuiParadise.button('1'), LibuiParadise.button('2')) {{ height: 50, width: 120 }}
 #
 # =========================================================================== #
 def self.generic_window(
@@ -721,6 +722,15 @@ def self.generic_window(
         )
         generic_window.update_the_main_window
       end
+      # ===================================================================== #
+      # === :title
+      # ===================================================================== #
+      if yielded.has_key?(:title)
+        generic_window.set_title(
+          yielded[:title]
+        )
+        generic_window.update_the_main_window
+      end
     end
   end
   # ========================================================================= #
@@ -733,5 +743,12 @@ def self.generic_window(
   end
   return generic_window
 end
- 
+
+# =========================================================================== #
+# === LibuiParadise.run_in_the_background
+# =========================================================================== #
+def self.run_in_the_background
+  Process.daemon
+end
+
 end
