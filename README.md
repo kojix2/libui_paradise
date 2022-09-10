@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">04.09.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">19:16:10</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.09.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:44:15</span> o'clock.
 
 ## The libui_paradise project
 
@@ -749,6 +749,29 @@ not necessarily recommending this be done, but **if** you ever have
 such a use case then you can use it - which is another reason why
 I added this screenshot, so that I don't forget. :)
 
+## Padding elements in LibUI
+
+The general API for setting padding to a container in LibUI
+goes via:
+
+    LibUI.box_set_padded(box, 1) # The value is usually either 0 or 1.
+
+The alignment value may be as follows:
+
+    0: Fill
+    1: Start
+    2: Center
+    3: End
+
+Positioning values may typically be:
+
+    0: Left
+    1: Top
+    2: Right
+
+Have a look at the example file <b>libui_paradise/examples/simple/007_control_gallery.rb</b>
+to see how this could be used.
+
 ## LibUI::FFI::DrawTextLayoutParams.malloc
 
 LibUI::FFI::DrawTextLayoutParams.malloc can be used to draw
@@ -1087,19 +1110,6 @@ subsequently removed one day.
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
 
-# How to set a padded box:
-
-  UI.box_set_padded(box, 1) # The value is either 0 or 1.
-
-  Alignment may be:
-    0: Fill
-    1: Start
-    2: Center
-    3: End
- Positioning:
-    0: Left
-    1: Top
-    2: Right
 
 # Add a checkbox (checkbox tag, checkbutton)
 
@@ -1552,6 +1562,15 @@ How does this look? The following image shows this:
 Use the following API for this:
 
     image = LibUI.new_image(width, height)
+
+You can use external libraries to determine the width
+and height of an image, such as ChunkyPNG.
+
+Example for this:
+
+    canvas = ChunkyPNG::Canvas.from_io(this_file)
+    width = canvas.width
+    height = canvas.height
 
 ## Horizontal boxes
 

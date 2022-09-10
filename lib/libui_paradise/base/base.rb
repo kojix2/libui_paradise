@@ -113,6 +113,16 @@ class Base # === LibuiParadise::Base
     # ======================================================================= #
     outer_vbox.add_hsep
     i.flatten.each {|this_widget|
+      # ===================================================================== #
+      # Some symbols exist as special keywords:
+      # ===================================================================== #
+      case this_widget
+      # ===================================================================== #
+      # === :create_a_quit_button
+      # ===================================================================== #
+      when :create_a_quit_button
+        this_widget = quit_button
+      end
       outer_vbox.minimal(this_widget)
     }
     @window.add(outer_vbox)
