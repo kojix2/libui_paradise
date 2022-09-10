@@ -26,19 +26,6 @@
   UI.control_show(main_window)
   main_window.show_the_controls # Or use this one here.
 
-# How to set a padded box:
-
-  UI.box_set_padded(box, 1) # The value is either 0 or 1.
-
-  Alignment may be:
-    0: Fill
-    1: Start
-    2: Center
-    3: End
- Positioning:
-    0: Left
-    1: Top
-    2: Right
 
 # Add a checkbox (checkbox tag, checkbutton)
 

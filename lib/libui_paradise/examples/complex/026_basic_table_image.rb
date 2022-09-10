@@ -28,24 +28,26 @@ main_window.child = hbox
 # =========================================================================== #
 IMAGES = []
 
-N_TIMES.times do |i|
+N_TIMES.times { |i|
   url = format(REMOTE_URL, (i + 1))
   this_file = URI.open(url)
+  # =========================================================================== #
   # Use ChunkyPNG::Canvas to get information about the image at hand.
+  # =========================================================================== #
   canvas = ChunkyPNG::Canvas.from_io(this_file)
   this_file.close
   data = canvas.to_rgba_stream
   width = canvas.width
   height = canvas.height
   # ========================================================================= #
-  # Add a new image here:
+  # Add a new image next:
   # ========================================================================= #
   image = UI.new_image(width, height)
   UI.image_append(image, data, width, height, width * 4)
   IMAGES << image # Store all images in the following area.
 rescue StandardError => error
   warn url, error.message
-end
+}
 
 # =========================================================================== #
 # Protects BlockCaller objects from garbage collection.
@@ -61,18 +63,18 @@ def rbcallback(*args, &block)
   blockcaller
 end
 
-model_handler = UI::FFI::TableModelHandler.malloc
+model_handler = LibUI::FFI::TableModelHandler.malloc
 model_handler.NumColumns   = rbcallback(4) { 1 }
 model_handler.ColumnType   = rbcallback(4) { 1 } # Image
 model_handler.NumRows      = rbcallback(4) { IMAGES.size }
 model_handler.CellValue    = rbcallback(1, [1, 1, 4, 4]) do |_, _, row, _column|
-  UI.new_table_value_image(IMAGES[row])
+  LibUI.new_table_value_image(IMAGES[row])
 end
 model_handler.SetCellValue = rbcallback(0, [0]) {}
 
-model = UI.new_table_model(model_handler)
+model = LibUI.new_table_model(model_handler)
 
-table_params = UI::FFI::TableParams.malloc
+table_params = LibUI::FFI::TableParams.malloc
 table_params.Model = model
 table_params.RowBackgroundColorModelColumn = -1
 
