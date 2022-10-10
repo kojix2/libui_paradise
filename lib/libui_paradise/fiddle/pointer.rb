@@ -1135,6 +1135,7 @@ class Pointer # === Fiddle::Pointer
   def spacing1=(i = 2); end
   def spacing2=(i = 2); end
   def spacing=(i = 0); end
+  def deselect; end
   # def fraction=(i = ''); end
   def return_all_entries
     []

@@ -33,6 +33,9 @@ brush.to_ptr.free = Fiddle::RUBY_FREE
 color_button = LibUI.new_color_button
 datapoints   = []
 
+# =========================================================================== #
+# === graph_size
+# =========================================================================== #
 def graph_size(area_width, area_height)
   graph_width = area_width - X_OFF_LEFT - X_OFF_RIGHT
   graph_height = area_height - Y_OFF_TOP - Y_OFF_BOTTOM
@@ -56,24 +59,25 @@ def point_locations(datapoints, width, height)
   data
 end
 
+# === construct_graph  
 def construct_graph(datapoints, width, height, should_extend)
   locations = point_locations(datapoints, width, height)
-  path = UI.draw_new_path(0) # winding
+  path = LibUI.draw_new_path(0) # winding
   first_location = locations[0] # x and y
   UI.draw_path_new_figure(path, first_location[0], first_location[1])
-  locations.each do |loc|
+  locations.each { |loc|
     UI.draw_path_line_to(path, loc[0], loc[1])
-  end
+  }
 
   if should_extend
-    UI.draw_path_line_to(path, width, height)
-    UI.draw_path_line_to(path, 0, height)
-    UI.draw_path_close_figure(path)
+    LibUI.draw_path_line_to(path, width, height)
+    LibUI.draw_path_line_to(path, 0, height)
+    LibUI.draw_path_close_figure(path)
   end
 
-  UI.draw_path_end(path)
+  LibUI.draw_path_end(path)
 
-  path
+  return path
 end
 
 handler_draw_event = Fiddle::Closure::BlockCaller.new(
@@ -164,13 +168,15 @@ UI.box_append(hbox, histogram, 1)
 datapoints = Array.new(10) do
   UI.new_spinbox(0, 100).tap do |datapoint|
     UI.spinbox_set_value(datapoint, Random.new.rand(90))
-    UI.spinbox_on_changed(datapoint) do
+    UI.spinbox_on_changed(datapoint) {
+      # Redraw the drawing area next:
       UI.area_queue_redraw_all(histogram)
-    end
+    }
     UI.box_append(vbox, datapoint, 0)
   end
 end
 
+# === set_solid_brush
 def set_solid_brush(brush, color, alpha)
   brush.Type = 0 # solid
   brush.R = ((color >> 16) & 0xFF) / 255.0
