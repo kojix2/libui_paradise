@@ -502,6 +502,7 @@ module Extensions # === LibuiParadise::Extensions
     ::LibuiParadise::Extensions.entry(optional_text)
   end; alias ui_entry        entry # === ui_entry
        alias hcentered_entry entry # === hcentered_entry
+       alias create_entry    entry # === create_entry
 
   # ========================================================================= #
   # === text?

@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.09.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">15:44:15</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.10.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:36:45</span> o'clock.
 
 ## The libui_paradise project
 
@@ -1571,6 +1571,14 @@ Example for this:
     canvas = ChunkyPNG::Canvas.from_io(this_file)
     width = canvas.width
     height = canvas.height
+
+## Creating a new drawing area
+
+This should suffice:
+
+    handler             = LibUI::FFI::AreaHandler.malloc
+    handler.to_ptr.free = Fiddle::RUBY_FREE
+    histogram           = LibUI.new_area(handler)
 
 ## Horizontal boxes
 

@@ -11,7 +11,8 @@ text2 = LibuiParadise.text('Some text there.')
 
 LibuiParadise.generic_window(
   text1,
-  text2
+  text2,
+  :create_a_quit_button # Ad-hoc create a quit-button.
 ) {{
   width:  620,
   height: 220,
