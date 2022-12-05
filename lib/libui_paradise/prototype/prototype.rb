@@ -12,9 +12,7 @@ module LibUI
 
 class Prototype # === LibuiParadise::GUI::LibUI::Prototype
 
-  alias e puts
-
-  require 'libui_paradise'
+  require 'libui_paradise/extensions/extensions.rb'
   include LibuiParadise::Extensions
 
   # require 'bioroebe/gui/shared_code/levensthein_distance/levensthein_distance_module.rb'

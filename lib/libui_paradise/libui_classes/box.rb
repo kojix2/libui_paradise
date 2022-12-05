@@ -121,8 +121,9 @@ module Extensions # === LibuiParadise::Extensions
   # ========================================================================= #
   def vbox(*optional_widgets)
     ::LibuiParadise::Extensions.vbox(optional_widgets)
-  end; alias ui_vbox vbox # === ui_vbox
-       alias gtk_box vbox # === gtk_box
+  end; alias ui_vbox     vbox # === ui_vbox
+       alias gtk_box     vbox # === gtk_box
+       alias create_vbox vbox # === create_vbox
 
 end
 

@@ -69,7 +69,7 @@ class GenericWindow < LibuiParadise::Base # === LibuiParadise::GenericWindow
   # === run
   # ========================================================================= #
   def run
-    super()
+    super() # Call any parent method.
   end
 
 end; end

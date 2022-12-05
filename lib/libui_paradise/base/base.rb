@@ -3,6 +3,11 @@
 # frozen_string_literal: true
 # =========================================================================== #
 # === LibuiParadise::Base
+#
+# Usage example:
+#
+#   LibuiParadise::Base.new(ARGV)
+#
 # =========================================================================== #
 # require 'libui_paradise/base/base.rb'
 # < LibuiParadise::Base
@@ -13,7 +18,7 @@ class Base # === LibuiParadise::Base
 
   alias e puts
 
-  require 'libui_paradise'
+  require 'libui_paradise/extensions/extensions.rb'
   include LibuiParadise::Extensions
 
   # ========================================================================= #
@@ -23,28 +28,15 @@ class Base # === LibuiParadise::Base
 
   # ========================================================================= #
   # === WIDTH
+  #
+  # The default width.
   # ========================================================================= #
-  WIDTH  = 800
+  WIDTH  = 880
 
   # ========================================================================= #
   # === HEIGHT
   # ========================================================================= #
-  HEIGHT = 640
-
-  # ========================================================================= #
-  # === default_title_width_height
-  # ========================================================================= #
-  def default_title_width_height(
-      title  = TITLE,
-      width  = WIDTH,
-      height = HEIGHT
-    )
-    title_width_height(
-      title,
-      width,
-      height
-    )
-  end
+  HEIGHT = 680
 
   # ========================================================================= #
   # === reset                                                     (reset tag)
@@ -79,13 +71,28 @@ class Base # === LibuiParadise::Base
     return ui_padded_main_window(title, width, height, 0)
   end
 
-  # ======================================================================= #
+  # ========================================================================= #
   # === set_window
   #
   # Simply assign to @window here.
-  # ======================================================================= #
+  # ========================================================================= #
   def set_window(i = return_default_window)
-    @window = i
+    ::LibuiParadise::Extensions.set_window(i)
+  end
+
+  # ========================================================================= #
+  # === default_title_width_height
+  # ========================================================================= #
+  def default_title_width_height(
+      title  = TITLE,
+      width  = WIDTH,
+      height = HEIGHT
+    )
+    title_width_height(
+      title,
+      width,
+      height
+    )
   end
 
   # ========================================================================= #
@@ -125,7 +132,7 @@ class Base # === LibuiParadise::Base
       end
       outer_vbox.minimal(this_widget)
     }
-    @window.add(outer_vbox)
+    window?.add(outer_vbox)
     if i.size > 0
       Thread.new {
         sleep 5
@@ -134,8 +141,15 @@ class Base # === LibuiParadise::Base
         exit
       }
     end
-    @window.intelligent_exit
+    window?.intelligent_exit
   end; alias add_these_widgets add_these_widgets_to_the_main_window # === add_these_widgets
+
+  # ========================================================================= #
+  # === window?
+  # ========================================================================= #
+  def window?
+    ::LibuiParadise::Extensions.window?
+  end; alias main_window? window? # === main_window?
 
   # ========================================================================= #
   # === run_in_the_background
@@ -151,4 +165,15 @@ class Base # === LibuiParadise::Base
     create_skeleton_then_connect_skeleton
   end
 
+  # ========================================================================= #
+  # === LibuiParadise::Base[]
+  # ========================================================================= #
+  def self.[](i = ARGV)
+    new(i)
+  end
+
 end; end
+
+if __FILE__ == $PROGRAM_NAME
+  LibuiParadise::Base.new(ARGV)
+end # base.rb
