@@ -8,7 +8,7 @@
 module LibuiParadise
 
   # ========================================================================= #
-  # === PROJECT_BASE_DIRECTORY
+  # === LibuiParadise::PROJECT_BASE_DIRECTORY
   # ========================================================================= #
   PROJECT_BASE_DIRECTORY =
     File.absolute_path("#{__dir__}/..")+'/'
@@ -25,4 +25,8 @@ module LibuiParadise
        self.instance_eval { alias project_base_dir?       project_base_dir? } # === LibuiParadise.project_base_dir?
        self.instance_eval { alias project_base_directory? project_base_dir? } # === LibuiParadise.project_base_directory?
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+  puts LibuiParadise.project_base_dir?  
 end

@@ -150,40 +150,46 @@ UI.combobox_append(cbox, 'combobox Item 1')
 UI.combobox_append(cbox, 'combobox Item 2')
 UI.combobox_append(cbox, 'combobox Item 3')
 UI.box_append(inner, cbox, 0)
-UI.combobox_on_selected(cbox) do |ptr|
+UI.combobox_on_selected(cbox) { |ptr|
   puts "New combobox selection: #{UI.combobox_selected(ptr)}"
-end
+}
 
+# =========================================================================== #
 # Editable Combobox
+# =========================================================================== #
 ebox = UI.new_editable_combobox
 UI.editable_combobox_append(ebox, 'Editable Item 1')
 UI.editable_combobox_append(ebox, 'Editable Item 2')
 UI.editable_combobox_append(ebox, 'Editable Item 3')
 UI.box_append(inner, ebox, 0)
 
+# =========================================================================== #
 # Radio Buttons
+# =========================================================================== #
 rb = UI.new_radio_buttons
 UI.radio_buttons_append(rb, 'Radio Button 1')
 UI.radio_buttons_append(rb, 'Radio Button 2')
 UI.radio_buttons_append(rb, 'Radio Button 3')
 UI.box_append(inner, rb, 1)
 
+# =========================================================================== #
 # Tab
-tab = UI.new_tab
-hbox1 = UI.new_horizontal_box
-hbox2 = UI.new_horizontal_box
-UI.tab_append(tab, 'Page 1', hbox1)
-UI.tab_append(tab, 'Page 2', hbox2)
-UI.tab_append(tab, 'Page 3', UI.new_horizontal_box)
-UI.box_append(inner2, tab, 1)
+# =========================================================================== #
+tab = LibUI.new_tab
+hbox1 = LibUI.new_horizontal_box
+hbox2 = LibUI.new_horizontal_box
+LibUI.tab_append(tab, 'Page 1', hbox1)
+LibUI.tab_append(tab, 'Page 2', hbox2)
+LibUI.tab_append(tab, 'Page 3', UI.new_horizontal_box)
+LibUI.box_append(inner2, tab, 1)
 
 # Text Entry
 text_entry = UI.new_entry
-UI.entry_set_text text_entry, 'Please enter your feelings'
-UI.entry_on_changed(text_entry) do |ptr|
+LibUI.entry_set_text text_entry, 'Please enter your feelings'
+LibUI.entry_on_changed(text_entry) { |ptr|
   puts "Current textbox data: '#{UI.entry_text(ptr)}'"
-end
-UI.box_append(hbox1, text_entry, 1)
+}
+LibUI.box_append(hbox1, text_entry, 1)
 
 UI.control_show(MAIN_WINDOW)
 

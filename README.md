@@ -2,7 +2,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-ruby.svg)](https://www.ruby-lang.org/en/)
 [![Gem Version](https://badge.fury.io/rb/libui_paradise.svg)](https://badge.fury.io/rb/libui_paradise)
 
-This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">09.10.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">16:36:45</span> o'clock.
+This gem was <b>last updated</b> on the <span style="color: darkblue; font-weight: bold">05.12.2022</span> (dd.mm.yyyy notation), at <span style="color: steelblue; font-weight: bold">00:31:45</span> o'clock.
 
 ## The libui_paradise project
 
@@ -610,17 +610,26 @@ just a stub though - we may have to research this with better examples.
 
 A simple checkbox example in **plain** ruby-libui follows:
 
-    checkbox = UI.checkbox('Checkbox')
-    checkbox_toggle_callback = proc { |ptr|
-      checked = UI.checkbox_checked(ptr) == 1
-      UI.checkbox_set_text(ptr, "I am the checkbox (#{checked})")
+    checkbox = LibUI.checkbox('Checkbox')
+    checkbox_toggle_callback = proc { |pointer|
+      checked = LibUI.checkbox_checked(pointer) == 1
+      LibUI.checkbox_set_text(ptr, "I am the checkbox (#{checked})")
     }
 
 This may look like so on Linux:
 
 <img src="https://i.imgur.com/d7qWalZ.png" style="margin-left: 2em; padding: 4px; border: 1px solid black;">
 
-To query whether a checkbox is **active**, use code such as the
+To set such a checkbox to the checked-state (that is, as if the
+user clicked on it), use:
+
+    checkbox.set_checked(1)
+
+To query its state use:
+
+    checked = LibUI.checkbox_checked(pointer) == 1
+
+To <b>query</b> whether a checkbox is **active**, use code such as the
 following:
 
     checkbox.is_active?
@@ -685,6 +694,20 @@ API to understand the difference.
 The notebook-tab may look like this:
 
 <img src="https://i.imgur.com/olWQAIJ.png" style="margin-left: 2em">
+
+A new tab can be created via:
+
+    tab = LibUI.new_tab
+
+To populate the notebook-tab you can use .tab_append() such as
+shown next:
+
+    hbox1 = LibUI.new_horizontal_box
+    hbox2 = LibUI.new_horizontal_box
+    LibUI.tab_append(tab, 'Page 1', hbox1)
+    LibUI.tab_append(tab, 'Page 2', hbox2)
+    LibUI.tab_append(tab, 'Page 3', UI.new_horizontal_box)
+    LibUI.box_append(inner2, tab, 1)
 
 ## Create a vertical box:
 
@@ -857,14 +880,14 @@ To set the main window to full screen (occupy the whole monitor) do:
 
 You can use the following API for a spinbox:
 
-    UI.new_spinbox
+    LibUI.new_spinbox
 
 To create a new spinbox.
 
 To specify the **min** and **max** range, pass them as parameters
 on creation-time:
 
-    UI.new_spinbox(0, 100)
+    LibUI.new_spinbox(0, 100)
 
 If you use the extensions found in the libui_paradise gem then
 you can do this instead:
@@ -884,9 +907,9 @@ to see how this works.
 
 Relevant methods in regard to the spinbox in libui are as follows:
 
-    UI.spinbox_on_changed()
-    UI.spinbox_set_value()
-    UI.spinbox_value() 
+    LibUI.spinbox_on_changed()
+    LibUI.spinbox_set_value()
+    LibUI.spinbox_value() 
 
 To **set** a value use either of the following two methods:
 
@@ -903,7 +926,7 @@ A text-view widget shows content, such as the content of a local file.
 
 In libui the general API for this is:
 
-    UI.new_multiline_entry                      # this is a textview
+    LibUI.new_multiline_entry                      # this is a textview
 
 ## Control Gallery
 
@@ -1123,13 +1146,6 @@ subsequently removed one day.
   UI.checkbox_on_toggled(checkbox, checkbox_toggle_callback, nil)
   UI.box_append(inner, checkbox, 0)
 
-  To set it checked:
-
-  checkbox.set_checked(1)
-
-  To query its state:
-
-    checked = UI.checkbox_checked(pointer) == 1
 
 # And the control:
 
@@ -1162,7 +1178,7 @@ subsequently removed one day.
   UI.combobox_on_selected(cbox, combobox_selected_callback, nil)
 
   # Or more concise:
-  combo_box = UI.combobox {
+  combo_box = LibUI.combobox {
     ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
   }
 
@@ -1171,10 +1187,6 @@ subsequently removed one day.
 
   UI.append() # .append() adds the named item to the end of the EditableCombobox.
 
-# How to build a menu-interface (menu tag):
-
-  help_menu = UI.new_menu('Help')
-  version_item = UI.menu_append_item(help_menu, 'Version')
 
 
 </pre>
@@ -1390,9 +1402,9 @@ shows how this may look (on icewm):
 The syntax goes something like this:
 
     rb = ui_radio_buttons
-    UI.radio_buttons_append(rb, 'Radio Button 1')
-    UI.radio_buttons_append(rb, 'Radio Button 2')
-    UI.radio_buttons_append(rb, 'Radio Button 3')
+    LibUI.radio_buttons_append(rb, 'Radio Button 1')
+    LibUI.radio_buttons_append(rb, 'Radio Button 2')
+    LibUI.radio_buttons_append(rb, 'Radio Button 3')
     outer_vbox.minimal(rb) # add the radio-button control to the box.
 
 In other words: you instantiate a new rb-radio-button 'pointer';
@@ -1525,7 +1537,7 @@ Available "**new**"-widgets in LibUI:
     LibUI.new_table_value_color
     LibUI.new_table_value_string
     LibUI.new_time_picker
-    LibUI.new_menu
+    LibUI.new_menu                                 # this is a menu, appearing on the upper area
     LibUI.new_multiline_entry                      # this is a textview
     LibUI.new_non_wrapping_multiline_entry
     LibUI.new_open_type_features
@@ -1572,9 +1584,14 @@ Example for this:
     width = canvas.width
     height = canvas.height
 
-## Creating a new drawing area
+## How to to build a menu-interface (menu tag):
 
-This should suffice:
+    help_menu = LibUI.new_menu('Help')
+    version_item = LibUI.menu_append_item(help_menu, 'Version')
+
+## Creating a new drawing area in LibUI
+
+The following code should suffice:
 
     handler             = LibUI::FFI::AreaHandler.malloc
     handler.to_ptr.free = Fiddle::RUBY_FREE
@@ -1582,9 +1599,9 @@ This should suffice:
 
 ## Horizontal boxes
 
-A HBox represents a horizontal box. The API for putting 
-something into a hbox goes as follows, such as when you
-wish to put a text-entry into the hbox:
+A <b>HBox</b> represents a <b>horizontal box</b>. The API for putting 
+something into a hbox goes as follows, such as when you wish to put
+a text-entry into the hbox:
 
     LibUI.box_append(hbox1, text_entry, 1)
 
@@ -1600,7 +1617,7 @@ like this:
       puts "New Slider value: #{UI.slider_value(ptr)}"
       0
     }
-    UI.slider_on_changed(slider, slider_changed_callback) # last element is nil, but it seems we can omit it
+    LibUI.slider_on_changed(slider, slider_changed_callback) # last element is nil, but it seems we can omit it
 
 This may look like so on Linux:
 
@@ -1844,26 +1861,27 @@ expand horizontally or vertically. halign and valign, I think,
 are used to align the grid-cell horizontally and vertically, so you
 can position them exactly in the middle.
 
-Recently (August 2021) I discovered that you can actually put 
-a button-in-a-button. I don't know whether this is a bug or
-a feature, but it is hilarious.
+Recently (in <b>August 2021</b>) I discovered that you can actually
+put a button-in-a-button. I don't know whether this is a bug or
+a feature, but it is hilarious nonetheless.
 
-The 'raw' code I used for this was the following:
+The '<b>raw</b>' code I used for this was the following:
 
-    UI.grid_append(grid, UI.new_button('3'),0,1,1,1,1,1,1,1)
-    UI.grid_append(grid, UI.new_button('4'),1,1,1,1,1,1,1,1)
-    UI.grid_append(grid, UI.new_button('5'),0,1,1,1,1,0,1,0)
-    UI.grid_append(grid, UI.new_button('6'),1,1,1,1,1,0,1,0)
+    LibUI.grid_append(grid, UI.new_button('3'),0,1,1,1,1,1,1,1)
+    LibUI.grid_append(grid, UI.new_button('4'),1,1,1,1,1,1,1,1)
+    LibUI.grid_append(grid, UI.new_button('5'),0,1,1,1,1,0,1,0)
+    LibUI.grid_append(grid, UI.new_button('6'),1,1,1,1,1,0,1,0)
 
-This led to the following image:
+This led to the following widget setup, as shown in this
+image:
 
 <img src="https://i.imgur.com/6sWwWKh.png" style="margin-left: 1em">
 
 The smaller buttons and the larger buttons can be clicked. They
-reside in the same grid-cell. I don't know whether this is a 
-bug or a feature really, but this was quite hilarious to see.
-In the event that I may forget this, I'll keep this here as
-a reference.
+reside in the same grid-cell. As stated I do not know whether this is
+a bug or a feature really, but this was quite hilarious to see.
+In the event that I may forget this, I'll keep this here as a
+<b>reference</b>.
 
 If you want to pad the grid you can use the following method:
 
@@ -2038,35 +2056,31 @@ more useful in general, feel free to drop me an email at any time, via:
     shevy@inbox.lt
 
 Before that email I used an email account at Google gmail, but in **2021** I
-decided to slowly abandon gmail for various reasons. In order to limit this
+decided to slowly abandon gmail, for various reasons. In order to limit the
 explanation here, allow me to just briefly state that I do not feel as if I
-want to promote any Google service anymore, for various reasons.
+want to promote any Google service anymore when the user becomes the 
+product (such as via data collection by upstream services). I feel this is
+a hugely flawed business model.
 
 Do keep in mind that responding to emails may take some time, depending on
 the amount of work I may have at that moment.
 
-In 2022 rubygems.org decided to make 2FA mandatory for every gem owner:
-see https://blog.rubygems.org/2022/06/13/making-packages-more-secure.html
+In <b>2022</b> rubygems.org, or rather the corporate overlords who control the
+rubygems.org infrastructure these days, decided to make 2FA mandatory for every
+gem owner eventually: see
+https://blog.rubygems.org/2022/06/13/making-packages-more-secure.html
 
-As I can not use 2FA, for reasons I will skip explaining here (see
-various github issue discussions in the past), this effectively means that
-Betty Li and others who run the show at rubygems.org will perma-ban me
-from using rubygems as a developer.
+Mandatory 2FA will eventually be extended to all rubygems.org developers and
+maintainers. As I can not use 2FA, for reasons I will skip explaining here,
+this means that my projects will eventually be taken over by shopify (or,
+correspondingly, whoever effectively controls the rubygems.org ecosystem).
+At that point, I no longer have any control what is done to my projects
+since shopify (respectively those controlling the gems ecosystem) took away
+control here. Not sure at which point ruby became corporate-controlled -
+that was not the case several years ago.
 
-As I disagree with that decision completely, this will mean that all my
-gems will be removed from rubygems.org prior to that sunset date, e. g.
-before they permanently lock me out from the code that I used
-to maintain. It is pointless to want to discuss this with them anymore -
-they have made up their minds and decided that you can only use
-the code if 2FA is in place, even though the code itself works just
-fine. If you don't use 2FA you are effectively locked out from your
-own code; I consider this a malicious attack. See also how they limited
-discussions to people with mandatory 2FA on the ruby-bugtracker, thus
-banning everyone permanently without 2FA:  
+Ruby also only allows 2FA users to participate on the issue tracker these
+days:
 
-https://bugs.ruby-lang.org/issues/18800
-
-Guess it may indeed be time to finally abandon ruby - not because
-ruby is a bad language, but there are people now in charge who
-really should not be part of ruby in the first place.
+  https://bugs.ruby-lang.org/issues/18800
 

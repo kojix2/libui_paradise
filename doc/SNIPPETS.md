@@ -39,13 +39,6 @@
   UI.checkbox_on_toggled(checkbox, checkbox_toggle_callback, nil)
   UI.box_append(inner, checkbox, 0)
 
-  To set it checked:
-
-  checkbox.set_checked(1)
-
-  To query its state:
-
-    checked = UI.checkbox_checked(pointer) == 1
 
 # And the control:
 
@@ -78,7 +71,7 @@
   UI.combobox_on_selected(cbox, combobox_selected_callback, nil)
 
   # Or more concise:
-  combo_box = UI.combobox {
+  combo_box = LibUI.combobox {
     ['combobox Item 1', 'combobox Item 2', 'combobox Item 3']
   }
 
@@ -87,8 +80,4 @@
 
   UI.append() # .append() adds the named item to the end of the EditableCombobox.
 
-# How to build a menu-interface (menu tag):
-
-  help_menu = UI.new_menu('Help')
-  version_item = UI.menu_append_item(help_menu, 'Version')
 

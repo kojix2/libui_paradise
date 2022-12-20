@@ -1,0 +1,7 @@
+#!/usr/bin/ruby -w
+# Encoding: UTF-8
+# frozen_string_literal: true
+# =========================================================================== #
+require 'libui_paradise'
+
+LibuiParadise::Extensions.message_box(text: ARGV)

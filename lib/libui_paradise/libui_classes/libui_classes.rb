@@ -23,8 +23,38 @@ module Extensions # === LibuiParadise::Extensions
     if text.start_with? '_'
       text[0,1] = '' # Right now we do not support accelerators.
     end
-    ::LibuiParadise::Extensions.button(text)
-  end; alias ui_button button # === ui_button
+    return ::LibuiParadise::Extensions.button(text)
+  end; alias ui_button     button # === ui_button
+       alias create_button button # === create_button
+
+  # ========================================================================= #
+  # === LibuiParadise::Extensions.tab
+  #
+  # This could be also called "notebook_tab" - see the alias on the
+  # bottom.
+  # ========================================================================= #
+  def self.tab
+    _ = ::LibUI.new_tab # Create a new notebook-tab here.
+    add_to_the_registered_widgets(_, __method__)
+    return _
+  end; self.instance_eval { alias ui_tab       tab } # === LibuiParadise::Extensions.ui_tab
+       self.instance_eval { alias ui_tabs      tab } # === LibuiParadise::Extensions.ui_tabs
+       self.instance_eval { alias notebook     tab } # === LibuiParadise::Extensions.notebook
+       self.instance_eval { alias ui_notebook  tab } # === LibuiParadise::Extensions.ui_notebook
+       self.instance_eval { alias notebook_tab tab } # === LibuiParadise::Extensions.notebook_tab
+
+  # ========================================================================= #
+  # === tab
+  #
+  # This could be also called "notebook_tab".
+  # ========================================================================= #
+  def tab
+    ::LibuiParadise::Extensions.tab
+  end; alias ui_tab       tab # === ui_tab
+       alias ui_tabs      tab # === ui_tabs
+       alias notebook     tab # === notebook
+       alias ui_notebook  tab # === ui_notebook
+       alias notebook_tab tab # === notebook_tab
 
   # ========================================================================= #
   # === LibuiParadise::Extensions.msg_box
@@ -91,10 +121,15 @@ module Extensions # === LibuiParadise::Extensions
     case main_window
     # ======================================================================= #
     # === :default_window
+    #
+    # Note that LibuiParadise.main_window? may be nil.
     # ======================================================================= #
     when :default_window,
          :default
       main_window = ::LibuiParadise.main_window?
+    end
+    if description_to_use.is_a? Array
+      description_to_use = description_to_use.join(' ').strip
     end
     _ = ::LibUI.msg_box(
       main_window,
@@ -1243,34 +1278,6 @@ module Extensions # === LibuiParadise::Extensions
   end; alias attributed_string fancy_text # === attributed_string
 
   # ========================================================================= #
-  # === LibuiParadise::Extensions.tab
-  #
-  # This could be also called "notebook_tab".
-  # ========================================================================= #
-  def self.tab
-    _ = ::LibUI.new_tab
-    add_to_the_registered_widgets(_, __method__)
-    return _
-  end; self.instance_eval { alias ui_tab       tab } # === LibuiParadise::Extensions.ui_tab
-       self.instance_eval { alias ui_tabs      tab } # === LibuiParadise::Extensions.ui_tabs
-       self.instance_eval { alias notebook     tab } # === LibuiParadise::Extensions.notebook
-       self.instance_eval { alias ui_notebook  tab } # === LibuiParadise::Extensions.ui_notebook
-       self.instance_eval { alias notebook_tab tab } # === LibuiParadise::Extensions.notebook_tab
-
-  # ========================================================================= #
-  # === tab
-  #
-  # This could be also called "notebook_tab".
-  # ========================================================================= #
-  def tab
-    ::LibuiParadise::Extensions.tab
-  end; alias ui_tab       tab # === ui_tab
-       alias ui_tabs      tab # === ui_tabs
-       alias notebook     tab # === notebook
-       alias ui_notebook  tab # === ui_notebook
-       alias notebook_tab tab # === notebook_tab
-
-  # ========================================================================= #
   # === LibuiParadise::Extensions.area
   #
   # AreaHandler defines the functionality needed for handling events from
@@ -1607,5 +1614,12 @@ end; self.instance_eval { alias ui_open_file open_file } # === LibuiParadise.ui_
 def self.set_main_window(i)
   ::LibuiParadise::Extensions.set_main_window(i)
 end
+
+# =========================================================================== #
+# === LibuiParadise.create_tab
+# =========================================================================== #
+def self.create_tab
+  LibuiParadise::Extensions.tab
+end; self.instance_eval { alias tab create_tab } # === LibuiParadise.tab
 
 end

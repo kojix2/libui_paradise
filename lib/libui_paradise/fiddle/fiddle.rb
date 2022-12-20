@@ -11,13 +11,31 @@
 # refinements, but I don't quite like the syntax of refinements,
 # so I opted for the simpler toplevel modification instead.
 # =========================================================================== #
-# require 'libui_paradise/fiddle/pointer.rb'
+# require 'libui_paradise/fiddle/fiddle.rb'
 # =========================================================================== #
 module Fiddle
 
 class Pointer # === Fiddle::Pointer
 
-  require 'libui_paradise/extensions/counters.rb'
+  require 'libui_paradise/extensions/toplevel_counters.rb'
+
+  # ========================================================================= #
+  # === enable                                                   (enable tag)
+  # ========================================================================= #
+  def enable(&block)
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    type = hash[object_id].last # The last entry contains the type.
+    case type
+    # ======================================================================= #
+    # === :button
+    # ======================================================================= #
+    when :button
+      LibUI.control_enable(self)
+    else
+      e 'Not registered type in .enable(): '+type.to_s
+    end
+  end
 
   # ========================================================================= #
   # === on_changed
@@ -254,9 +272,9 @@ class Pointer # === Fiddle::Pointer
        alias start_position= set_value # === start_position=
 
   # ========================================================================= #
-  # === right                                                     (right tag)
+  # === left                                                       (left tag)
   # ========================================================================= #
-  def right(
+  def left(
       widget,
       left  = LibuiParadise.counter_left?,
       top   = LibuiParadise.counter_top?,
@@ -309,9 +327,9 @@ class Pointer # === Fiddle::Pointer
   end
 
   # ========================================================================= #
-  # === left                                                       (left tag)
+  # === right                                                     (right tag)
   # ========================================================================= #
-  def left(
+  def right(
       widget,
       left  = LibuiParadise.counter_left?,
       top   = LibuiParadise.counter_top?,
@@ -587,65 +605,9 @@ class Pointer # === Fiddle::Pointer
     #     display_this_text.to_s
     #   )
     else
-      puts 'Unhandled case in clear(): '+
-           type.to_s
+      puts "Unhandled case in clear(): "\
+           "#{type}"
     end
-  end
-
-  # ========================================================================= #
-  # === empty?
-  # ========================================================================= #
-  def empty?(
-      type = nil
-    )
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    if type.nil?
-      # ===================================================================== #
-      # In this case we must determine the type in use.
-      # ===================================================================== #
-      if hash.has_key? object_id
-        type = hash[object_id].last # The last entry contains the type.
-      end
-    end
-    case type
-    # ======================================================================= #
-    # === :entry
-    # ======================================================================= #
-    when :entry
-      self.text?.empty?
-    else
-      return true
-    end
-  end
-
-  # ========================================================================= #
-  # === is_read_only
-  # ========================================================================= #
-  def is_read_only(
-      current_widget = available_pointers?[self.object_id] # This will be an Array.
-    )
-    _pointer = current_widget.first # Not used currently in this method.
-    type     = current_widget.last
-    case type
-    # ======================================================================= #
-    # === :multiline_entry
-    # ======================================================================= #
-    when :multiline_entry
-      LibUI.multiline_entry_set_read_only(self, 1)
-    else
-      pp caller()
-      puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
-    end
-  end
-
-  # ========================================================================= #
-  # === append_this_string
-  #
-  # This method can be used to append a String to an existing String.
-  # ========================================================================= #
-  def append_this_string(i)
-    ::LibUI.attributed_string_append_unattributed(self, i)
   end
 
   # ========================================================================= #
@@ -740,24 +702,6 @@ class Pointer # === Fiddle::Pointer
   end
 
   # ========================================================================= #
-  # === enable                                                   (enable tag)
-  # ========================================================================= #
-  def enable(&block)
-    object_id = self.object_id
-    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
-    type = hash[object_id].last # The last entry contains the type.
-    case type
-    # ======================================================================= #
-    # === :button
-    # ======================================================================= #
-    when :button
-      LibUI.control_enable(self)
-    else
-      e 'Not registered type in .enable(): '+type.to_s
-    end
-  end
-
-  # ========================================================================= #
   # === populate
   # ========================================================================= #
   def populate(dataset)
@@ -809,6 +753,62 @@ class Pointer # === Fiddle::Pointer
   def available_pointers?
     LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
   end; alias main_hash? available_pointers? # === main_hash?
+
+  # ========================================================================= #
+  # === empty?
+  # ========================================================================= #
+  def empty?(
+      type = nil
+    )
+    object_id = self.object_id
+    hash = LibuiParadise::Extensions.hash_fiddle_pointer_widgets?
+    if type.nil?
+      # ===================================================================== #
+      # In this case we must determine the type in use.
+      # ===================================================================== #
+      if hash.has_key? object_id
+        type = hash[object_id].last # The last entry contains the type.
+      end
+    end
+    case type
+    # ======================================================================= #
+    # === :entry
+    # ======================================================================= #
+    when :entry
+      self.text?.empty?
+    else
+      return true
+    end
+  end
+
+  # ========================================================================= #
+  # === is_read_only
+  # ========================================================================= #
+  def is_read_only(
+      current_widget = available_pointers?[self.object_id] # This will be an Array.
+    )
+    _pointer = current_widget.first # Not used currently in this method.
+    type     = current_widget.last
+    case type
+    # ======================================================================= #
+    # === :multiline_entry
+    # ======================================================================= #
+    when :multiline_entry
+      LibUI.multiline_entry_set_read_only(self, 1)
+    else
+      pp caller()
+      puts "#{type} (class #{type.class}) is not yet implemented in .padded=."
+    end
+  end
+
+  # ========================================================================= #
+  # === append_this_string
+  #
+  # This method can be used to append a String to an existing String.
+  # ========================================================================= #
+  def append_this_string(i)
+    ::LibUI.attributed_string_append_unattributed(self, i)
+  end
 
   # ========================================================================= #
   # === append_this_array
@@ -1033,15 +1033,29 @@ class Pointer # === Fiddle::Pointer
     }
   end; alias simple_exit close_properly # === simple_exit
        alias sane_exit   close_properly # === sane_exit
-       alias should_quit close_properly # === should_quit
        alias do_quit     close_properly # === should_quit
+       alias should_quit close_properly # === should_quit
 
   # ========================================================================= #
-  # === Skeleton methods:
+  # === on_key_press_event
+  # ========================================================================= #
+  def on_key_press_event(&block)
+    # e 'NOT YET IMPLEMENTED.'
+  end
+
+  # ========================================================================= #
+  # === on_button_press_event
+  # ========================================================================= #
+  def on_button_press_event(&block)
+    # e 'NOT YET IMPLEMENTED'
+  end
+
+  # ========================================================================= #
+  # === Skeleton methods
   #
-  # A "skeleton" method is one that doesn't do anything right now. These
-  # were added to increase compatibility with the gtk_paradise gem in
-  # particular.
+  # A "skeleton" method is one that doesn't do anything right now.
+  # These were added to increase compatibility with the gtk_paradise
+  # gem in particular.
   #
   # Some of these skeleton methods may become real methods one day,
   # depending on how sophisticated the libui code will be - but
@@ -1135,24 +1149,12 @@ class Pointer # === Fiddle::Pointer
   def spacing1=(i = 2); end
   def spacing2=(i = 2); end
   def spacing=(i = 0); end
+  def light_blue_background; end
+  def on_hover_colour(i = '', &block); end
   def deselect; end
   # def fraction=(i = ''); end
   def return_all_entries
     []
-  end
-
-  # ========================================================================= #
-  # === on_key_press_event
-  # ========================================================================= #
-  def on_key_press_event(&block)
-    # e 'NOT YET IMPLEMENTED.'
-  end
-
-  # ========================================================================= #
-  # === on_button_press_event
-  # ========================================================================= #
-  def on_button_press_event(&block)
-    # e 'NOT YET IMPLEMENTED'
   end
 
 end; end
